@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antiarrhythmic Drugs — HY Reference Chart</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#f5f3ef; --surface:#fff; --border:#d9d3c7; --text:#1a1612; --muted:#7a7268;
+    --accent:#c0392b; --accent-light:#fdf0ee; --accent-mid:#e8998f;
+    --gold:#9b7e3a; --gold-light:#fdf8ee;
+    --teal:#2d6e65; --teal-light:#e8f4f2;
+    --blue:#2c5282; --blue-light:#ebf2fc;
+    --orange:#b85c1a;
+    --hy-bg:#fff8e1; --hy-border:#f0c040; --hy-text:#7a5c00;
+    --shadow:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);
+    --radius:10px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:13px;line-height:1.55;padding:24px 20px 60px;}
+
+  /* HEADER */
+  .page-header{max-width:1400px;margin:0 auto 24px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:2px solid var(--accent);padding-bottom:14px;}
+  .page-header h1{font-family:'DM Serif Display',serif;font-size:26px;font-weight:400;letter-spacing:-.3px;}
+  .page-header .subtitle{font-size:12px;color:var(--muted);margin-top:3px;}
+  .legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11.5px;align-items:center;}
+  .legend-item{display:flex;align-items:center;gap:5px;}
+  .legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
+
+  /* SECTION LABELS */
+  .section-label{max-width:1400px;margin:28px auto 8px;display:flex;align-items:center;gap:10px;}
+  .section-label::before{content:'';flex:none;width:4px;height:18px;border-radius:2px;background:var(--accent);}
+  .section-label h2{font-family:'DM Serif Display',serif;font-size:16px;font-weight:400;color:var(--muted);letter-spacing:.02em;}
+
+  /* CARDS */
+  .card-wrapper{max-width:1400px;margin:0 auto 12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+  .card-wrapper:hover{border-color:var(--accent-mid);box-shadow:0 2px 8px rgba(0,0,0,.08),0 8px 24px rgba(0,0,0,.06);}
+
+  /* DRUG HEADER BAR */
+  .drug-header{display:flex;align-items:center;gap:10px;padding:10px 16px;color:white;flex-wrap:wrap;}
+  .drug-header.diuretic{background:#1a3a2d;}
+  .drug-header.raas{background:#2d1b4e;}
+  .drug-header.ccb{background:#1a2d4a;}
+  .drug-header.bb{background:#1a1a3a;}
+  .drug-header.alpha{background:#2d2010;}
+  .drug-header.vasodilator{background:#3a1a10;}
+  .drug-header.sglt2{background:#0d3320;}
+  .drug-header.hf-raas{background:#2d1b4e;}
+  .drug-header.hf-bb{background:#1a1a3a;}
+  .drug-header.hf-newer{background:#0d3320;}
+  .drug-header.hf-symptom{background:#1a2d4a;}
+  .drug-header.hf-digoxin{background:#2d2010;}
+  .drug-header.class-ia{background:#4a1a10;}
+  .drug-header.class-ib{background:#1a3a1a;}
+  .drug-header.class-ic{background:#3a2a10;}
+  .drug-header.class-iii{background:#1a1a4a;}
+  .drug-header.class-iii-other{background:#2a1a4a;}
+  .drug-header.class-ii-iv{background:#1a2a3a;}
+  .drug-header.other-arr{background:#2a2a2a;}
+  .drug-header.statin{background:#1a3a2d;}
+  .drug-header.fibrate{background:#2d2010;}
+  .drug-header.bas{background:#1a2a4a;}
+  .drug-header.ezetimibe{background:#2d1b4e;}
+  .drug-header.pcsk9{background:#1a1a3a;}
+  .drug-header.omega3{background:#0d3320;}
+
+  .drug-name{font-family:'DM Serif Display',serif;font-size:17px;font-weight:400;letter-spacing:-.2px;}
+  .drug-class-pill{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.08em;padding:2px 9px;border-radius:20px;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);text-transform:uppercase;}
+  .drug-header .route{margin-left:auto;font-size:11px;color:rgba(255,255,255,.6);font-family:'JetBrains Mono',monospace;}
+
+  /* GRID */
+  .card-body{display:grid;grid-template-columns:1fr 1fr 1fr 1.2fr;gap:0;}
+  @media(max-width:900px){.card-body{grid-template-columns:1fr 1fr;}}
+  @media(max-width:600px){.card-body{grid-template-columns:1fr;}}
+
+  .cell{padding:12px 14px;border-right:1px solid var(--border);border-top:1px solid var(--border);}
+  .cell:last-child{border-right:none;}
+  .cell-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:flex;align-items:center;gap:5px;}
+  .cell-label .icon{font-size:12px;}
+  .cell-content{font-size:12.5px;color:var(--text);line-height:1.55;}
+  .cell-content strong{color:var(--accent);font-weight:600;}
+  .cell-content em{font-style:normal;color:var(--muted);}
+
+  .cell.moa{background:var(--accent-light);}
+  .cell.moa .cell-label{color:var(--accent);}
+  .cell.se .warn{display:inline-block;color:var(--orange);font-weight:600;}
+  .cell.use{background:var(--teal-light);}
+  .cell.use .cell-label{color:var(--teal);}
+  .cell.use .use-tag{display:inline-block;background:var(--teal-light);border:1px solid var(--teal);color:var(--teal);border-radius:4px;padding:1px 7px;font-size:11px;font-weight:500;margin:1px 2px 2px 0;}
+
+  .cell.hy{background:var(--hy-bg);border-left:3px solid var(--hy-border);border-right:none;}
+  .cell.hy .cell-label{color:var(--hy-text);font-size:10.5px;}
+  .cell.hy .hy-fact{display:flex;align-items:flex-start;gap:6px;margin-bottom:6px;font-size:12.5px;color:var(--hy-text);}
+  .cell.hy .hy-fact::before{content:'⭐';font-size:11px;flex-shrink:0;margin-top:1px;}
+  .cell.hy .trap{margin-top:8px;padding:6px 8px;background:rgba(192,57,43,.08);border-left:2px solid var(--accent);border-radius:4px;font-size:11.5px;color:var(--accent);}
+  .cell.hy .trap::before{content:'⚠ TRAP: ';font-weight:700;}
+
+  /* BOTTOM REFERENCE PANELS */
+  .ref-panel{max-width:1400px;margin:32px auto 8px;border-radius:var(--radius);padding:14px 18px;}
+  .ref-panel.blue-panel{background:var(--blue-light);border:1px solid #c5d8f0;}
+  .ref-panel.gold-panel{background:var(--gold-light);border:1px solid #dcc880;}
+  .ref-panel.teal-panel{background:var(--teal-light);border:1px solid #a0cdc7;}
+  .ref-panel h3{font-family:'DM Serif Display',serif;font-size:14px;font-weight:400;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .ref-panel.blue-panel h3{color:var(--blue);}
+  .ref-panel.gold-panel h3{color:var(--gold);}
+  .ref-panel.teal-panel h3{color:var(--teal);}
+  .ref-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;}
+  .ref-grid.col3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr));}
+  .ref-item{display:flex;flex-direction:column;gap:2px;padding:8px 10px;background:white;border-radius:6px;}
+  .ref-panel.blue-panel .ref-item{border:1px solid #c5d8f0;}
+  .ref-panel.gold-panel .ref-item{border:1px solid #dcc880;}
+  .ref-panel.teal-panel .ref-item{border:1px solid #a0cdc7;}
+  .ref-item .ri-drug{font-weight:600;font-size:12px;}
+  .ref-panel.blue-panel .ri-drug{color:var(--blue);}
+  .ref-panel.gold-panel .ri-drug{color:var(--gold);}
+  .ref-panel.teal-panel .ri-drug{color:var(--teal);}
+  .ref-item .ri-val{font-size:12.5px;color:var(--text);}
+  .ref-item .ri-note{font-size:11px;color:var(--muted);}
+
+  /* INDICATION TABLE */
+  .indication-section{max-width:1400px;margin:32px auto 8px;}
+  .indication-section h3{font-family:'DM Serif Display',serif;font-size:15px;font-weight:400;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .indication-section h3::before{content:'';width:4px;height:18px;border-radius:2px;background:var(--gold);flex-shrink:0;}
+  .ind-table{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+  .ind-table th{background:#2c3e50;color:white;padding:8px 12px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;}
+  .ind-table td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top;}
+  .ind-table tr:last-child td{border-bottom:none;}
+  .ind-table tr:nth-child(even) td{background:#faf9f7;}
+  .ind-table .iname{font-weight:600;color:var(--text);}
+  .ind-table .choice{color:var(--teal);font-weight:500;}
+  .ind-table .warn-cell{color:var(--accent);font-weight:600;}
+  .ind-table .muted{color:var(--muted);}
+
+  /* PRINT BTN */
+  .print-btn{position:fixed;bottom:24px;right:24px;background:var(--accent);color:white;border:none;border-radius:24px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;box-shadow:0 4px 16px rgba(192,57,43,.3);transition:transform .15s,box-shadow .15s;}
+  .print-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(192,57,43,.4);}
+  @media print{body{background:white;padding:10px;font-size:10px;}.print-btn{display:none;}.card-wrapper{break-inside:avoid;box-shadow:none;border:1px solid #ccc;}.page-header,.section-label{break-after:avoid;}}
+</style>
+
+</head>
+<body>
+
+<header class="page-header">
+  <div>
+    <h1>Antiarrhythmic Drugs</h1>
+    <div class="subtitle">Georgetown SOM · Cardio Exam 2 · HY Reference Chart</div>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#fdf0ee;border:1px solid #e8998f"></div> MOA</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e8f4f2;border:1px solid #2d6e65"></div> Uses</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#fff8e1;border:1px solid #f0c040"></div> ⭐ High-Yield Facts</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(192,57,43,.08);border:1px solid #c0392b"></div> ⚠ Trap</div>
+  </div>
+</header>
+<div class="section-label"><h2>Class IA — Na⁺ Channel Block + ↑ APD (Prolongs QT → Torsades Risk)</h2></div>
+
+<div class="card-wrapper">
+  <div class="drug-header class-ia">
+    <span class="drug-name">Procainamide · Disopyramide · Quinidine (historical)</span>
+    <span class="drug-class-pill">Class IA — Intermediate Na⁺ Block + K⁺ Block</span>
+    <span class="route">Procainamide: IV or PO · Disopyramide: PO · Monitor QT interval</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content"><strong>Intermediate Na⁺ channel kinetics</strong> + <strong>K⁺ channel (IKr) block</strong>:<br>• ↓ Vmax (phase 0) → ↓ conduction velocity → ↑ PR, ↑ QRS<br>• K⁺ block → ↑ APD → ↑ ERP → <strong>↑ QT interval</strong><br><br>Act on both atrial and ventricular tissue. Active metabolite of procainamide: NAPA.</div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content"><span class='warn'>QT prolongation → Torsades de Pointes</span> (all Class IA)<br><span class='warn'>Procainamide: Drug-Induced Lupus</span> (anti-histone Ab+, anti-dsDNA−, complement normal)<br><span class='warn'>Disopyramide: strong anticholinergic</span> (urinary retention, dry mouth, constipation) + strong negative inotrope → avoid in HF<br><br><strong>Contraindicated:</strong> Long QT syndrome, concurrent QT-prolonging drugs</div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content"><span class="use-tag">Ventricular arrhythmias (VT/VF)</span><span class="use-tag">AF conversion</span><span class="use-tag">WPW + Afib: procainamide ★</span><br><br>Procainamide IV: VT when lidocaine ineffective.<br><strong>WPW + Afib</strong>: use procainamide (blocks accessory pathway).</div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="icon">⭐</span> High-Yield Facts (Exam Focus)</div><div class="hy-fact"><strong>All Class IA prolong QT → Torsades de Pointes</strong> risk (especially with hypokalemia/hypomagnesemia).</div><div class="hy-fact">ECG changes: <strong>↑ PR, ↑ QRS, ↑ QT</strong>.</div><div class="hy-fact"><strong>Procainamide: drug-induced lupus</strong> — anti-histone Ab (+), anti-dsDNA (−), complement NORMAL. Stops when drug stopped.</div><div class="hy-fact"><strong>Disopyramide</strong>: strong negative inotrope (avoid in HF) + strong anticholinergic (urinary retention).</div><div class="hy-fact">WPW + Afib: use <strong>PROCAINAMIDE</strong> (blocks accessory pathway). Never adenosine/digoxin/verapamil.</div><div class="trap">Drug-induced lupus: anti-histone+, anti-dsDNA− (idiopathic SLE is anti-dsDNA+). Torsades risk highest when K⁺ or Mg²⁺ is low. Disopyramide in HF = dangerous (negative inotrope).</div>
+    </div>
+  </div>
+</div>
+<div class="section-label"><h2>Class IB — Na⁺ Channel Block + ↓ APD (Use-Dependent — Ischemic Tissue)</h2></div>
+
+<div class="card-wrapper">
+  <div class="drug-header class-ib">
+    <span class="drug-name">Lidocaine (IV only) · Mexiletine (PO)</span>
+    <span class="drug-class-pill">Class IB — Fast Na⁺ Block — Use-Dependent</span>
+    <span class="route">Lidocaine: IV ONLY (high first-pass) · Mexiletine: PO · Monitor CNS symptoms</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content"><strong>FAST Na⁺ channel kinetics</strong> (unbinds &lt;1 sec) → preferentially bind <strong>inactivated channels</strong> → most effective in <strong>rapidly firing ischemic/tachycardic tissue</strong>.<br><br><strong>↓ APD</strong> (shortens action potential duration) — opposite of Class IA.<br><strong>USE-DEPENDENT</strong>: more effective at faster rates → ideal for ischemic VT.</div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content"><span class='warn'>CNS toxicity</span> (dose-dependent): dizziness → tremor → slurred speech → <strong>SEIZURES → respiratory depression</strong><br><span class='warn'>Minimal ECG changes</span> (minimal QRS/QT widening) — distinguishing feature from IA/IC<br><span class='warn'>Mexiletine: GI upset</span>, same CNS ADRs<br><br><strong>Lidocaine INEFFECTIVE orally</strong> (extensive first-pass metabolism)<br>INEFFECTIVE for atrial arrhythmias</div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content"><span class="use-tag">Ventricular arrhythmias (VT/VF) — post-MI ★</span><span class="use-tag">Ischemic VT (use-dependent)</span><span class="use-tag">Local anesthesia (lidocaine)</span><br><br>Mexiletine: oral IB agent — chronic ventricular arrhythmia prevention.<br>NOT for atrial arrhythmias.</div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="icon">⭐</span> High-Yield Facts (Exam Focus)</div><div class="hy-fact"><strong>FAST kinetics → use-dependent</strong> → most effective in ischemic/tachycardic tissue (post-MI VT).</div><div class="hy-fact">IB drugs <strong>SHORTEN APD</strong> → minimal/no QT prolongation (vs. IA/III which lengthen QT).</div><div class="hy-fact"><strong>Minimal ECG changes</strong> — key distinguishing feature of Class IB from IA and IC.</div><div class="hy-fact">Lidocaine: <strong>IV ONLY</strong> (extensive first-pass metabolism → oral = useless).</div><div class="hy-fact"><strong>INEFFECTIVE for atrial arrhythmias</strong> — ventricular only.</div><div class="hy-fact">CNS toxicity is dose-dependent: dizziness → seizures → respiratory arrest.</div><div class="trap">'Give oral lidocaine' → impossible (first-pass destruction). IB drugs USELESS in Afib/AFL. Minimal ECG change = IB hallmark. Contrast: Class IA ↑ QT; Class IB ↓ APD (minimal QT change).</div>
+    </div>
+  </div>
+</div>
+<div class="section-label"><h2>Class IC — Marked Na⁺ Block (↑ QRS, ↑ PR — CAST Trial Warning)</h2></div>
+
+<div class="card-wrapper">
+  <div class="drug-header class-ic">
+    <span class="drug-name">Flecainide · Propafenone (+ β-blocking activity)</span>
+    <span class="drug-class-pill">Class IC — Slow/Marked Na⁺ Block</span>
+    <span class="route">PO · Monitor ECG (QRS, PR) · CONTRAINDICATED post-MI / structural heart disease</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content"><strong>SLOW Na⁺ channel kinetics</strong> (unbinds &gt;10 sec) → <strong>marked ↓ Vmax</strong> → <strong>↑ PR interval + ↑ QRS duration</strong>.<br><br>Minimal effect on APD/QT (distinguishes from IA and III).<br>Propafenone: also has intrinsic <strong>β-blocking activity</strong>.<br>QRS prolongation is rate-dependent (greater at faster rates).</div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content"><span class='warn'>PROARRHYTHMIC — marked risk</span> → can convert organized arrhythmia to VF<br><span class='warn'>CONTRAINDICATED post-MI and structural heart disease</span> (CAST trial — ↑ sudden death)<br><span class='warn'>Flecainide: CNS toxicity</span>, blurry vision, altered taste<br><span class='warn'>Propafenone: β-blocker ADRs</span> (bradycardia, bronchospasm)<br><br><strong>Contraindicated:</strong> Post-MI, HFrEF, structural heart disease, bundle branch block</div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content"><span class="use-tag">Paroxysmal AF — 'pill-in-pocket' ★ (normal heart ONLY)</span><span class="use-tag">SVT</span><br><br>ONLY in structurally normal hearts.<br>NEVER in CAD, HF, LVH, prior MI.</div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="icon">⭐</span> High-Yield Facts (Exam Focus)</div><div class="hy-fact"><strong>CAST TRIAL</strong>: flecainide/encainide suppressed PVCs post-MI but <strong>INCREASED sudden death 2.5×</strong>. Never use post-MI.</div><div class="hy-fact">ECG changes: <strong>↑ QRS</strong> (most prominent), ↑ PR; minimal QT change.</div><div class="hy-fact">'Pill-in-pocket' for paroxysmal Afib: patient takes dose at symptom onset — <strong>ONLY if structurally normal heart</strong>.</div><div class="hy-fact">Propafenone: also has β-blocking activity → watch for bradycardia/bronchospasm.</div><div class="trap">IC drugs suppress PVCs but INCREASE death in post-MI patients (CAST trial). IC drugs = safe ONLY in structurally normal hearts. Remember: IC suppresses PVCs but is lethal in structural disease.</div>
+    </div>
+  </div>
+</div>
+<div class="section-label"><h2>Class III — K⁺ Channel Block (↑ APD, ↑ QT)</h2></div>
+
+<div class="card-wrapper">
+  <div class="drug-header class-iii">
+    <span class="drug-name">Amiodarone ★ (Class I+II+III+IV — 'Dirty Drug')</span>
+    <span class="drug-class-pill">Multi-Class Antiarrhythmic — Primary: K⁺ Block</span>
+    <span class="route">IV or PO (poor PO bioavailability) · t½ = 40–55 DAYS · Monitor TFTs, LFTs, PFTs, CXR</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">Blocks <strong>K⁺ channels</strong> (primarily) → ↑ APD + ↑ ERP + ↑ QT.<br>Also blocks: <strong>Na⁺ + Ca²⁺ channels + α/β receptors</strong> (Class I+II+III+IV properties).<br><br><strong>37% iodine by weight</strong> → thyroid effects.<br>Highly lipophilic → accumulates in tissues (lungs, liver, thyroid, cornea, skin) → <strong>t½ 40–55 days</strong> → toxicity persists months after stopping.</div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content"><span class='warn'>Pulmonary toxicity</span>: interstitial pneumonitis/fibrosis — most SERIOUS, potentially FATAL<br><span class='warn'>Thyroid: hypothyroidism OR hyperthyroidism</span> (iodine load → both directions — Jod-Basedow)<br><span class='warn'>Hepatotoxicity</span> (↑ LFTs — monitor regularly)<br><span class='warn'>Corneal microdeposits</span> (almost universal, usually asymptomatic)<br><span class='warn'>Blue-gray skin</span> (sun-exposed areas), photosensitivity<br><br><strong>Drug interactions:</strong><br>• CYP2C9 inhibitor → <strong>↑ warfarin (↑ INR)</strong> → reduce warfarin dose<br>• P-gp inhibitor → <strong>↑ digoxin levels</strong><br>• Interactions persist <em>months</em> after stopping (long t½)</div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content"><span class="use-tag">Pulseless VT/VF — ACLS 1st line ★</span><span class="use-tag">AF/AFL (rate + rhythm control)</span><span class="use-tag">HFrEF with arrhythmia (tolerated)</span><span class="use-tag">Hemodynamically unstable VT</span><br><br>PARADOX: despite most QT prolongation, causes <strong>LESS torsades</strong> than other Class III.</div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="icon">⭐</span> High-Yield Facts (Exam Focus)</div><div class="hy-fact"><strong>First-line for PULSELESS VT/VF</strong> in ACLS (300 mg IV → 150 mg).</div><div class="hy-fact">t½ = <strong>40–55 DAYS</strong> — drug and interactions persist MONTHS after stopping.</div><div class="hy-fact">PARADOX: causes <strong>LESS torsades</strong> than other Class III despite most QT prolongation.</div><div class="hy-fact">Thyroid toxicity goes <strong>BOTH ways</strong>: hypo (iodine load) OR hyper (Jod-Basedow). Check TSH regularly.</div><div class="hy-fact"><strong>Amiodarone + warfarin</strong> → ↑ INR (CYP2C9 inhibition) — classic interaction. Reduce warfarin dose.</div><div class="hy-fact"><strong>Ground-glass opacities + dyspnea + amiodarone</strong> → pulmonary toxicity. Get CXR + PFTs.</div><div class="hy-fact">Blue-gray skin + antiarrhythmic = amiodarone (pathognomonic).</div><div class="trap">Blue-gray skin = amiodarone. Amiodarone stopped → toxicity persists MONTHS (t½ 40–55 days). TSH checks regularly — can go EITHER direction. CYP2C9 inhibitor → reduce warfarin dose when starting.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card-wrapper">
+  <div class="drug-header class-iii-other">
+    <span class="drug-name">Dronedarone · Ibutilide (IV) · Dofetilide · Sotalol (+ Class II β-block)</span>
+    <span class="drug-class-pill">Class III — Other K⁺ Channel Blockers</span>
+    <span class="route">Ibutilide: IV only · Dofetilide: PO (renal dosing critical) · Sotalol: PO (renal dosing)</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">All block <strong>K⁺ channels (IKr)</strong> → ↑ APD → ↑ ERP → <strong>↑ QT → Torsades risk</strong>.<br><br><strong>Dronedarone</strong>: non-iodinated amiodarone analog → no thyroid effects; CYP3A4/2D6/P-gp inhibitor.<br><strong>Sotalol</strong>: also Class II (β-blocker activity) → ↓ HR + ↓ AV conduction + K⁺ block.<br><strong>Dofetilide/Ibutilide</strong>: more atrial-selective K⁺ block.</div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content"><span class='warn'>QT prolongation → Torsades de Pointes</span> (all Class III)<br><span class='warn'>Dronedarone: CONTRAINDICATED in CHF or permanent Afib</span> (ANDROMEDA trial — ↑ mortality)<br><span class='warn'>Sotalol: β-blocker ADRs</span> (bradycardia, bronchospasm) + QT prolongation; <strong>renally cleared</strong><br><span class='warn'>Dofetilide: QT prolongation</span> — requires in-hospital initiation; renally cleared (dose-adjust critical)<br><span class='warn'>Ibutilide: torsades ~6%</span> — have defibrillator available</div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content"><span class="use-tag">Dronedarone: paroxysmal/persistent Afib (NOT CHF)</span><span class="use-tag">Ibutilide: acute AF/AFL cardioversion (IV)</span><span class="use-tag">Dofetilide: AF/AFL conversion + maintenance</span><span class="use-tag">Sotalol: VT/VF + Afib maintenance</span></div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="icon">⭐</span> High-Yield Facts (Exam Focus)</div><div class="hy-fact"><strong>Dronedarone</strong>: no iodine → no thyroid toxicity. <strong>CONTRAINDICATED in CHF and permanent Afib</strong> (ANDROMEDA: ↑ mortality).</div><div class="hy-fact"><strong>Dofetilide</strong>: requires <strong>in-hospital initiation</strong> (monitor QTc for torsades). Critical renal dosing.</div><div class="hy-fact"><strong>Ibutilide</strong>: IV cardioversion of Afib/AFL. ~6% torsades risk — defibrillator must be available.</div><div class="hy-fact"><strong>Sotalol</strong> = Class II + Class III (β-blocker + K⁺ block) — two effects, two ADR profiles.</div><div class="trap">Dronedarone in CHF or permanent Afib = CONTRAINDICATED (↑ mortality — ANDROMEDA trial). Dofetilide requires in-hospital initiation. All Class III → QT prolongation → torsades risk.</div>
+    </div>
+  </div>
+</div>
+<div class="section-label"><h2>Class II (β-Blockers) · Class IV (Non-DHP CCBs) · Other Agents</h2></div>
+
+<div class="card-wrapper">
+  <div class="drug-header class-ii-iv">
+    <span class="drug-name">Metoprolol · Esmolol · Propranolol [Class II] · Verapamil · Diltiazem [Class IV]</span>
+    <span class="drug-class-pill">Class II: β-Blockers · Class IV: Non-DHP CCBs</span>
+    <span class="route">Class II: PO or IV (esmolol IV only) · Class IV: PO or IV · NEVER combine Class II + Class IV</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content"><strong>Class II (β-blockers)</strong>: β₁ blockade → ↓ cAMP → ↓ SA node automaticity + ↓ AV conduction → ↓ HR.<br><br><strong>Class IV (non-DHP CCBs)</strong>: L-type Ca²⁺ block in nodal tissue → ↓ SA + AV node activity → ↑ PR interval.<br><br><strong>Esmolol</strong>: t½ ~9 min (erythrocyte esterase) → IV only, rapidly titratable rate control.</div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content"><span class='warn'>Class II: bradycardia, AV block, bronchospasm, mask hypoglycemia</span><br><span class='warn'>Class IV: bradycardia, AV block, negative inotropy (↑ HF risk), ↑ digoxin (verapamil)</span><br><span class='warn'>Constipation (verapamil)</span><br><br><strong>NEVER combine Class II + Class IV → complete AV block/arrest</strong><br>Non-DHP CCBs in HFrEF → worsen EF<br>Non-DHP in WPW + Afib → can accelerate accessory pathway → VF</div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content"><span class="use-tag">Class II: AF/AFL rate control, SVT, post-MI, HFrEF</span><span class="use-tag">Class IV: AF/AFL rate control, SVT termination (verapamil IV), HTN</span><span class="use-tag">Esmolol: perioperative/ICU rate control</span></div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="icon">⭐</span> High-Yield Facts (Exam Focus)</div><div class="hy-fact"><strong>Class II + Class IV = COMPLETE HEART BLOCK risk. NEVER combine.</strong></div><div class="hy-fact">Verapamil <strong>↑ digoxin levels</strong> via P-gp inhibition — monitor if co-prescribed.</div><div class="hy-fact">Non-DHP CCBs <strong>WORSEN HFrEF</strong> — avoid in systolic dysfunction.</div><div class="hy-fact">Non-DHP CCBs <strong>CONTRAINDICATED in WPW + Afib</strong> (can accelerate accessory pathway → VF).</div><div class="hy-fact"><strong>Esmolol</strong>: ideal perioperative/ICU rate control — t½ 9 min, rapidly titratable.</div><div class="trap">Verapamil + β-blocker = AV block. Verapamil + digoxin = digoxin toxicity. WPW contraindications: digoxin, verapamil, diltiazem, adenosine (all AV nodal blockers → force conduction via accessory pathway → VF).</div>
+    </div>
+  </div>
+</div>
+
+<div class="card-wrapper">
+  <div class="drug-header other-arr">
+    <span class="drug-name">Adenosine · Atropine · Magnesium Sulfate</span>
+    <span class="drug-class-pill">Other Antiarrhythmic Agents — Unique Mechanisms</span>
+    <span class="route">Adenosine: IV rapid bolus (t½ <10 sec) · Atropine: IV · Magnesium: IV</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content"><strong>Adenosine</strong>: Binds A1 GPCR → activates GIRK K⁺ channels → K⁺ efflux → AV node hyperpolarization → <strong>transient complete AV block</strong> → terminates SVT. t½ &lt;10 seconds.<br><br><strong>Atropine</strong>: Muscarinic antagonist → blocks vagal tone → ↑ HR (positive chronotrope).<br><br><strong>Magnesium sulfate</strong>: Competes with Ca²⁺ at channels → membrane stabilization → torsades.</div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content"><strong>Adenosine:</strong><br><span class='warn'>Transient flushing, chest tightness, dyspnea, sinus arrest</span> (all &lt;30 sec — extremely brief)<br>• <strong>Methylxanthines</strong> (theophylline, caffeine) <em>BLOCK</em> adenosine → need higher dose<br>• <strong>Dipyridamole</strong> <em>POTENTIATES</em> adenosine → need lower dose<br><br><strong>Contraindicated:</strong> WPW + Afib (can shunt all conduction via accessory → VF), Sick sinus syndrome, 2nd/3rd degree AV block (without pacemaker)</div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content"><span class="use-tag">Adenosine: acute SVT termination (AVNRT/AVRT) ★</span><span class="use-tag">Adenosine: diagnostic (reveal flutter waves in Afib/AFL)</span><span class="use-tag">Atropine: acute symptomatic bradycardia (1st line)</span><span class="use-tag">Magnesium sulfate: Torsades de Pointes (1st line) ★</span></div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="icon">⭐</span> High-Yield Facts (Exam Focus)</div><div class="hy-fact">Adenosine: <strong>drug of choice for acute SVT</strong> termination. t½ &lt;10 SECONDS — effects vanish instantly.</div><div class="hy-fact">Adenosine is both <strong>diagnostic + therapeutic</strong>: slowing AV node reveals flutter waves (sawtooth) in Afib/AFL.</div><div class="hy-fact"><strong>Theophylline/caffeine BLOCK adenosine</strong> (competitive) → need higher dose.</div><div class="hy-fact"><strong>Dipyridamole POTENTIATES adenosine</strong> (blocks reuptake) → need lower dose.</div><div class="hy-fact"><strong>Magnesium sulfate: FIRST-LINE for Torsades</strong> de Pointes (IV, regardless of Mg²⁺ level).</div><div class="hy-fact">Atropine: first-line for acute <strong>symptomatic bradycardia</strong>.</div><div class="trap">Adenosine in WPW + Afib = POTENTIALLY FATAL (blocks AV node → all impulses via accessory pathway → VF). Torsades = IV Mg²⁺ first (NOT Class IA or III — they worsen it by prolonging QT further).</div>
+    </div>
+  </div>
+</div>
+
+<div class="card-wrapper">
+  <div class="drug-header other-arr">
+    <span class="drug-name">Digoxin</span>
+    <span class="drug-class-pill">Cardiac Glycoside — Rate Control + Inotropy</span>
+    <span class="route">PO or IV · Narrow TI · Target 0.5–0.9 ng/mL · Monitor K⁺, Mg²⁺, Cr · Renally cleared</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">Inhibits <strong>Na⁺/K⁺-ATPase</strong> → ↑ intracellular Na⁺ → reverse NCX → ↑ intracellular Ca²⁺ → <strong>positive inotropy</strong>.<br>Also <strong>vagomimetic</strong> → ↑ vagal tone → ↓ AV node conduction → <strong>rate control in Afib</strong>.<br><br>Does NOT affect accessory pathway → dangerous in WPW.</div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content"><strong>Toxicity triad:</strong><br><span class='warn'>GI: anorexia, nausea, vomiting</span> (earliest)<br><span class='warn'>CNS: Xanthopsia</span> (yellow-green visual halos)<br><span class='warn'>Cardiac: PAT with block</span> (classic!), bidirectional VT, any arrhythmia<br><br>Toxicity precipitated by:<br>• <strong>Hypokalemia</strong> (most important — K⁺ competes at binding site)<br>• Renal failure, hypomagnesemia, hypercalcemia<br>• Verapamil/amiodarone → ↑ digoxin levels (P-gp inhibition)<br><br>Treatment: <strong>DIGIBIND</strong> (Fab antibody fragments)</div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content"><span class="use-tag">Afib rate control (esp. with HF)</span><span class="use-tag">HFrEF symptom control (no mortality benefit)</span><br><br>Contraindicated in <strong>WPW + Afib</strong>.</div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="icon">⭐</span> High-Yield Facts (Exam Focus)</div><div class="hy-fact">Classic toxicity triad: <strong>N/V + xanthopsia (yellow-green halos) + PAT with block</strong>.</div><div class="hy-fact"><strong>Hypokalemia = most important precipitant</strong> (loop diuretics → hypoK⁺ → digoxin toxicity).</div><div class="hy-fact">Verapamil and amiodarone → <strong>↑ digoxin levels</strong> (P-gp inhibition) → toxicity.</div><div class="hy-fact">Toxicity treatment: <strong>DIGIBIND</strong> (anti-digoxin Fab antibodies).</div><div class="hy-fact"><strong>CONTRAINDICATED in WPW + Afib</strong> (AV nodal block → all impulses via accessory → VF).</div><div class="trap">Digoxin toxicity — check K⁺ FIRST. Hypokalemia is most common precipitant. Target level 0.5–0.9 ng/mL (NOT 1.0–2.0). PAT with block = classic digoxin toxicity arrhythmia. NEVER give in WPW + Afib.</div>
+    </div>
+  </div>
+</div>
+
+<div class="ref-panel teal-panel">
+  <h3>ECG Changes Quick Reference</h3>
+  <div class="ref-grid col3"><div class="ref-item">
+  <span class="ri-drug">↑ QRS Duration</span>
+  <span class="ri-val">Na⁺ channel block (slows phase 0)</span>
+  <span class="ri-note">Class IC (most) > IA > IB (minimal)</span>
+</div><div class="ref-item">
+  <span class="ri-drug">↑ PR Interval</span>
+  <span class="ri-val">↓ AV nodal conduction</span>
+  <span class="ri-note">Class IC, II (β-block), IV (non-DHP CCB)</span>
+</div><div class="ref-item">
+  <span class="ri-drug">↑ QT Interval</span>
+  <span class="ri-val">K⁺ channel block → delayed repolarization (↑ APD)</span>
+  <span class="ri-note">Class IA, Class III — ALL → Torsades risk</span>
+</div><div class="ref-item">
+  <span class="ri-drug">↓ APD / minimal QT change</span>
+  <span class="ri-val">Fast Na⁺ kinetics → rapid repolarization</span>
+  <span class="ri-note">Class IB (lidocaine, mexiletine) — distinguishing feature</span>
+</div><div class="ref-item">
+  <span class="ri-drug">Torsades de Pointes</span>
+  <span class="ri-val">QT prolongation + EADs (early afterdepolarizations)</span>
+  <span class="ri-note">Rx: IV Magnesium sulfate 1st line + correct K⁺/Mg²⁺ + ↑ HR</span>
+</div><div class="ref-item">
+  <span class="ri-drug">WPW + Afib (irregular wide-complex tach)</span>
+  <span class="ri-val">Accessory pathway bypass of AV node</span>
+  <span class="ri-note">⚠ Rx: PROCAINAMIDE. NEVER: adenosine, digoxin, verapamil, diltiazem</span>
+</div><div class="ref-item">
+  <span class="ri-drug">SVT (narrow complex tachycardia)</span>
+  <span class="ri-val">Re-entry at AV node (AVNRT/AVRT)</span>
+  <span class="ri-note">Rx: Adenosine (1st line). Verapamil IV (2nd). Terminates → AVNRT.</span>
+</div><div class="ref-item">
+  <span class="ri-drug">Pulseless VT/VF</span>
+  <span class="ri-val">Life-threatening ventricular arrhythmia</span>
+  <span class="ri-note">Rx: ★ Amiodarone 300 mg IV (ACLS 1st line). Alt: lidocaine.</span>
+</div></div>
+</div>
+<button class="print-btn" onclick="window.print()">🖨 Print / Save PDF</button>
+</body>
+</html>

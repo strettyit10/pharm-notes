@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lipid-Lowering Drugs — HY Reference Chart</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#f5f3ef; --surface:#fff; --border:#d9d3c7; --text:#1a1612; --muted:#7a7268;
+    --accent:#c0392b; --accent-light:#fdf0ee; --accent-mid:#e8998f;
+    --gold:#9b7e3a; --gold-light:#fdf8ee;
+    --teal:#2d6e65; --teal-light:#e8f4f2;
+    --blue:#2c5282; --blue-light:#ebf2fc;
+    --orange:#b85c1a;
+    --hy-bg:#fff8e1; --hy-border:#f0c040; --hy-text:#7a5c00;
+    --shadow:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);
+    --radius:10px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:13px;line-height:1.55;padding:24px 20px 60px;}
+
+  /* HEADER */
+  .page-header{max-width:1400px;margin:0 auto 24px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:2px solid var(--accent);padding-bottom:14px;}
+  .page-header h1{font-family:'DM Serif Display',serif;font-size:26px;font-weight:400;letter-spacing:-.3px;}
+  .page-header .subtitle{font-size:12px;color:var(--muted);margin-top:3px;}
+  .legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11.5px;align-items:center;}
+  .legend-item{display:flex;align-items:center;gap:5px;}
+  .legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
+
+  /* SECTION LABELS */
+  .section-label{max-width:1400px;margin:28px auto 8px;display:flex;align-items:center;gap:10px;}
+  .section-label::before{content:'';flex:none;width:4px;height:18px;border-radius:2px;background:var(--accent);}
+  .section-label h2{font-family:'DM Serif Display',serif;font-size:16px;font-weight:400;color:var(--muted);letter-spacing:.02em;}
+
+  /* CARDS */
+  .card-wrapper{max-width:1400px;margin:0 auto 12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+  .card-wrapper:hover{border-color:var(--accent-mid);box-shadow:0 2px 8px rgba(0,0,0,.08),0 8px 24px rgba(0,0,0,.06);}
+
+  /* DRUG HEADER BAR */
+  .drug-header{display:flex;align-items:center;gap:10px;padding:10px 16px;color:white;flex-wrap:wrap;}
+  .drug-header.diuretic{background:#1a3a2d;}
+  .drug-header.raas{background:#2d1b4e;}
+  .drug-header.ccb{background:#1a2d4a;}
+  .drug-header.bb{background:#1a1a3a;}
+  .drug-header.alpha{background:#2d2010;}
+  .drug-header.vasodilator{background:#3a1a10;}
+  .drug-header.sglt2{background:#0d3320;}
+  .drug-header.hf-raas{background:#2d1b4e;}
+  .drug-header.hf-bb{background:#1a1a3a;}
+  .drug-header.hf-newer{background:#0d3320;}
+  .drug-header.hf-symptom{background:#1a2d4a;}
+  .drug-header.hf-digoxin{background:#2d2010;}
+  .drug-header.class-ia{background:#4a1a10;}
+  .drug-header.class-ib{background:#1a3a1a;}
+  .drug-header.class-ic{background:#3a2a10;}
+  .drug-header.class-iii{background:#1a1a4a;}
+  .drug-header.class-iii-other{background:#2a1a4a;}
+  .drug-header.class-ii-iv{background:#1a2a3a;}
+  .drug-header.other-arr{background:#2a2a2a;}
+  .drug-header.statin{background:#1a3a2d;}
+  .drug-header.fibrate{background:#2d2010;}
+  .drug-header.bas{background:#1a2a4a;}
+  .drug-header.ezetimibe{background:#2d1b4e;}
+  .drug-header.pcsk9{background:#1a1a3a;}
+  .drug-header.omega3{background:#0d3320;}
+
+  .drug-name{font-family:'DM Serif Display',serif;font-size:17px;font-weight:400;letter-spacing:-.2px;}
+  .drug-class-pill{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.08em;padding:2px 9px;border-radius:20px;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);text-transform:uppercase;}
+  .drug-header .route{margin-left:auto;font-size:11px;color:rgba(255,255,255,.6);font-family:'JetBrains Mono',monospace;}
+
+  /* GRID */
+  .card-body{display:grid;grid-template-columns:1fr 1fr 1fr 1.2fr;gap:0;}
+  @media(max-width:900px){.card-body{grid-template-columns:1fr 1fr;}}
+  @media(max-width:600px){.card-body{grid-template-columns:1fr;}}
+
+  .cell{padding:12px 14px;border-right:1px solid var(--border);border-top:1px solid var(--border);}
+  .cell:last-child{border-right:none;}
+  .cell-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:flex;align-items:center;gap:5px;}
+  .cell-label .icon{font-size:12px;}
+  .cell-content{font-size:12.5px;color:var(--text);line-height:1.55;}
+  .cell-content strong{color:var(--accent);font-weight:600;}
+  .cell-content em{font-style:normal;color:var(--muted);}
+
+  .cell.moa{background:var(--accent-light);}
+  .cell.moa .cell-label{color:var(--accent);}
+  .cell.se .warn{display:inline-block;color:var(--orange);font-weight:600;}
+  .cell.use{background:var(--teal-light);}
+  .cell.use .cell-label{color:var(--teal);}
+  .cell.use .use-tag{display:inline-block;background:var(--teal-light);border:1px solid var(--teal);color:var(--teal);border-radius:4px;padding:1px 7px;font-size:11px;font-weight:500;margin:1px 2px 2px 0;}
+
+  .cell.hy{background:var(--hy-bg);border-left:3px solid var(--hy-border);border-right:none;}
+  .cell.hy .cell-label{color:var(--hy-text);font-size:10.5px;}
+  .cell.hy .hy-fact{display:flex;align-items:flex-start;gap:6px;margin-bottom:6px;font-size:12.5px;color:var(--hy-text);}
+  .cell.hy .hy-fact::before{content:'⭐';font-size:11px;flex-shrink:0;margin-top:1px;}
+  .cell.hy .trap{margin-top:8px;padding:6px 8px;background:rgba(192,57,43,.08);border-left:2px solid var(--accent);border-radius:4px;font-size:11.5px;color:var(--accent);}
+  .cell.hy .trap::before{content:'⚠ TRAP: ';font-weight:700;}
+
+  /* BOTTOM REFERENCE PANELS */
+  .ref-panel{max-width:1400px;margin:32px auto 8px;border-radius:var(--radius);padding:14px 18px;}
+  .ref-panel.blue-panel{background:var(--blue-light);border:1px solid #c5d8f0;}
+  .ref-panel.gold-panel{background:var(--gold-light);border:1px solid #dcc880;}
+  .ref-panel.teal-panel{background:var(--teal-light);border:1px solid #a0cdc7;}
+  .ref-panel h3{font-family:'DM Serif Display',serif;font-size:14px;font-weight:400;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .ref-panel.blue-panel h3{color:var(--blue);}
+  .ref-panel.gold-panel h3{color:var(--gold);}
+  .ref-panel.teal-panel h3{color:var(--teal);}
+  .ref-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;}
+  .ref-grid.col3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr));}
+  .ref-item{display:flex;flex-direction:column;gap:2px;padding:8px 10px;background:white;border-radius:6px;}
+  .ref-panel.blue-panel .ref-item{border:1px solid #c5d8f0;}
+  .ref-panel.gold-panel .ref-item{border:1px solid #dcc880;}
+  .ref-panel.teal-panel .ref-item{border:1px solid #a0cdc7;}
+  .ref-item .ri-drug{font-weight:600;font-size:12px;}
+  .ref-panel.blue-panel .ri-drug{color:var(--blue);}
+  .ref-panel.gold-panel .ri-drug{color:var(--gold);}
+  .ref-panel.teal-panel .ri-drug{color:var(--teal);}
+  .ref-item .ri-val{font-size:12.5px;color:var(--text);}
+  .ref-item .ri-note{font-size:11px;color:var(--muted);}
+
+  /* INDICATION TABLE */
+  .indication-section{max-width:1400px;margin:32px auto 8px;}
+  .indication-section h3{font-family:'DM Serif Display',serif;font-size:15px;font-weight:400;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .indication-section h3::before{content:'';width:4px;height:18px;border-radius:2px;background:var(--gold);flex-shrink:0;}
+  .ind-table{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+  .ind-table th{background:#2c3e50;color:white;padding:8px 12px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;}
+  .ind-table td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top;}
+  .ind-table tr:last-child td{border-bottom:none;}
+  .ind-table tr:nth-child(even) td{background:#faf9f7;}
+  .ind-table .iname{font-weight:600;color:var(--text);}
+  .ind-table .choice{color:var(--teal);font-weight:500;}
+  .ind-table .warn-cell{color:var(--accent);font-weight:600;}
+  .ind-table .muted{color:var(--muted);}
+
+  /* PRINT BTN */
+  .print-btn{position:fixed;bottom:24px;right:24px;background:var(--accent);color:white;border:none;border-radius:24px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;box-shadow:0 4px 16px rgba(192,57,43,.3);transition:transform .15s,box-shadow .15s;}
+  .print-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(192,57,43,.4);}
+  @media print{body{background:white;padding:10px;font-size:10px;}.print-btn{display:none;}.card-wrapper{break-inside:avoid;box-shadow:none;border:1px solid #ccc;}.page-header,.section-label{break-after:avoid;}}
+</style>
+
+</head>
+<body>
+
+<header class="page-header">
+  <div>
+    <h1>Lipid-Lowering Drugs</h1>
+    <div class="subtitle">Georgetown SOM · Cardio Exam 2 · HY Reference Chart</div>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#fdf0ee;border:1px solid #e8998f"></div> MOA</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e8f4f2;border:1px solid #2d6e65"></div> Uses</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#fff8e1;border:1px solid #f0c040"></div> ⭐ High-Yield Facts</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(192,57,43,.08);border:1px solid #c0392b"></div> ⚠ Trap</div>
+  </div>
+</header>
+<div class="section-label"><h2>Statins — HMG-CoA Reductase Inhibitors (Primary LDL-Lowering)</h2></div>
+
+<div class="card-wrapper">
+  <div class="drug-header statin">
+    <span class="drug-name">Atorvastatin ★ · Rosuvastatin ★ · Pravastatin · Simvastatin</span>
+    <span class="drug-class-pill">HMG-CoA Reductase Inhibitors — Statins</span>
+    <span class="route">PO · Once daily (evening preferred) · Monitor CK if myalgia · Baseline LFTs</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">Inhibit <strong>HMG-CoA reductase</strong> (rate-limiting step of cholesterol synthesis) → ↓ hepatic cholesterol → compensatory <strong>↑ LDL receptor expression</strong> → ↑ LDL clearance → <strong>↓ serum LDL</strong>.<br><br>High-intensity: ↓ LDL ≥50%. Moderate: ↓ LDL 30–50%.<br><br>All metabolized by <strong>CYP3A4 EXCEPT pravastatin</strong> (glucuronidation → fewer drug interactions).</div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content"><span class='warn'>Myopathy/myalgia</span> (most common) → check CK<br><span class='warn'>Rhabdomyolysis</span> (↑↑ CK + myoglobinuria + AKI) → STOP immediately, hydrate aggressively<br><span class='warn'>↑ LFTs</span> (monitor at baseline; routine monitoring not required if asymptomatic)<br><span class='warn'>Teratogenic (Category X)</span> — ABSOLUTELY CONTRAINDICATED in pregnancy<br><span class='warn'>↑ Glucose / new-onset DM</span> (slight risk)<br><br>Myopathy risk ↑ with: high dose, CYP3A4 inhibitors (clarithromycin, azoles, grapefruit juice), <strong>gemfibrozil</strong> co-administration</div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content"><span class="use-tag">Primary ASCVD prevention</span><span class="use-tag">Secondary prevention (post-MI, stroke, PAD)</span><span class="use-tag">Familial hypercholesterolemia</span><span class="use-tag">Any elevated LDL-C</span><br><br><strong>First-line drug for LDL lowering.</strong><br>Step-up: Statin → + ezetimibe → + PCSK9 inhibitor.</div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="icon">⭐</span> High-Yield Facts (Exam Focus)</div><div class="hy-fact"><strong>High-intensity</strong>: atorvastatin, rosuvastatin (LDL ↓ ≥50%). Know these two.</div><div class="hy-fact"><strong>Pravastatin</strong>: glucuronidation (NOT CYP3A4) → fewer drug interactions → safer to combine with fibrates if needed.</div><div class="hy-fact"><strong>Simvastatin</strong>: multiple CYP3A4 interactions; max 20 mg/day with amlodipine (↑ myopathy risk).</div><div class="hy-fact"><strong>Rhabdomyolysis</strong>: myalgia + ↑ CK + myoglobinuria + AKI → STOP statin immediately.</div><div class="hy-fact">Teratogenic (<strong>Category X</strong>) — NEVER in pregnancy.</div><div class="trap">SIMVASTATIN + GEMFIBROZIL = classic rhabdomyolysis combo (gemfibrozil inhibits glucuronidation of simvastatin → ↑ statin plasma levels). If fibrate + statin needed: use FENOFIBRATE + PRAVASTATIN (safer combination).</div>
+    </div>
+  </div>
+</div>
+<div class="section-label"><h2>Fibrates — Fibric Acids (Primary TG-Lowering)</h2></div>
+
+<div class="card-wrapper">
+  <div class="drug-header fibrate">
+    <span class="drug-name">Fenofibrate (Tricor) ★ safer with statins · Gemfibrozil (Lopid) ★ AVOID with statins</span>
+    <span class="drug-class-pill">Fibrates — PPARα Agonists</span>
+    <span class="route">PO · With meals · Monitor CK, LFTs · Adjust in CKD</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">Activate <strong>PPARα</strong> (peroxisome proliferator-activated receptor alpha) → ↑ lipoprotein lipase (LPL) + ↑ ApoA-I + ↓ ApoC-III → ↑ VLDL hydrolysis → <strong>↓ TG 40–60%</strong> + ↑ HDL 10–20%.<br><br><strong>Gemfibrozil</strong>: inhibits statin glucuronidation → ↑ statin plasma levels → DANGEROUS with statins.<br><strong>Fenofibrate</strong>: does NOT inhibit glucuronidation → SAFER with statins.</div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content"><span class='warn'>Myopathy</span> (risk ↑ with statins, especially gemfibrozil)<br><span class='warn'>Cholelithiasis (gallstones)</span> — ↑ biliary cholesterol saturation → classic association<br><span class='warn'>↑ LFTs, GI upset</span><br><span class='warn'>Gemfibrozil + ANY statin = rhabdomyolysis risk</span><br><br><strong>Contraindicated:</strong> Gemfibrozil + statins (rhabdomyolysis), severe hepatic/renal disease, gallbladder disease</div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content"><span class="use-tag">★ Severe hypertriglyceridemia (TG >500 mg/dL) — pancreatitis prevention</span><span class="use-tag">Mixed dyslipidemia (↑ TG + ↓ HDL)</span><br><br>Fenofibrate preferred if fibrate + statin needed.<br>NOT for isolated LDL elevation (statins are better).</div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="icon">⭐</span> High-Yield Facts (Exam Focus)</div><div class="hy-fact"><strong>First-line for TG &gt;500 mg/dL</strong> (pancreatitis prevention). Primary use = hypertriglyceridemia.</div><div class="hy-fact"><strong>GEMFIBROZIL</strong>: inhibits statin glucuronidation → ↑ statin plasma levels → <strong>rhabdomyolysis</strong>.</div><div class="hy-fact"><strong>FENOFIBRATE</strong>: safer with statins (does NOT inhibit glucuronidation). Always prefer if fibrate + statin needed.</div><div class="hy-fact">Cholelithiasis: fibrates ↑ biliary cholesterol concentration → <strong>gallstones</strong> (classic association).</div><div class="trap">Gemfibrozil + any statin = most dangerous drug interaction in lipid pharmacology. ALWAYS use fenofibrate if fibrate + statin combination is needed. Fibrates can slightly ↑ LDL-C in some patients.</div>
+    </div>
+  </div>
+</div>
+<div class="section-label"><h2>Bile Acid Sequestrants (BAS) — Anion Exchange Resins</h2></div>
+
+<div class="card-wrapper">
+  <div class="drug-header bas">
+    <span class="drug-name">Cholestyramine (Questran) · Colesevelam (WelChol) ★</span>
+    <span class="drug-class-pill">Bile Acid Sequestrants — Anion Exchange Resins</span>
+    <span class="route">PO · With meals · NOT systemically absorbed · Other meds: 1 hr before or 4 hrs after</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">Anion exchange resins <strong>bind bile acids</strong> in intestinal lumen → ↓ BA enterohepatic circulation → hepatocytes convert more cholesterol to BAs → <strong>↑ LDL receptor expression</strong> → ↓ serum LDL 15–30%.<br><br><strong>NOT systemically absorbed</strong> → safe in pregnancy.<br><strong>Colesevelam</strong>: also approved for type 2 DM (modestly ↓ glucose).</div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content"><span class='warn'>Constipation, bloating, nausea</span> (most common — GI effects)<br><span class='warn'>Drug absorption impaired</span>: fat-soluble vitamins (A, D, E, K), warfarin, digoxin, levothyroxine, tetracyclines<br><span class='warn'>↑ Triglycerides</span> (contraindicated if TG elevated — raises TG further)<br><br><strong>Contraindicated:</strong> Hypertriglyceridemia, Complete biliary obstruction<br>Take all other meds <strong>1 hr BEFORE or 4 hrs AFTER</strong> BAS</div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content"><span class="use-tag">★ Pregnancy + hypercholesterolemia (safest option)</span><span class="use-tag">Pediatric FH</span><span class="use-tag">Primary hypercholesterolemia (add-on to statin)</span><span class="use-tag">Colesevelam: DM type 2 (modest glucose ↓)</span></div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="icon">⭐</span> High-Yield Facts (Exam Focus)</div><div class="hy-fact"><strong>Safe in PREGNANCY</strong> — not systemically absorbed (no fetal exposure). Drug of choice for hypercholesterolemia in pregnancy.</div><div class="hy-fact"><strong>Colesevelam</strong>: tablets (easier than powder), also approved for type 2 DM (modest glucose ↓).</div><div class="hy-fact"><strong>Drug interactions</strong>: impair absorption of fat-soluble vitamins (A, D, E, K) + warfarin, digoxin, levothyroxine.</div><div class="hy-fact"><strong>AVOID if TG elevated</strong> — BAS raise TG.</div><div class="hy-fact">Constipation = most common complaint.</div><div class="trap">BAS + warfarin → ↓ warfarin absorption → ↓ INR. BAS RAISE TG — contraindicated in hypertriglyceridemia. Pregnancy + hypercholesterolemia → bile acid sequestrant (NOT statin — teratogenic).</div>
+    </div>
+  </div>
+</div>
+<div class="section-label"><h2>Cholesterol Absorption Inhibitor — Add-On Therapy</h2></div>
+
+<div class="card-wrapper">
+  <div class="drug-header ezetimibe">
+    <span class="drug-name">Ezetimibe (Zetia)</span>
+    <span class="drug-class-pill">NPC1L1 Blocker — Intestinal Cholesterol Absorption Inhibitor</span>
+    <span class="route">PO · Once daily · No routine monitoring · Safe to combine with statins</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">Blocks <strong>NPC1L1</strong> (Niemann-Pick C1-Like 1) transporter in intestinal brush border → ↓ intestinal cholesterol absorption → ↓ LDL ~18–25%.<br><br>When combined with statin: <strong>synergistic effect</strong> (statin ↓ synthesis; ezetimibe ↓ absorption) → additional 20–25% LDL reduction.</div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content"><span class='warn'>Generally very well tolerated</span><br>Rare: ↑ LFTs, myopathy (additive with statin — uncommon)<br>Rare: GI upset<br><br>Contraindications: none absolute</div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content"><span class="use-tag">Add-on when statin alone doesn't reach LDL goal</span><span class="use-tag">Statin intolerance</span><span class="use-tag">Familial hypercholesterolemia</span><br><br>IMPROVED-IT: ezetimibe + statin ↓ CV events vs. statin alone.<br>Step-up: Statin → <strong>+ ezetimibe</strong> → + PCSK9 inhibitor.</div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="icon">⭐</span> High-Yield Facts (Exam Focus)</div><div class="hy-fact">Modest LDL reduction (~18–25%) alone; <strong>synergistic with statin</strong> (additional ~20% reduction).</div><div class="hy-fact">Step-up logic: max statin → <strong>+ ezetimibe</strong> → + PCSK9 inhibitor.</div><div class="hy-fact">IMPROVED-IT trial: ezetimibe + statin ↓ CV events (modest benefit).</div><div class="hy-fact">Very well tolerated — no major safety concerns.</div><div class="hy-fact">Useful in <strong>statin-intolerant</strong> patients: ezetimibe ± PCSK9 inhibitor.</div><div class="trap">Ezetimibe ALONE has only MODEST effect — not comparable to statins for ASCVD prevention. Always start statin first (unless statin intolerant). Ezetimibe = add-on, not first-line monotherapy.</div>
+    </div>
+  </div>
+</div>
+<div class="section-label"><h2>PCSK9 Inhibitors — Most Potent LDL-Lowering (Add-On Only)</h2></div>
+
+<div class="card-wrapper">
+  <div class="drug-header pcsk9">
+    <span class="drug-name">Evolocumab (Repatha) · Alirocumab (Praluent)</span>
+    <span class="drug-class-pill">PCSK9 Inhibitors — Anti-PCSK9 Monoclonal Antibodies</span>
+    <span class="route">SQ injection · Every 2 or 4 weeks · No routine monitoring · Expensive</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">Monoclonal antibodies → bind <strong>PCSK9</strong> → prevent PCSK9 from degrading LDL receptors → LDL receptors recycled back to hepatocyte surface → <strong>↑ LDL receptor density</strong> → ↑ LDL clearance → <strong>↓ LDL 50–60%</strong>.<br><br>Most potent LDL-lowering agents available. <strong>Injectable only</strong> (SQ).</div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content"><span class='warn'>Injection site reactions</span> (mild)<br><span class='warn'>Nasopharyngitis, flu-like symptoms</span> (mild)<br>Rare: neurocognitive effects (under investigation; appears rare/reversible)<br><br>No absolute contraindications. Cost/insurance barriers are common.<br>Use ONLY after exhausting statin ± ezetimibe options (unless statin intolerant)</div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content"><span class="use-tag">★ Familial hypercholesterolemia (FH) — esp. homozygous</span><span class="use-tag">Very high ASCVD risk + LDL not at goal on max statin + ezetimibe</span><span class="use-tag">Statin intolerance</span><br><br>FOURIER (evolocumab): ↓ CV events ~15% vs. placebo on top of statin.<br>ODYSSEY (alirocumab): ↓ CV events in post-ACS.</div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="icon">⭐</span> High-Yield Facts (Exam Focus)</div><div class="hy-fact"><strong>Most potent LDL-lowering</strong>: ↓ LDL 50–60% (on top of statin effect).</div><div class="hy-fact"><strong>NEVER first-line</strong> — always exhaust statin ± ezetimibe options first.</div><div class="hy-fact">Step-up: Statin → + ezetimibe → <strong>+ PCSK9 inhibitor</strong>.</div><div class="hy-fact">Injectable (SQ) every 2–4 weeks — expensive, requires prior authorization.</div><div class="hy-fact">FH (especially homozygous FH) — primary indication.</div><div class="trap">'PCSK9 inhibitors are first-line for high LDL' → WRONG. Always start statin first. PCSK9 inhibitors are add-on therapy after statin ± ezetimibe. Indicated primarily for FH or very high ASCVD risk not meeting goals.</div>
+    </div>
+  </div>
+</div>
+<div class="section-label"><h2>Omega-3 Fatty Acids — TG-Lowering</h2></div>
+
+<div class="card-wrapper">
+  <div class="drug-header omega3">
+    <span class="drug-name">Icosapentaenoic Acid / EPA (Vascepa ★) · Omega-3-acid ethyl esters (Lovaza) · OTC Fish Oils</span>
+    <span class="drug-class-pill">Omega-3 Fatty Acids — PPARα + VLDL Synthesis Reduction</span>
+    <span class="route">PO · With meals · Prescription formulation needed for therapeutic effect</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content"><strong>EPA (and DHA)</strong> → ↓ hepatic VLDL synthesis + ↓ TG secretion → <strong>↓ TG 30–50%</strong> at therapeutic doses (4g/day).<br><br><strong>Vascepa</strong> (pure EPA): REDUCE-IT trial → ↓ CV events in high-CV-risk patients with elevated TG on statin therapy.<br><br>Note: DHA-containing formulations may slightly ↑ LDL-C in some patients.</div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content"><span class='warn'>GI upset, fishy aftertaste/breath</span> ('fishy burp')<br><span class='warn'>↑ Bleeding time</span> (mild antiplatelet effect — caution with anticoagulants)<br>DHA formulations: may slightly ↑ LDL-C<br><br>OTC fish oils: variable, unreliable potency — <strong>NOT equivalent to prescription formulations</strong></div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content"><span class="use-tag">★ Severe hypertriglyceridemia (TG >500 mg/dL) — pancreatitis prevention</span><span class="use-tag">High CV risk on statin with elevated TG (Vascepa — REDUCE-IT)</span><br><br>OTC fish oils are dietary supplements only — NOT for therapeutic TG lowering.</div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="icon">⭐</span> High-Yield Facts (Exam Focus)</div><div class="hy-fact">REDUCE-IT trial: <strong>Vascepa (pure EPA, 4g/day)</strong> ↓ CV events 25% in statin-treated patients with TG 135–500.</div><div class="hy-fact"><strong>Prescription formulations required</strong> for therapeutic TG lowering — OTC fish oils have variable, unreliable potency.</div><div class="hy-fact">DHA-containing formulations may slightly <strong>↑ LDL-C</strong> — watch in mixed dyslipidemia.</div><div class="hy-fact">TG &gt;500 mg/dL = risk of pancreatitis → fibrate OR omega-3 FA.</div><div class="trap">OTC fish oils ≠ therapeutic prescription omega-3 FA (Vascepa/Lovaza). Cannot substitute OTC fish oil capsules for clinical TG management. Vascepa (EPA only) ≠ Lovaza (EPA+DHA) — different CV evidence.</div>
+    </div>
+  </div>
+</div>
+
+<div class="ref-panel gold-panel">
+  <h3>Treatment Step-Up by Lipid Pattern</h3>
+  <div class="ref-grid col3"><div class="ref-item">
+  <span class="ri-drug">Isolated ↑ LDL</span>
+  <span class="ri-val">★ High-intensity statin → + ezetimibe → + PCSK9 inhibitor</span>
+  <span class="ri-note">Statins are FIRST-LINE. Never skip to PCSK9 inhibitors.</span>
+</div><div class="ref-item">
+  <span class="ri-drug">TG >500 mg/dL (pancreatitis risk)</span>
+  <span class="ri-val">★ Fibrate (fenofibrate preferred) OR Omega-3 FA (Vascepa)</span>
+  <span class="ri-note">⚠ BAS contraindicated (raise TG). Use fenofibrate if combining with statin.</span>
+</div><div class="ref-item">
+  <span class="ri-drug">Mixed dyslipidemia (↑ LDL + ↑ TG)</span>
+  <span class="ri-val">★ Statin (for LDL) + fenofibrate if needed (for TG)</span>
+  <span class="ri-note">⚠ Use FENOFIBRATE (not gemfibrozil) with statins.</span>
+</div><div class="ref-item">
+  <span class="ri-drug">Pregnancy + ↑ LDL</span>
+  <span class="ri-val">★ Bile acid sequestrant (cholestyramine or colesevelam)</span>
+  <span class="ri-note">⚠ Statins TERATOGENIC (Category X) — NEVER in pregnancy.</span>
+</div><div class="ref-item">
+  <span class="ri-drug">Statin intolerance</span>
+  <span class="ri-val">★ Ezetimibe ± PCSK9 inhibitor</span>
+  <span class="ri-note">Try lower-dose or alternate statin (rosuvastatin, pravastatin) first.</span>
+</div><div class="ref-item">
+  <span class="ri-drug">Familial Hypercholesterolemia (FH)</span>
+  <span class="ri-val">★ High-intensity statin → + ezetimibe → + PCSK9 inhibitor (evolocumab)</span>
+  <span class="ri-note">PCSK9 inhibitors key in homozygous FH (LDL-R mutation reduces statin effect).</span>
+</div><div class="ref-item">
+  <span class="ri-drug">Post-ACS (secondary prevention)</span>
+  <span class="ri-val">★ HIGH-intensity statin (atorvastatin 80 mg or rosuvastatin 40 mg)</span>
+  <span class="ri-note">After ACS: highest-intensity statin regardless of baseline LDL. Target LDL <70.</span>
+</div><div class="ref-item">
+  <span class="ri-drug">DM + ↑ LDL</span>
+  <span class="ri-val">★ Statin (primary risk reduction)</span>
+  <span class="ri-note">Colesevelam = dual benefit (↓ LDL + modest ↓ glucose). SGLT-2i if HF/CKD also present.</span>
+</div></div>
+</div>
+<button class="print-btn" onclick="window.print()">🖨 Print / Save PDF</button>
+</body>
+</html>

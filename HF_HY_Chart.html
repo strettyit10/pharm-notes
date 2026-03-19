@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Treatment of Heart Failure — HY Reference Chart</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#f5f3ef; --surface:#fff; --border:#d9d3c7; --text:#1a1612; --muted:#7a7268;
+    --accent:#c0392b; --accent-light:#fdf0ee; --accent-mid:#e8998f;
+    --gold:#9b7e3a; --gold-light:#fdf8ee;
+    --teal:#2d6e65; --teal-light:#e8f4f2;
+    --blue:#2c5282; --blue-light:#ebf2fc;
+    --orange:#b85c1a;
+    --hy-bg:#fff8e1; --hy-border:#f0c040; --hy-text:#7a5c00;
+    --shadow:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);
+    --radius:10px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:13px;line-height:1.55;padding:24px 20px 60px;}
+
+  /* HEADER */
+  .page-header{max-width:1400px;margin:0 auto 24px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:2px solid var(--accent);padding-bottom:14px;}
+  .page-header h1{font-family:'DM Serif Display',serif;font-size:26px;font-weight:400;letter-spacing:-.3px;}
+  .page-header .subtitle{font-size:12px;color:var(--muted);margin-top:3px;}
+  .legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11.5px;align-items:center;}
+  .legend-item{display:flex;align-items:center;gap:5px;}
+  .legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
+
+  /* SECTION LABELS */
+  .section-label{max-width:1400px;margin:28px auto 8px;display:flex;align-items:center;gap:10px;}
+  .section-label::before{content:'';flex:none;width:4px;height:18px;border-radius:2px;background:var(--accent);}
+  .section-label h2{font-family:'DM Serif Display',serif;font-size:16px;font-weight:400;color:var(--muted);letter-spacing:.02em;}
+
+  /* CARDS */
+  .card-wrapper{max-width:1400px;margin:0 auto 12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+  .card-wrapper:hover{border-color:var(--accent-mid);box-shadow:0 2px 8px rgba(0,0,0,.08),0 8px 24px rgba(0,0,0,.06);}
+
+  /* DRUG HEADER BAR */
+  .drug-header{display:flex;align-items:center;gap:10px;padding:10px 16px;color:white;flex-wrap:wrap;}
+  .drug-header.diuretic{background:#1a3a2d;}
+  .drug-header.raas{background:#2d1b4e;}
+  .drug-header.ccb{background:#1a2d4a;}
+  .drug-header.bb{background:#1a1a3a;}
+  .drug-header.alpha{background:#2d2010;}
+  .drug-header.vasodilator{background:#3a1a10;}
+  .drug-header.sglt2{background:#0d3320;}
+  .drug-header.hf-raas{background:#2d1b4e;}
+  .drug-header.hf-bb{background:#1a1a3a;}
+  .drug-header.hf-newer{background:#0d3320;}
+  .drug-header.hf-symptom{background:#1a2d4a;}
+  .drug-header.hf-digoxin{background:#2d2010;}
+  .drug-header.class-ia{background:#4a1a10;}
+  .drug-header.class-ib{background:#1a3a1a;}
+  .drug-header.class-ic{background:#3a2a10;}
+  .drug-header.class-iii{background:#1a1a4a;}
+  .drug-header.class-iii-other{background:#2a1a4a;}
+  .drug-header.class-ii-iv{background:#1a2a3a;}
+  .drug-header.other-arr{background:#2a2a2a;}
+  .drug-header.statin{background:#1a3a2d;}
+  .drug-header.fibrate{background:#2d2010;}
+  .drug-header.bas{background:#1a2a4a;}
+  .drug-header.ezetimibe{background:#2d1b4e;}
+  .drug-header.pcsk9{background:#1a1a3a;}
+  .drug-header.omega3{background:#0d3320;}
+
+  .drug-name{font-family:'DM Serif Display',serif;font-size:17px;font-weight:400;letter-spacing:-.2px;}
+  .drug-class-pill{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.08em;padding:2px 9px;border-radius:20px;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);text-transform:uppercase;}
+  .drug-header .route{margin-left:auto;font-size:11px;color:rgba(255,255,255,.6);font-family:'JetBrains Mono',monospace;}
+
+  /* GRID */
+  .card-body{display:grid;grid-template-columns:1fr 1fr 1fr 1.2fr;gap:0;}
+  @media(max-width:900px){.card-body{grid-template-columns:1fr 1fr;}}
+  @media(max-width:600px){.card-body{grid-template-columns:1fr;}}
+
+  .cell{padding:12px 14px;border-right:1px solid var(--border);border-top:1px solid var(--border);}
+  .cell:last-child{border-right:none;}
+  .cell-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:flex;align-items:center;gap:5px;}
+  .cell-label .icon{font-size:12px;}
+  .cell-content{font-size:12.5px;color:var(--text);line-height:1.55;}
+  .cell-content strong{color:var(--accent);font-weight:600;}
+  .cell-content em{font-style:normal;color:var(--muted);}
+
+  .cell.moa{background:var(--accent-light);}
+  .cell.moa .cell-label{color:var(--accent);}
+  .cell.se .warn{display:inline-block;color:var(--orange);font-weight:600;}
+  .cell.use{background:var(--teal-light);}
+  .cell.use .cell-label{color:var(--teal);}
+  .cell.use .use-tag{display:inline-block;background:var(--teal-light);border:1px solid var(--teal);color:var(--teal);border-radius:4px;padding:1px 7px;font-size:11px;font-weight:500;margin:1px 2px 2px 0;}
+
+  .cell.hy{background:var(--hy-bg);border-left:3px solid var(--hy-border);border-right:none;}
+  .cell.hy .cell-label{color:var(--hy-text);font-size:10.5px;}
+  .cell.hy .hy-fact{display:flex;align-items:flex-start;gap:6px;margin-bottom:6px;font-size:12.5px;color:var(--hy-text);}
+  .cell.hy .hy-fact::before{content:'⭐';font-size:11px;flex-shrink:0;margin-top:1px;}
+  .cell.hy .trap{margin-top:8px;padding:6px 8px;background:rgba(192,57,43,.08);border-left:2px solid var(--accent);border-radius:4px;font-size:11.5px;color:var(--accent);}
+  .cell.hy .trap::before{content:'⚠ TRAP: ';font-weight:700;}
+
+  /* BOTTOM REFERENCE PANELS */
+  .ref-panel{max-width:1400px;margin:32px auto 8px;border-radius:var(--radius);padding:14px 18px;}
+  .ref-panel.blue-panel{background:var(--blue-light);border:1px solid #c5d8f0;}
+  .ref-panel.gold-panel{background:var(--gold-light);border:1px solid #dcc880;}
+  .ref-panel.teal-panel{background:var(--teal-light);border:1px solid #a0cdc7;}
+  .ref-panel h3{font-family:'DM Serif Display',serif;font-size:14px;font-weight:400;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .ref-panel.blue-panel h3{color:var(--blue);}
+  .ref-panel.gold-panel h3{color:var(--gold);}
+  .ref-panel.teal-panel h3{color:var(--teal);}
+  .ref-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;}
+  .ref-grid.col3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr));}
+  .ref-item{display:flex;flex-direction:column;gap:2px;padding:8px 10px;background:white;border-radius:6px;}
+  .ref-panel.blue-panel .ref-item{border:1px solid #c5d8f0;}
+  .ref-panel.gold-panel .ref-item{border:1px solid #dcc880;}
+  .ref-panel.teal-panel .ref-item{border:1px solid #a0cdc7;}
+  .ref-item .ri-drug{font-weight:600;font-size:12px;}
+  .ref-panel.blue-panel .ri-drug{color:var(--blue);}
+  .ref-panel.gold-panel .ri-drug{color:var(--gold);}
+  .ref-panel.teal-panel .ri-drug{color:var(--teal);}
+  .ref-item .ri-val{font-size:12.5px;color:var(--text);}
+  .ref-item .ri-note{font-size:11px;color:var(--muted);}
+
+  /* INDICATION TABLE */
+  .indication-section{max-width:1400px;margin:32px auto 8px;}
+  .indication-section h3{font-family:'DM Serif Display',serif;font-size:15px;font-weight:400;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .indication-section h3::before{content:'';width:4px;height:18px;border-radius:2px;background:var(--gold);flex-shrink:0;}
+  .ind-table{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+  .ind-table th{background:#2c3e50;color:white;padding:8px 12px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;}
+  .ind-table td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top;}
+  .ind-table tr:last-child td{border-bottom:none;}
+  .ind-table tr:nth-child(even) td{background:#faf9f7;}
+  .ind-table .iname{font-weight:600;color:var(--text);}
+  .ind-table .choice{color:var(--teal);font-weight:500;}
+  .ind-table .warn-cell{color:var(--accent);font-weight:600;}
+  .ind-table .muted{color:var(--muted);}
+
+  /* PRINT BTN */
+  .print-btn{position:fixed;bottom:24px;right:24px;background:var(--accent);color:white;border:none;border-radius:24px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;box-shadow:0 4px 16px rgba(192,57,43,.3);transition:transform .15s,box-shadow .15s;}
+  .print-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(192,57,43,.4);}
+  @media print{body{background:white;padding:10px;font-size:10px;}.print-btn{display:none;}.card-wrapper{break-inside:avoid;box-shadow:none;border:1px solid #ccc;}.page-header,.section-label{break-after:avoid;}}
+</style>
+
+</head>
+<body>
+
+<header class="page-header">
+  <div>
+    <h1>Treatment of Heart Failure</h1>
+    <div class="subtitle">Georgetown SOM · Cardio Exam 2 · HY Reference Chart</div>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#fdf0ee;border:1px solid #e8998f"></div> MOA</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e8f4f2;border:1px solid #2d6e65"></div> Uses</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#fff8e1;border:1px solid #f0c040"></div> ⭐ High-Yield Facts</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(192,57,43,.08);border:1px solid #c0392b"></div> ⚠ Trap</div>
+  </div>
+</header>
+<div class="section-label"><h2>RAAS Blockade — Mortality Benefit in HFrEF</h2></div>
+
+<div class="card-wrapper">
+  <div class="drug-header hf-raas">
+    <span class="drug-name">Lisinopril · Enalapril · Captopril</span>
+    <span class="drug-class-pill">ACE Inhibitors — HFrEF 1st Line</span>
+    <span class="route">PO · Monitor K⁺, Cr, BP · Start low, uptitrate</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">Block <strong>ACE</strong> → ↓ Ang II → ↓ vasoconstriction + ↓ aldosterone + ↑ bradykinin.<br>Reduce preload + afterload + cardiac remodeling → ↑ EF over time.<br><br>Upgrade to ARNI if tolerated (superior outcomes — PARADIGM-HF).</div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content"><span class='warn'>Dry cough</span> (bradykinin — 10–15%) → switch to ARB or ARNI<br><span class='warn'>Angioedema</span> (rare, serious — switch to ARB; NOT ARNI acutely)<br><span class='warn'>Hyperkalemia</span><br><span class='warn'>AKI</span> (especially volume-depleted)<br><span class='warn'>Hypotension</span> (1st dose)<br><br><strong>Contraindicated:</strong> Bilateral RAS, Pregnancy, K⁺ &gt;5.5, Severe CKD<br>Do NOT combine with ARB</div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content"><span class="use-tag">HFrEF (EF ≤40%) — 1st line</span><span class="use-tag">Post-MI with LV dysfunction</span><span class="use-tag">Diabetic nephropathy</span><br><br>Cr rise &lt;30% after starting = acceptable (therapeutic). Upgrade to ARNI if tolerated.</div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="icon">⭐</span> High-Yield Facts (Exam Focus)</div><div class="hy-fact">Start with ACEi in HFrEF → upgrade to <strong>ARNI (sacubitril/valsartan)</strong> if tolerated.</div><div class="hy-fact">ACEi + ARB: <strong>do NOT combine</strong> — ↑ hyperkalemia/AKI, no mortality benefit.</div><div class="hy-fact">Cough on ACEi → switch to ARB or ARNI (NOT another ACEi — same bradykinin mechanism).</div><div class="hy-fact">Cr rise &lt;30% = <strong>acceptable and therapeutic</strong> (↓ efferent constriction).</div><div class="trap">Angioedema from ACEi → switch to ARB (NOT ARNI immediately — ARNI also increases bradykinin). ACEi + ARB combo = no benefit + ↑ harm.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card-wrapper">
+  <div class="drug-header hf-raas">
+    <span class="drug-name">Sacubitril/Valsartan (Entresto)</span>
+    <span class="drug-class-pill">ARNI — Preferred in HFrEF</span>
+    <span class="route">PO · BID · 36-hr ACEi washout REQUIRED · Monitor K⁺, Cr, BP</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content"><strong>Sacubitril</strong> → LBQ657 (neprilysin inhibitor) → ↑ BNP, ANP, bradykinin → ↑ vasodilation + natriuresis + ↓ cardiac fibrosis.<br><strong>Valsartan</strong> → AT1R block → ↓ Ang II effects.<br><br>PARADIGM-HF: <strong>20% ↓ CV death + HF hospitalization</strong> vs. enalapril → now preferred first-line in HFrEF.</div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content"><span class='warn'>Hypotension</span> (most common — strong vasodilation)<br><span class='warn'>Hyperkalemia</span><br><span class='warn'>AKI</span><br><span class='warn'>Angioedema</span> (↑↑ risk if &lt;36 hrs from ACEi — BOTH ↑ bradykinin)<br><br><strong>Contraindicated:</strong> &lt;36 hrs after last ACEi dose, Pregnancy, Angioedema history, Bilateral RAS</div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content"><span class="use-tag">HFrEF (EF ≤40%) — PREFERRED over ACEi</span><br><br>PARADIGM-HF: 20% ↓ CV death + HF hospitalization vs. enalapril.<br>NOT indicated for HTN alone.<br><br>Monitor with <strong>NT-proBNP</strong> (not BNP) while on ARNI.</div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="icon">⭐</span> High-Yield Facts (Exam Focus)</div><div class="hy-fact">PARADIGM-HF: ARNI ↓ CV death + HF hospitalization by <strong>20%</strong> vs. ACEi → preferred 1st line.</div><div class="hy-fact"><strong>36-hr washout</strong> from ACEi before ARNI → prevent dual bradykinin → angioedema.</div><div class="hy-fact">Monitor with <strong>NT-proBNP (NOT BNP)</strong> on ARNI — neprilysin inhibition → BNP accumulates (falsely elevated).</div><div class="hy-fact">Hypotension = most common dose-limiting side effect.</div><div class="trap">ARNI given &lt;36 hrs after ACEi = life-threatening angioedema. BNP unreliable on ARNI — use NT-proBNP always.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card-wrapper">
+  <div class="drug-header hf-raas">
+    <span class="drug-name">Losartan · Valsartan</span>
+    <span class="drug-class-pill">ARBs — HFrEF if ACEi/ARNI Intolerant</span>
+    <span class="route">PO · Monitor K⁺, Cr, BP</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">Block <strong>AT1 receptor</strong> → ↓ Ang II effects → ↓ vasoconstriction + ↓ aldosterone + ↓ remodeling.<br><strong>NO bradykinin</strong> → no cough, very rare angioedema. More complete Ang II block than ACEi (works around chymase pathway).</div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content"><span class='warn'>Hyperkalemia</span><br><span class='warn'>AKI</span><br><span class='warn'>Hypotension</span><br>No cough (distinguishing feature)<br><span class='warn'>Teratogenic</span><br><br>Do NOT combine with ACEi</div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content"><span class="use-tag">HFrEF if ACEi/ARNI not tolerated</span><span class="use-tag">Post-MI LV dysfunction</span><span class="use-tag">DM + Proteinuria</span><br><br>Hierarchy in HFrEF: <strong>ARNI &gt; ACEi &gt; ARB</strong> (in order of preference).</div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="icon">⭐</span> High-Yield Facts (Exam Focus)</div><div class="hy-fact">ARBs = ACEi minus cough/angioedema. Same HF mortality benefit.</div><div class="hy-fact">Use if ACEi causes intolerable cough. Prefer ARNI over both if tolerated.</div><div class="hy-fact">Hierarchy: <strong>ARNI &gt; ACEi &gt; ARB</strong>.</div><div class="hy-fact">Do NOT combine ARB + ACEi — ↑ hyperkalemia/AKI, no mortality benefit.</div><div class="trap">Hierarchy in HFrEF: ARNI > ACEi > ARB. Do NOT combine ACEi + ARB.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card-wrapper">
+  <div class="drug-header hf-raas">
+    <span class="drug-name">Spironolactone · Eplerenone</span>
+    <span class="drug-class-pill">MRAs — Mineralocorticoid Receptor Antagonists</span>
+    <span class="route">PO · Monitor K⁺ closely · Avoid K⁺ >5.0 or GFR <30</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">Block <strong>mineralocorticoid (aldosterone) receptor</strong> → ↓ Na⁺ retention + ↓ K⁺ excretion + ↓ cardiac fibrosis/remodeling.<br><br>In HF: high aldosterone drives myocardial fibrosis → MRA blocks → ↓ remodeling.<br>Eplerenone = <strong>selective MRA</strong> (no androgen/progesterone effects).</div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content"><span class='warn'>Hyperkalemia</span> (most serious — monitor with ACEi/ARB)<br><span class='warn'>Metabolic acidosis</span><br><strong>Spironolactone only:</strong> gynecomastia, impotence, menstrual irregularities (non-selective)<br>Eplerenone: fewer sexual SE<br><br><strong>Contraindicated:</strong> K⁺ &gt;5.0, GFR &lt;30, triple RAAS blockade</div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content"><span class="use-tag">HFrEF (add-on to ACEi/ARNI + β-blocker)</span><span class="use-tag">Post-MI LV dysfunction</span><span class="use-tag">Resistant HTN</span><span class="use-tag">Primary hyperaldosteronism</span><br><br>RALES: spironolactone ↓ HFrEF mortality.<br>EPHESUS: eplerenone ↓ post-MI HF mortality.</div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="icon">⭐</span> High-Yield Facts (Exam Focus)</div><div class="hy-fact">RALES: spironolactone ↓ HFrEF mortality. EPHESUS: eplerenone post-MI HF.</div><div class="hy-fact">Hyperkalemia: life-threatening with ACEi/ARB combo. Monitor K⁺ diligently.</div><div class="hy-fact">Gynecomastia on spironolactone → <strong>switch to eplerenone</strong> (selective MRA, same efficacy).</div><div class="hy-fact">Triple RAAS blockade (ACEi + ARB + MRA) → severe hyperkalemia + AKI. Avoid.</div><div class="trap">Spironolactone → gynecomastia/impotence → switch to eplerenone. Hyperkalemia risk highest with ACEi/ARB + MRA combo. Avoid if K⁺ >5.0 or GFR <30.</div>
+    </div>
+  </div>
+</div>
+<div class="section-label"><h2>β-Blockers — Only 3 Specific Drugs Proven in HFrEF</h2></div>
+
+<div class="card-wrapper">
+  <div class="drug-header hf-bb">
+    <span class="drug-name">Carvedilol ★ · Metoprolol Succinate ★ · Bisoprolol ★</span>
+    <span class="drug-class-pill">β-Blockers — Specific HFrEF-Approved Drugs Only</span>
+    <span class="route">PO · Start LOW, titrate SLOWLY · NEVER start in ADHF</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">Block chronic <strong>SNS catecholamine excess</strong> in HF → ↓ catecholamine toxicity → ↓ remodeling → ↑ EF over weeks-months.<br><br><strong>PARADOX</strong>: Negative inotropes that IMPROVE long-term cardiac function via reverse remodeling.<br><br>Carvedilol: α₁+β₁+β₂ (most vasodilation). Metoprolol succinate, bisoprolol: β₁-selective.</div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content"><span class='warn'>Bradycardia, hypotension</span> (especially carvedilol — α₁ block)<br><span class='warn'>Fatigue, dizziness</span><br><span class='warn'>Fluid retention</span> (if titrated too fast)<br><span class='warn'>Worsening HF</span> if started during acute decompensation<br><br><strong>Contraindicated:</strong> ADHF/cardiogenic shock, Severe bronchospasm, Bradycardia/AV block<br>Start only when <strong>euvolemic</strong> and hemodynamically stable</div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content"><span class="use-tag">HFrEF (EF ≤40%) — mortality benefit</span><br><br>Only these 3 drugs proven: carvedilol, metoprolol SUCCINATE, bisoprolol.<br>Other β-blockers (atenolol, propranolol) <em>NOT proven</em> in HFrEF.<br>EF improvement takes <strong>weeks to months</strong>.</div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="icon">⭐</span> High-Yield Facts (Exam Focus)</div><div class="hy-fact">Only <strong>3 β-blockers</strong> proven for HFrEF mortality: carvedilol, metoprolol succinate, bisoprolol.</div><div class="hy-fact">Paradox: negative inotrope that <strong>improves EF long-term</strong> via reverse remodeling.</div><div class="hy-fact"><strong>NEVER start in ADHF</strong> → can precipitate cardiogenic shock.</div><div class="hy-fact">Start ONLY when euvolemic and hemodynamically stable.</div><div class="hy-fact">EF improvement takes <strong>weeks to months</strong> — inform patients.</div><div class="trap">Metoprolol TARTRATE (immediate-release) ≠ metoprolol SUCCINATE. Only succinate is proven for HFrEF mortality. Do NOT substitute. Never start β-blocker in acute decompensated HF.</div>
+    </div>
+  </div>
+</div>
+<div class="section-label"><h2>Newer Agents — Mortality Benefit (HFrEF AND/OR HFpEF)</h2></div>
+
+<div class="card-wrapper">
+  <div class="drug-header hf-newer">
+    <span class="drug-name">Empagliflozin · Dapagliflozin</span>
+    <span class="drug-class-pill">SGLT-2 Inhibitors — HFrEF + HFpEF</span>
+    <span class="route">PO · Once daily · Avoid eGFR <20 · Monitor renal function</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">Block <strong>SGLT-2</strong> in PCT → osmotic diuresis + natriuresis + direct cardiac anti-fibrotic/anti-inflammatory effects.<br><br><strong>Mechanism in HF goes BEYOND glucose lowering</strong> — works in both diabetic and non-diabetic HF patients.</div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content"><span class='warn'>Genital mycotic infections</span><br><span class='warn'>UTI</span><br><span class='warn'>Euglycemic DKA</span> (glucose may be normal — check ketones)<br><span class='warn'>Hypotension</span><br><br><strong>Contraindicated:</strong> eGFR &lt;20, Type 1 DM</div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content"><span class="use-tag">HFrEF (EMPEROR-Reduced)</span><span class="use-tag">HFpEF (EMPEROR-Preserved) ★</span><span class="use-tag">DM + HF</span><span class="use-tag">CKD with proteinuria</span><br><br><strong>ONLY class with benefit in BOTH HFrEF and HFpEF.</strong></div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="icon">⭐</span> High-Yield Facts (Exam Focus)</div><div class="hy-fact"><strong>UNIQUE</strong>: Only class with mortality/hospitalization benefit in <strong>BOTH HFrEF AND HFpEF</strong>.</div><div class="hy-fact">Works in HF <strong>even without diabetes</strong> — mechanism beyond glucose lowering.</div><div class="hy-fact">Euglycemic DKA: DKA with near-normal glucose — check <strong>ketones</strong>, not just glucose.</div><div class="hy-fact">EMPEROR-Preserved/Reduced (empagliflozin); DAPA-HF (dapagliflozin): landmark trials.</div><div class="trap">'No diabetes → SGLT-2i doesn't apply' → WRONG. SGLT-2i benefit in HF regardless of DM. Euglycemic DKA — glucose may be NORMAL.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card-wrapper">
+  <div class="drug-header hf-newer">
+    <span class="drug-name">Ivabradine (Corlanor)</span>
+    <span class="drug-class-pill">If (Funny Current) Inhibitor — Pure HR Reducer</span>
+    <span class="route">PO · BID · HR ≥70 bpm required · Sinus rhythm ONLY</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">Blocks <strong>If (funny current)</strong> in SA node → ↓ pacemaker depolarization rate → ↓ HR <strong>ONLY</strong>.<br><br>No effect on contractility, BP, or conduction below SA node.<br><strong>NO effect in Atrial Fibrillation</strong> (SA node not driving rhythm in Afib).</div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content"><span class='warn'>Bradycardia</span><br><span class='warn'>Luminous phenomena (phosphenes)</span> — visual brightness; reversible and characteristic<br><span class='warn'>Headache</span><br><br><strong>Contraindicated:</strong> Afib/flutter, HR &lt;60, Sick sinus syndrome, Strong CYP3A4 inhibitors</div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content"><span class="use-tag">HFrEF + HR ≥70 in sinus rhythm on max β-blocker</span><br><br>SHIFT trial: ivabradine ↓ HF hospitalizations.<br>Add-on when HR goal not achieved with max β-blocker.</div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="icon">⭐</span> High-Yield Facts (Exam Focus)</div><div class="hy-fact">Indication: HFrEF + sinus rhythm + HR ≥70 on <strong>maximum tolerated β-blocker dose</strong>.</div><div class="hy-fact">Pure rate-reducer — no effect on contractility, BP, or AV conduction.</div><div class="hy-fact"><strong>COMPLETELY USELESS IN AFIB</strong> — only blocks SA node (not driving rhythm in Afib).</div><div class="hy-fact">Luminous phenomena (phosphenes) = unique and characteristic ADR of ivabradine.</div><div class="trap">Ivabradine for Afib rate control → WRONG. Only works in sinus rhythm. Also useless if HR <60 or patient is already on max β-blocker and HR is adequate.</div>
+    </div>
+  </div>
+</div>
+<div class="section-label"><h2>Symptom Relief — Diuretics & Vasodilators (No Mortality Benefit)</h2></div>
+
+<div class="card-wrapper">
+  <div class="drug-header hf-symptom">
+    <span class="drug-name">Furosemide (IV for ADHF) · Torsemide (oral preferred)</span>
+    <span class="drug-class-pill">Loop Diuretics — NKCC2 Block — Symptom Relief Only</span>
+    <span class="route">IV (ADHF) or PO · Monitor BMP (K⁺, Mg²⁺, Cr)</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">Block <strong>NKCC2</strong> in thick ascending loop of Henle → intense natriuresis + diuresis → ↓ ECF volume → ↓ preload → ↓ pulmonary congestion.<br><br>Rapidly relieve dyspnea and volume overload. <strong>Do NOT improve mortality in HFrEF.</strong></div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content"><span class='warn'>Hypokalemia</span> (critical — ↑ digoxin toxicity!)<br><span class='warn'>Hypomagnesemia</span><br><span class='warn'>Metabolic alkalosis</span><br><span class='warn'>Ototoxicity</span> (high-dose IV, especially + aminoglycosides)<br><span class='warn'>Hyperuricemia</span><br><span class='warn'>Dehydration/AKI</span> from overdiuresis</div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content"><span class="use-tag">ADHF — IV furosemide FIRST-LINE</span><span class="use-tag">Chronic HFrEF volume management</span><br><br>Diuretic resistance → add <strong>metolazone</strong> (synergistic DCT blockade).<br>Torsemide: better oral bioavailability → preferred in RV failure.</div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="icon">⭐</span> High-Yield Facts (Exam Focus)</div><div class="hy-fact">Diuretics relieve <strong>SYMPTOMS</strong> but do <strong>NOT reduce mortality</strong> in HFrEF.</div><div class="hy-fact">IV furosemide = first step in <strong>ADHF management</strong>.</div><div class="hy-fact">Hypokalemia from loops → <strong>↑ digoxin toxicity</strong> (K⁺ competes at Na/K-ATPase).</div><div class="hy-fact">Diuretic resistance → add <strong>metolazone</strong> (synergistic blockade of DCT + loop).</div><div class="hy-fact">Torsemide: better oral bioavailability than furosemide → preferred in RV failure with gut edema.</div><div class="trap">Loop diuretic + digoxin → always monitor K⁺. Furosemide causes ototoxicity at high IV doses (especially with aminoglycosides). Diuretics = symptom relief only, NOT mortality benefit.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card-wrapper">
+  <div class="drug-header hf-symptom">
+    <span class="drug-name">Hydralazine + Isosorbide Dinitrate (H-ISDN / BiDil)</span>
+    <span class="drug-class-pill">Arteriolar + Venodilator Combo — HFrEF Alternative</span>
+    <span class="route">PO · TID · Nitrate-free interval required (8–10 hrs)</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content"><strong>Hydralazine</strong>: direct arteriolar vasodilation → ↓ SVR (↓ afterload).<br><strong>Isosorbide dinitrate</strong>: ↑ NO → ↑ cGMP → venodilation → ↓ preload.<br><br><strong>Complementary</strong>: together ↓ both preload AND afterload.<br>A-HeFT trial: specifically benefited Black patients with HFrEF.</div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content"><span class='warn'>Hydralazine: reflex tachycardia, headache</span><br><span class='warn'>Drug-induced lupus</span> (high dose — ANA+, anti-histone+, anti-dsDNA NEGATIVE)<br><span class='warn'>Nitrate tolerance</span> (8–10 hr nitrate-free period required daily)<br><span class='warn'>Hypotension</span><br><br><strong>Contraindicated:</strong> PDE-5 inhibitors + nitrates = severe hypotension</div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content"><span class="use-tag">HFrEF when ACEi/ARB/ARNI NOT tolerated</span><span class="use-tag">★ Black patients with HFrEF on standard therapy (A-HeFT)</span><br><br>A-HeFT: H-ISDN ↓ mortality <strong>43%</strong> in self-identified Black HFrEF patients on standard therapy.</div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="icon">⭐</span> High-Yield Facts (Exam Focus)</div><div class="hy-fact">Two specific indications: (1) <strong>ACEi/ARB/ARNI intolerant HFrEF</strong> and (2) <strong>Black patients with HFrEF</strong> on standard therapy (A-HeFT).</div><div class="hy-fact">A-HeFT trial: H-ISDN added to standard therapy in Black HFrEF → ↓ mortality 43%.</div><div class="hy-fact">Drug-induced lupus: ANA+, anti-histone+, anti-dsDNA <strong>NEGATIVE</strong>.</div><div class="hy-fact">Nitrate tolerance → must have <strong>8–10 hr nitrate-free interval</strong> daily.</div><div class="trap">H-ISDN + PDE-5 inhibitor (sildenafil, tadalafil) = severe hypotension. CONTRAINDICATED. Hydralazine lupus: ANA+, anti-histone+, anti-dsDNA NEGATIVE (not idiopathic SLE).</div>
+    </div>
+  </div>
+</div>
+<div class="section-label"><h2>Digoxin & Other Agents</h2></div>
+
+<div class="card-wrapper">
+  <div class="drug-header hf-digoxin">
+    <span class="drug-name">Digoxin (Digitalis)</span>
+    <span class="drug-class-pill">Cardiac Glycoside — Na/K-ATPase Inhibitor — NO Mortality Benefit</span>
+    <span class="route">PO or IV · Narrow TI · Target 0.5–0.9 ng/mL · Monitor K⁺, Mg²⁺, Cr</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">Inhibits <strong>Na⁺/K⁺-ATPase</strong> → ↑ intracellular Na⁺ → reverse NCX → ↑ intracellular Ca²⁺ → <strong>positive inotropy</strong>.<br><br>Also <strong>vagomimetic</strong> → ↑ vagal tone → ↓ HR + ↓ AV conduction → rate control in Afib.<br><br>Narrow therapeutic index: target <strong>0.5–0.9 ng/mL</strong> for HF (NOT the old 1.0–2.0 range).</div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content"><strong>Toxicity triad:</strong><br><span class='warn'>GI: N/V, anorexia</span> (earliest signs)<br><span class='warn'>CNS: Xanthopsia</span> (yellow-green visual halos), confusion<br><span class='warn'>Cardiac: any arrhythmia</span> (PAT with block is classic), AV block, bidirectional VT<br><br>Toxicity precipitated by:<br>• <strong>HYPOKALEMIA</strong> (most important — K⁺ competes at binding site)<br>• Renal failure, hypomagnesemia, hypercalcemia<br>• Verapamil/amiodarone → ↑ digoxin levels (P-gp inhibition)<br><br>Treatment: <strong>DIGIBIND</strong> (anti-digoxin Fab antibodies)</div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content"><span class="use-tag">HFrEF symptom relief (no mortality benefit)</span><span class="use-tag">Afib rate control</span><br><br>DIG trial: digoxin ↓ HF hospitalizations but <strong>NO mortality benefit</strong>.</div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="icon">⭐</span> High-Yield Facts (Exam Focus)</div><div class="hy-fact"><strong>NO MORTALITY BENEFIT</strong> — reduces symptoms and hospitalizations only (DIG trial).</div><div class="hy-fact">Therapeutic level for HF: <strong>0.5–0.9 ng/mL</strong> (NOT old 1.0–2.0 range).</div><div class="hy-fact">Hypokalemia dramatically ↑ digoxin toxicity — K⁺ competes at Na/K-ATPase binding site.</div><div class="hy-fact">Toxicity triad: <strong>GI (N/V)</strong> + <strong>yellow-green halos (xanthopsia)</strong> + <strong>cardiac arrhythmia (PAT with block)</strong>.</div><div class="hy-fact">Toxicity treatment: <strong>DIGIBIND</strong> (Fab antibody fragments).</div><div class="hy-fact">Verapamil + amiodarone → ↑ digoxin levels (P-gp inhibition) → toxicity.</div><div class="trap">Loop diuretic + digoxin → always monitor K⁺ (hypokalemia = most common toxicity precipitant). Target level 0.5–0.9 ng/mL for HF (NOT 1.0–2.0). PAT with block = classic digoxin toxicity arrhythmia.</div>
+    </div>
+  </div>
+</div>
+
+<div class="indication-section">
+  <h3>Drug Selection by Clinical Indication</h3>
+  <table class="ind-table">
+    <thead><tr><th>SCENARIO</th><th>FIRST-LINE</th><th>ADD-ON / SECOND-LINE</th><th>KEY PEARL</th></tr></thead>
+    <tbody><tr><td class="iname">HFrEF (EF ≤40%) — GDMT</td><td class="choice">★ ARNI + β-blocker (carvedilol/metoprolol succinate/bisoprolol)</td><td class="choice">+ MRA (spironolactone/eplerenone) + SGLT-2i</td><td class="">4 pillars of GDMT: ARNI + β-blocker + MRA + SGLT-2i.</td></tr>
+<tr><td class="iname">HFpEF (EF ≥50%)</td><td class="choice">★ SGLT-2 inhibitor (EMPEROR-Preserved)</td><td class="">Diuretics for volume; treat HTN, Afib, DM</td><td class="warn-cell">No β-blocker/ACEi mortality benefit in HFpEF. SGLT-2i is the only proven agent.</td></tr>
+<tr><td class="iname">ADHF (Acute Decompensated HF)</td><td class="choice">★ IV Loop diuretic (furosemide) immediately</td><td class="">IV nitroglycerin if hypertensive + congested; treat precipitant</td><td class="warn-cell">NEVER start β-blocker in ADHF. Continue existing β-blocker if possible.</td></tr>
+<tr><td class="iname">HFrEF + Black Patient</td><td class="choice">★ Add H-ISDN (hydralazine + ISDN) to GDMT</td><td class="muted">—</td><td class="">A-HeFT: H-ISDN ↓ mortality 43% in Black HFrEF on standard therapy.</td></tr>
+<tr><td class="iname">HFrEF + HR ≥70 on max β-blocker (sinus rhythm)</td><td class="choice">★ Add ivabradine (SHIFT trial)</td><td class="muted">—</td><td class="warn-cell">Ivabradine only works in SINUS RHYTHM. Useless in Afib.</td></tr>
+<tr><td class="iname">ACEi Cough in HFrEF</td><td class="choice">★ Switch to ARB or ARNI</td><td class="muted">—</td><td class="warn-cell">36-hr washout if switching from ACEi to ARNI.</td></tr>
+<tr><td class="iname">Gynecomastia on Spironolactone</td><td class="choice">★ Switch to eplerenone</td><td class="muted">—</td><td class="">Same mortality benefit; selective MRA = no androgen effects.</td></tr>
+<tr><td class="iname">Digoxin Toxicity</td><td class="choice">★ DIGIBIND (Fab antibody fragments)</td><td class="">Correct K⁺ (hypokalemia precipitates); hold digoxin; monitor ECG</td><td class="warn-cell">Yellow halos + N/V + arrhythmia = classic triad. Check K⁺ FIRST.</td></tr>
+</tbody>
+  </table>
+</div>
+<button class="print-btn" onclick="window.print()">🖨 Print / Save PDF</button>
+</body>
+</html>
