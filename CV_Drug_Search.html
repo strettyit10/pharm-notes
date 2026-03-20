@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV Drug Search — Georgetown SOM Cardio Exam 2</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f4f2ee; --surface:#fff; --border:#d9d3c7; --text:#1a1612; --muted:#7a7268;
+  --accent:#c0392b; --accent-light:#fdf0ee; --accent-mid:#e8998f;
+  --gold:#9b7e3a; --gold-light:#fff8e1; --hy-border:#f0c040; --hy-text:#7a5c00;
+  --teal:#2d6e65; --teal-light:#e8f4f2;
+  --blue:#2c5282; --blue-light:#ebf2fc;
+  --orange:#b85c1a;
+  --shadow:0 2px 8px rgba(0,0,0,.07),0 8px 32px rgba(0,0,0,.05);
+  --radius:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* ── HERO SEARCH AREA ── */
+.hero{
+  background:var(--text);
+  padding:36px 24px 28px;
+  text-align:center;
+  position:sticky;top:0;z-index:100;
+  box-shadow:0 4px 24px rgba(0,0,0,.25);
+}
+.hero h1{
+  font-family:'DM Serif Display',serif;
+  font-size:22px;font-weight:400;color:#fff;letter-spacing:-.2px;
+  margin-bottom:4px;
+}
+.hero .sub{font-size:11px;color:rgba(255,255,255,.5);margin-bottom:18px;font-family:'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+.search-wrap{position:relative;max-width:640px;margin:0 auto;}
+.search-wrap input{
+  width:100%;padding:14px 48px 14px 18px;
+  border-radius:10px;border:none;outline:none;
+  font-family:'DM Sans',sans-serif;font-size:15px;
+  background:#fff;color:var(--text);
+  box-shadow:0 0 0 0 transparent;
+  transition:box-shadow .2s;
+}
+.search-wrap input:focus{box-shadow:0 0 0 3px rgba(192,57,43,.35);}
+.search-wrap input::placeholder{color:#aaa;}
+.search-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:#aaa;font-size:18px;pointer-events:none;}
+.hint{margin-top:10px;font-size:11.5px;color:rgba(255,255,255,.4);}
+
+/* ── AUTOCOMPLETE DROPDOWN ── */
+.dropdown{
+  position:absolute;top:calc(100% + 4px);left:0;right:0;
+  background:#fff;border-radius:10px;
+  box-shadow:0 8px 32px rgba(0,0,0,.18);
+  max-height:320px;overflow-y:auto;
+  z-index:200;border:1px solid var(--border);
+  display:none;
+}
+.dropdown.open{display:block;}
+.dd-item{
+  padding:10px 16px;cursor:pointer;
+  border-bottom:1px solid var(--border);
+  transition:background .12s;
+  display:flex;align-items:baseline;gap:10px;
+}
+.dd-item:last-child{border-bottom:none;}
+.dd-item:hover,.dd-item.active{background:var(--accent-light);}
+.dd-name{font-size:13.5px;font-weight:500;color:var(--text);}
+.dd-cat{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-left:auto;flex-shrink:0;}
+
+/* ── MAIN CONTENT ── */
+.main{max-width:1100px;margin:0 auto;padding:32px 20px 80px;}
+.empty-state{
+  text-align:center;padding:80px 20px;
+  color:var(--muted);
+}
+.empty-state .big{font-family:'DM Serif Display',serif;font-size:32px;color:var(--border);margin-bottom:12px;}
+.empty-state p{font-size:14px;line-height:1.7;max-width:420px;margin:0 auto;}
+
+/* ── RESULTS COUNT ── */
+.results-meta{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;flex-wrap:wrap;gap:8px;
+}
+.results-meta .count{font-size:12px;color:var(--muted);}
+.results-meta .query-pill{
+  font-size:12px;font-weight:600;
+  background:var(--accent-light);color:var(--accent);
+  border:1px solid var(--accent-mid);
+  border-radius:20px;padding:2px 12px;
+}
+.clear-btn{
+  font-size:12px;color:var(--muted);background:none;border:none;
+  cursor:pointer;padding:2px 8px;border-radius:6px;
+  transition:background .15s,color .15s;
+}
+.clear-btn:hover{background:var(--border);color:var(--text);}
+
+/* ── DRUG CARD ── */
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  overflow:hidden;margin-bottom:14px;
+  animation:slideIn .22s ease;
+}
+@keyframes slideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.card:hover{border-color:var(--accent-mid);}
+
+/* DRUG HEADER */
+.dh{display:flex;align-items:center;gap:10px;padding:11px 16px;color:#fff;flex-wrap:wrap;cursor:pointer;user-select:none;}
+.dh:hover{filter:brightness(1.08);}
+.dh .dname{font-family:'DM Serif Display',serif;font-size:17px;font-weight:400;letter-spacing:-.2px;}
+.dh .dpill{font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 9px;border-radius:20px;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);text-transform:uppercase;letter-spacing:.07em;}
+.dh .droute{margin-left:auto;font-size:10.5px;color:rgba(255,255,255,.55);font-family:'JetBrains Mono',monospace;}
+.dh .dcat-badge{font-size:10px;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7);border-radius:4px;padding:2px 7px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;}
+.toggle-icon{margin-left:6px;font-size:13px;color:rgba(255,255,255,.6);transition:transform .2s;}
+.card.collapsed .toggle-icon{transform:rotate(-90deg);}
+
+/* CARD BODY */
+.cbody{
+  display:grid;grid-template-columns:1fr 1fr 1fr 1.2fr;
+  border-top:1px solid var(--border);
+  transition:max-height .3s ease,opacity .25s;
+  max-height:1000px;opacity:1;overflow:hidden;
+}
+.card.collapsed .cbody{max-height:0;opacity:0;}
+@media(max-width:900px){.cbody{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.cbody{grid-template-columns:1fr;}}
+
+.cell{padding:13px 15px;border-right:1px solid var(--border);}
+.cell:last-child{border-right:none;}
+.clabel{font-size:9.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:5px;color:var(--muted);}
+.ccontent{font-size:12.5px;line-height:1.6;color:var(--text);}
+.ccontent strong{color:var(--accent);font-weight:600;}
+.ccontent b{font-weight:600;}
+.cell.moa{background:var(--accent-light);}
+.cell.moa .clabel{color:var(--accent);}
+.cell.use{background:var(--teal-light);}
+.cell.use .clabel{color:var(--teal);}
+.cell.use .utag{display:inline-block;background:var(--teal-light);border:1px solid var(--teal);color:var(--teal);border-radius:4px;padding:1px 7px;font-size:11px;font-weight:500;margin:1px 2px 2px 0;}
+.cell.hy{background:var(--gold-light);border-left:3px solid var(--hy-border);border-right:none;}
+.cell.hy .clabel{color:var(--hy-text);font-size:10px;}
+.hyfact{display:flex;align-items:flex-start;gap:6px;margin-bottom:6px;font-size:12.5px;color:var(--hy-text);}
+.hyfact::before{content:'⭐';font-size:11px;flex-shrink:0;margin-top:2px;}
+.trap{margin-top:8px;padding:6px 9px;background:rgba(192,57,43,.07);border-left:2px solid var(--accent);border-radius:4px;font-size:11.5px;color:var(--accent);}
+.trap::before{content:'⚠ TRAP: ';font-weight:700;}
+
+/* HEADER COLOR CLASSES */
+.antiplatelet{background:#2c3e50;}
+.heparin{background:#1a3a4a;}
+.vka{background:#2d1b4e;}
+.doac{background:#1a3a2d;}
+.fibrinolytic{background:#4a1a1a;}
+.direct-thrombin{background:#1a2a4a;}
+.diuretic{background:#1a3a2d;}
+.raas{background:#2d1b4e;}
+.ccb{background:#1a2d4a;}
+.bb{background:#1a1a3a;}
+.alpha{background:#2d2010;}
+.vasodilator{background:#3a1a10;}
+.sglt2,.hf-newer{background:#0d3320;}
+.hf-raas{background:#2d1b4e;}
+.hf-bb{background:#1a1a3a;}
+.hf-symptom{background:#1a2d4a;}
+.hf-digoxin{background:#2d2010;}
+.class-ia{background:#4a1a10;}
+.class-ib{background:#1a3a1a;}
+.class-ic{background:#3a2a10;}
+.class-iii{background:#1a1a4a;}
+.class-iii-other{background:#2a1a4a;}
+.class-ii-iv{background:#1a2a3a;}
+.other-arr{background:#2a2a2a;}
+.statin{background:#1a3a2d;}
+.fibrate{background:#2d2010;}
+.bas{background:#1a2a4a;}
+.ezetimibe{background:#2d1b4e;}
+.pcsk9{background:#1a1a3a;}
+.omega3{background:#0d3320;}
+
+/* MATCH HIGHLIGHT */
+mark{background:#fef3c7;color:#92400e;border-radius:2px;padding:0 2px;}
+
+/* NO RESULTS */
+.no-results{text-align:center;padding:60px 20px;color:var(--muted);}
+.no-results .nr-icon{font-size:36px;margin-bottom:12px;}
+.no-results p{font-size:14px;}
+
+/* CATEGORY FILTER CHIPS */
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;}
+.chip{
+  font-size:11.5px;padding:4px 12px;border-radius:20px;cursor:pointer;
+  border:1px solid var(--border);background:var(--surface);color:var(--muted);
+  transition:all .15s;font-weight:500;
+}
+.chip:hover{border-color:var(--accent-mid);color:var(--accent);background:var(--accent-light);}
+.chip.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>CV Drug Reference Search</h1>
+  <div class="sub">Georgetown SOM · Cardio Exam 2 · All Topics</div>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="Search any drug name, class, or indication…" autocomplete="off" spellcheck="false">
+    <span class="search-icon">🔍</span>
+    <div class="dropdown" id="dropdown"></div>
+  </div>
+  <div class="hint">Try: aspirin · warfarin · amiodarone · SGLT-2 · HIT · torsades</div>
+</div>
+
+<div class="main" id="main">
+  <div class="empty-state" id="emptyState">
+    <div class="big">💊</div>
+    <p>Search for any drug, class, mechanism, or clinical scenario above.<br>Cards expand with MOA, side effects, clinical uses, and high-yield exam facts.</p>
+  </div>
+  <div id="results" style="display:none">
+    <div class="results-meta">
+      <span class="count" id="countLabel"></span>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <span class="query-pill" id="queryPill"></span>
+        <button class="clear-btn" id="clearBtn">✕ Clear</button>
+      </div>
+    </div>
+    <div class="filters" id="filters"></div>
+    <div id="cardContainer"></div>
+  </div>
+</div>
+
+<script>
+const DRUGS = [{"name": "Aspirin (ASA)", "aliases": ["aspirin", "asa", "acetylsalicylic", "cox inhibitor"], "category": "Antiplatelets / Anticoagulants", "class": "COX-1 Inhibitor — Antiplatelet", "route": "PO · 81 mg antiplatelet / 325 mg anti-inflam", "css": "antiplatelet", "moa": "<strong>Irreversibly inhibits COX-1 (and COX-2)</strong> → ↓ TXA₂ synthesis in platelets → ↓ vasoconstriction + ↓ platelet aggregation. Effect lasts <strong>platelet lifetime (7–10 days)</strong> — platelets cannot synthesize new COX.", "se": "<b>Side Effects:</b> GI ulcers/bleeding (COX-1 protects gastric mucosa), renal impairment.<br><b>CI:</b> Children with viral illness → <b>Reye syndrome</b>; hemorrhagic stroke (NEVER).", "uses": "<span class='utag'>ACS</span><span class='utag'>Acute ischemic stroke</span><span class='utag'>PAD</span><span class='utag'>1°/2° CV prevention</span>", "hy": ["Irreversible COX-1 — effect lasts <strong>7–10 days</strong>. Hold 7–10 days pre-op.", "Low dose (81 mg) = antiplatelet ONLY. High dose = anti-inflammatory.", "ACS → DAPT: aspirin + P2Y12 inhibitor.", "Ischemic stroke: aspirin alone (if no tPA). Post-tPA: hold 24 hrs, then restart."], "trap": "NOT for hemorrhagic stroke. Always confirm ischemic first. Never in children with viral illness → Reye syndrome."}, {"name": "Clopidogrel (Plavix) · Prasugrel", "aliases": ["clopidogrel", "plavix", "prasugrel", "p2y12", "thienopyridine", "grel"], "category": "Antiplatelets / Anticoagulants", "class": "P2Y12 Inhibitor — Thienopyridine (Prodrug)", "route": "PO · Hold 5–7 days pre-op", "css": "antiplatelet", "moa": "<strong>Prodrug → CYP2C19 activation</strong> → active metabolite <strong>irreversibly blocks P2Y12 (ADP receptor)</strong> → ↓ ADP-induced platelet aggregation. Prasugrel: stronger/faster, also prodrug.", "se": "<b>SE:</b> Bleeding (DAPT > ASA alone).<br><b>CI:</b> CYP2C19 poor metabolizers (↓ efficacy — FDA black box warning); Prasugrel: avoid if prior stroke/TIA.", "uses": "<span class='utag'>ACS (loading dose + 1 yr post-MI with ASA)</span><span class='utag'>Post-PCI stent</span><span class='utag'>PAD</span><span class='utag'>Ischemic stroke (2° prevention)</span>", "hy": ["<strong>Prodrug: requires CYP2C19 activation.</strong> Poor metabolizers (~15% Caucasian, ~30% Asian) → ↓ platelet inhibition → ↑ stent thrombosis.", "FDA BLACK BOX WARNING: test CYP2C19 in high-risk patients.", "Irreversible P2Y12 block — lasts platelet lifetime.", "Prasugrel: stronger, faster. Avoid if prior stroke/TIA (↑ bleeding)."], "trap": "CYP2C19 poor metabolizer + clopidogrel = treatment failure → switch to TICAGRELOR (direct-acting, bypasses CYP2C19)."}, {"name": "Ticagrelor (Brilinta)", "aliases": ["ticagrelor", "brilinta", "p2y12 direct"], "category": "Antiplatelets / Anticoagulants", "class": "P2Y12 Inhibitor — Direct-Acting (NOT a prodrug)", "route": "PO · Hold 5 days pre-op", "css": "antiplatelet", "moa": "<strong>Direct-acting</strong> (no hepatic activation needed) → <strong>reversibly blocks P2Y12</strong> → ↓ platelet aggregation. Faster onset, more complete ADP inhibition than clopidogrel. PLATO trial → ↓ mortality vs. clopidogrel in ACS.", "se": "<b>Unique SE: DYSPNEA</b> (adenosine-mediated, NOT bronchospasm).<br>Bleeding (similar to clopidogrel). More expensive.", "uses": "<span class='utag'>ACS — PREFERRED P2Y12 ★</span><span class='utag'>Post-PCI stent (with ASA)</span>", "hy": ["<strong>NOT a prodrug</strong> → works regardless of CYP2C19 genotype. Preferred in ACS.", "<strong>Reversible</strong> P2Y12 block (vs. irreversible for clopidogrel/prasugrel).", "Unique ADR: <strong>DYSPNEA</strong> (adenosine-mediated, non-bronchospastic).", "PLATO trial: ticagrelor > clopidogrel in ACS (lower CV mortality)."], "trap": "Ticagrelor dyspnea ≠ bronchospasm. Don't automatically switch. Dyspnea on P2Y12 → think ticagrelor ADR first."}, {"name": "Heparin (UFH)", "aliases": ["heparin", "ufh", "unfractionated heparin", "antithrombin"], "category": "Antiplatelets / Anticoagulants", "class": "Indirect Thrombin Inhibitor (AT-III Activator)", "route": "IV or SQ · Monitor aPTT (1.5–2.5× normal)", "css": "heparin", "moa": "Binds <strong>Antithrombin III (AT-III)</strong> → activates AT-III 1000× → inactivates <strong>thrombin (IIa), Factor Xa, Factor IXa</strong>. Variable chain length → unpredictable dosing → monitor aPTT.", "se": "<b>SE:</b> Bleeding (reverse with <b>protamine sulfate</b>).<br><b>HIT Type II</b> (days 5–14): IgG vs. heparin-PF4 → platelet activation → <b>PARADOXICAL THROMBOSIS + thrombocytopenia</b>.<br>Osteoporosis (long-term).", "uses": "<span class='utag'>DVT/PE (acute)</span><span class='utag'>ACS</span><span class='utag'>Renal failure (preferred over LMWH)</span><span class='utag'>Surgery bridging</span>", "hy": ["Monitor with <strong>aPTT</strong> (goal 1.5–2.5×). NOT anti-Xa.", "<strong>Safe in renal failure</strong> — cleared by reticuloendothelial system, not kidneys.", "Does NOT cross placenta. Reversal: <strong>protamine sulfate</strong> (full).", "<strong>HIT:</strong> platelet drop ≥50% days 5–14 + paradoxical THROMBOSIS → STOP heparin → argatroban/bivalirudin."], "trap": "In HIT: do NOT switch to LMWH (cross-reacts!), do NOT give warfarin acutely (protein C/S depletion → skin necrosis), do NOT transfuse platelets."}, {"name": "Enoxaparin (LMWH)", "aliases": ["enoxaparin", "lmwh", "lovenox", "low molecular weight heparin"], "category": "Antiplatelets / Anticoagulants", "class": "Low-Molecular-Weight Heparin — Anti-Xa", "route": "SQ only · Anti-Xa monitoring if obese/pregnant/CKD", "css": "heparin", "moa": "Same as UFH (binds AT-III) but <strong>smaller chains → primarily inhibits Factor Xa only</strong>. More predictable PK → weight-based dosing, no routine monitoring. <strong>Renally cleared.</strong>", "se": "<b>SE:</b> Bleeding; HIT (lower risk than UFH but possible).<br><b>CI:</b> CrCl &lt;15–30 mL/min (accumulates → bleeding). Partial protamine reversal only (~60%).", "uses": "<span class='utag'>DVT/PE (Tx + ppx)</span><span class='utag'>ACS</span><span class='utag'>Pregnancy (preferred)</span><span class='utag'>Outpatient DVT</span>", "hy": ["Monitor with <strong>anti-Xa</strong> levels (NOT aPTT). Only in pregnancy, obesity, renal impairment.", "<strong>Renally cleared</strong> → AVOID in GFR &lt;30 (accumulates). Use UFH instead.", "Does NOT cross placenta → <strong>preferred anticoagulant in pregnancy</strong>.", "Partial protamine reversal only (~60% anti-Xa)."], "trap": "Do NOT use in severe CKD (GFR <30) — use UFH. LMWH cross-reacts in HIT — never substitute for UFH in HIT."}, {"name": "Warfarin (Coumadin)", "aliases": ["warfarin", "coumadin", "vka", "vitamin k antagonist", "inr"], "category": "Antiplatelets / Anticoagulants", "class": "Vitamin K Epoxide Reductase Inhibitor (VKA)", "route": "PO · Monitor INR (goal 2–3; 2.5–3.5 mechanical valves)", "css": "vka", "moa": "Inhibits <strong>Vitamin K epoxide reductase (VKOR)</strong> → ↓ γ-carboxylation of factors <strong>II, VII, IX, X</strong> + Protein C, S. <strong>Factor VII shortest t½ → INR rises first.</strong> Full effect in 2–5 days. Metabolized by CYP2C9.", "se": "<b>SE:</b> Bleeding; Teratogen (Category X); Skin/tissue necrosis (protein C/S depleted first).<br><b>Drug interactions:</b> CYP2C9 inhibitors ↑ INR (amiodarone, azoles); inducers ↓ INR (rifampin, anti-epileptics).", "uses": "<span class='utag'>Mechanical heart valves ★ (ONLY approved)</span><span class='utag'>DVT/PE</span><span class='utag'>Afib</span><span class='utag'>APS</span>", "hy": ["Factor VII shortest t½ → <strong>INR rises first</strong>.", "<strong>MECHANICAL HEART VALVES → WARFARIN ONLY.</strong> DOACs CONTRAINDICATED (RE-ALIGN trial).", "Reversal: mild → hold + Vit K PO; serious → FFP + Vit K IV; life-threatening → <strong>4-factor PCC + Vit K IV</strong>.", "<strong>Amiodarone inhibits CYP2C9</strong> → ↑ warfarin → ↑ INR. Effect persists months (amiodarone t½ 40–55 days).", "Teratogenic — use LMWH in pregnancy."], "trap": "FFP alone is NOT sufficient reversal (transient). Must add Vitamin K for sustained effect. DOACs NEVER approved for mechanical valves."}, {"name": "Apixaban · Rivaroxaban · Edoxaban", "aliases": ["apixaban", "eliquis", "rivaroxaban", "xarelto", "edoxaban", "savaysa", "xa inhibitor", "doac", "noac", "factor xa"], "category": "Antiplatelets / Anticoagulants", "class": "Direct Factor Xa Inhibitors (DOACs)", "route": "PO · No routine monitoring · Renal dose adjustments", "css": "doac", "moa": "<strong>Directly inhibit Factor Xa</strong> → ↓ thrombin generation → ↓ fibrin clot. No vitamin K dependence. Predictable PK. Renal clearance: <strong>apixaban 27% (least)</strong> → preferred in CKD.", "se": "<b>SE:</b> Bleeding (limited reversal vs. warfarin).<br><b>CI:</b> Mechanical heart valves (ALL DOACs); severe renal failure (varies — apixaban safest); pregnancy.", "uses": "<span class='utag'>Non-valvular Afib (preferred over warfarin)</span><span class='utag'>DVT/PE Tx + ppx</span>", "hy": ["Reversal: <strong>andexanet alfa</strong> (specific antidote for ALL Xa inhibitors).", "<strong>Apixaban preferred in CKD</strong> — only 27% renally cleared (vs. dabigatran ~80%).", "Preferred over warfarin for <strong>non-valvular Afib</strong> — no monitoring, fewer interactions.", "Trials: ROCKET-AF (rivaroxaban), ARISTOTLE (apixaban), ENGAGE (edoxaban)."], "trap": "NEVER use any DOAC for mechanical heart valves — warfarin ONLY. All DOACs renally cleared to varying degrees."}, {"name": "Dabigatran (Pradaxa)", "aliases": ["dabigatran", "pradaxa", "direct thrombin inhibitor", "iia inhibitor", "idarucizumab"], "category": "Antiplatelets / Anticoagulants", "class": "Direct Thrombin (IIa) Inhibitor — DOAC", "route": "PO · No routine monitoring · ~80% renally cleared", "css": "doac", "moa": "<strong>Directly inhibits thrombin (Factor IIa)</strong> → ↓ fibrin formation. Most renally cleared DOAC (~80%). No prodrug activation required.", "se": "<b>SE:</b> Bleeding; GI upset (take with food).<br><b>CI:</b> Severe renal failure (GFR &lt;30); mechanical heart valves (RE-ALIGN trial: inferior to warfarin).", "uses": "<span class='utag'>Non-valvular Afib</span><span class='utag'>DVT/PE Tx + ppx</span>", "hy": ["Reversal: <strong>idarucizumab (Praxbind)</strong> — specific monoclonal antibody antidote.", "<strong>Most renally cleared DOAC (~80%)</strong> → most affected by CKD.", "RE-LY trial: dabigatran non-inferior/superior to warfarin for non-valvular Afib."], "trap": "RE-ALIGN trial: dabigatran INFERIOR to warfarin in mechanical valves (more thromboembolism AND more bleeding). Mechanical valves = warfarin ONLY."}, {"name": "Argatroban · Bivalirudin", "aliases": ["argatroban", "bivalirudin", "direct thrombin iv", "hit treatment", "non-heparin anticoagulant"], "category": "Antiplatelets / Anticoagulants", "class": "Direct Thrombin Inhibitors (IV) — Non-Heparin", "route": "IV only · Very short t½", "css": "direct-thrombin", "moa": "<strong>Directly inhibit thrombin (Factor IIa)</strong>. NOT heparin-derived → do NOT cross-react with HIT antibodies. Argatroban: hepatically cleared. Bivalirudin: renally cleared.", "se": "<b>SE:</b> Bleeding. No specific antidote.<br>Argatroban: caution in liver failure. Bivalirudin: reduce dose in CKD.", "uses": "<span class='utag'>HIT Type II — FIRST-LINE replacement ★</span><span class='utag'>Bivalirudin: PCI procedures</span>", "hy": ["FIRST-LINE for HIT — not heparin-derived, no cross-reactivity with HIT antibodies.", "<strong>Argatroban preferred in renal failure</strong> (hepatically cleared). Bivalirudin preferred in liver failure.", "Bridge to warfarin ONLY after <strong>platelets RECOVER</strong> in HIT — never start warfarin acutely."], "trap": "In HIT: NEVER use LMWH (cross-reacts), NEVER transfuse platelets (worsens thrombosis), NEVER start warfarin acutely (protein C/S → skin necrosis)."}, {"name": "tPA (Alteplase) · Tenecteplase", "aliases": ["tpa", "alteplase", "tenecteplase", "fibrinolytic", "thrombolytic", "tissue plasminogen activator"], "category": "Antiplatelets / Anticoagulants", "class": "Fibrinolytic — Tissue Plasminogen Activator", "route": "IV infusion (alteplase) or IV bolus (tenecteplase)", "css": "fibrinolytic", "moa": "Converts <strong>plasminogen → plasmin</strong> → plasmin cleaves fibrin crosslinks → dissolves clot. Must give early — fibrin matures over time. D-dimer ↑ after tPA = expected.", "se": "<b>SE:</b> Intracranial hemorrhage (most feared); major bleeding.<br><b>Absolute CI:</b> Prior intracranial hemorrhage, active bleeding, recent (&lt;3 mo) intracranial surgery, BP &gt;185/110 (stroke), ischemic stroke &lt;3 mo, suspected aortic dissection.", "uses": "<span class='utag'>Acute ischemic stroke (&lt;4.5 hrs) ★</span><span class='utag'>STEMI (if PCI &gt;120 min)</span><span class='utag'>Massive PE (hemodynamically unstable)</span>", "hy": ["Stroke: tPA within <strong>4.5 hours</strong> of last known well time. CT head FIRST to exclude hemorrhage.", "BP threshold for stroke tPA: <strong>&lt;185/110</strong> (NOT 140/90 — common trap).", "STEMI: tPA if primary PCI not available within <strong>120 minutes</strong>.", "After tPA in stroke: hold antiplatelets for <strong>24 hours</strong>, then restart aspirin."], "trap": "tPA in hemorrhagic stroke = CATASTROPHIC. CT MUST be done first. Prior hemorrhagic stroke = absolute contraindication regardless of timing. Aspirin is NOT a contraindication to tPA."}, {"name": "Chlorthalidone · HCTZ · Metolazone", "aliases": ["chlorthalidone", "hydrochlorothiazide", "hctz", "metolazone", "thiazide", "diuretic thiazide", "ncc blocker"], "category": "Hypertension", "class": "Thiazide / Thiazide-like Diuretics", "route": "PO · Once daily · Monitor BMP", "css": "diuretic", "moa": "Block <strong>NCC (Na-Cl cotransporter)</strong> in DCT → ↓ NaCl reabsorption → ↓ ECF volume → ↓ CO → ↓ BP. Also <strong>↑ Ca²⁺ reabsorption</strong> → ↓ urinary Ca²⁺ (useful in osteoporosis/hypercalciuria).", "se": "<b>5 H's + 1 L:</b> Hypo-K, Hypo-Na, Hyper-glycemia, Hyper-uricemia (gout CI), Hyper-calcemia, Hyper-lipidemia.<br><b>CI:</b> Gout, Sulfa allergy, Anuria.", "uses": "<span class='utag'>1st-line uncomplicated HTN (ALLHAT) ★</span><span class='utag'>Elderly / isolated systolic</span><span class='utag'>Osteoporosis</span><span class='utag'>Hypercalciuria</span>", "hy": ["ALLHAT: chlorthalidone = first-line uncomplicated HTN (NOT β-blockers or ACEi alone).", "Chlorthalidone &gt; HCTZ: longer t½ (50–60 hrs), better CV outcomes. Always prefer chlorthalidone.", "Hypercalcemia is <strong>useful</strong> — good for osteoporosis/hypercalciuria patients.", "Metolazone: potent; add to loop diuretic for diuretic resistance. Retains efficacy in CKD."], "trap": "Thiazides CONTRAINDICATED in gout (raise uric acid). HTN + gout → use losartan (uricosuric ARB) instead."}, {"name": "Furosemide (Lasix) · Torsemide", "aliases": ["furosemide", "lasix", "torsemide", "loop diuretic", "nkcc2"], "category": "Hypertension", "class": "Loop Diuretic — NKCC2 Blocker", "route": "IV (ADHF) or PO · Monitor BMP (K⁺, Mg²⁺)", "css": "diuretic", "moa": "Block <strong>NKCC2</strong> in thick ascending loop of Henle → most potent diuresis available. Works in severe renal impairment. <strong>↑ Ca²⁺ excretion</strong> (opposite of thiazides).", "se": "<b>SE:</b> Hypo-K, Hypo-Mg, Metabolic alkalosis, Ototoxicity (high-dose IV + aminoglycosides), Hyperuricemia.<br><b>CI:</b> Anuria, Sulfa allergy.", "uses": "<span class='utag'>ADHF — first-line ★</span><span class='utag'>Volume overload/pulmonary edema</span><span class='utag'>Hypercalcemia</span>", "hy": ["Loop diuretics <strong>↑ Ca²⁺ excretion</strong> — opposite of thiazides (loops lose calcium; thiazides retain it).", "IV furosemide = <strong>first step in ADHF</strong> management.", "Ototoxicity with high-dose IV — NEVER combine with aminoglycosides.", "Loop diuretics → hypokalemia → <strong>↑ digoxin toxicity</strong>. Monitor K⁺ carefully.", "Torsemide: better oral bioavailability → preferred in RV failure with gut edema."], "trap": "Loop diuretics NOT first-line for uncomplicated HTN — use thiazides. Loops for volume overload/ADHF only."}, {"name": "Spironolactone · Eplerenone · Triamterene", "aliases": ["spironolactone", "eplerenone", "triamterene", "mra", "aldosterone antagonist", "k sparing diuretic", "potassium sparing", "enac"], "category": "Hypertension", "class": "K⁺-Sparing Diuretics (MRA / ENaC Block)", "route": "PO · Monitor K⁺, Cr · Avoid K⁺ >5.0 or GFR <30", "css": "diuretic", "moa": "<strong>MRAs (spiro/eplerenone)</strong>: Block aldosterone receptor → ↓ Na⁺ retention + ↓ K⁺ excretion + ↓ cardiac fibrosis. <strong>Eplerenone</strong>: selective MRA (no androgen/progesterone effects). <strong>Triamterene</strong>: Blocks ENaC channel.", "se": "<b>SE:</b> HYPERKALEMIA (most dangerous).<br>Spironolactone only: gynecomastia, impotence, menstrual irregularities.<br><b>CI:</b> K⁺ &gt;5.0, GFR &lt;30, ACEi+ARB combo without monitoring.", "uses": "<span class='utag'>HTN (add-on to thiazide)</span><span class='utag'>Resistant HTN (4th line)</span><span class='utag'>HFrEF (mortality benefit)</span><span class='utag'>Primary hyperaldosteronism</span>", "hy": ["<strong>Hyperkalemia</strong> = major risk — monitor K⁺ especially with ACEi/ARB.", "Gynecomastia on spironolactone → <strong>switch to eplerenone</strong> (same efficacy, selective MRA).", "RALES: spironolactone ↓ HFrEF mortality. EPHESUS: eplerenone ↓ post-MI HF mortality."], "trap": "ACEi/ARB + K⁺-sparing = high hyperkalemia risk. Triple RAAS blockade (ACEi + ARB + MRA) → severe hyperkalemia + AKI. NEVER if K⁺ >5.0."}, {"name": "Lisinopril · Captopril · Enalapril (ACEi)", "aliases": ["lisinopril", "captopril", "enalapril", "ace inhibitor", "acei", "angiotensin converting enzyme"], "category": "Hypertension", "class": "ACE Inhibitors (ACEi) — RAAS Blocker", "route": "PO · Monitor K⁺, Cr, BP · Adjust in CKD", "css": "raas", "moa": "Block <strong>ACE</strong> → ↓ Ang II + <strong>↑ bradykinin</strong> → ↓ vasoconstriction + ↓ aldosterone + vasodilation. Renoprotective: ↓ efferent arteriole constriction → ↓ proteinuria.", "se": "<b>SE:</b> Dry cough (bradykinin, 10–15%), ANGIOEDEMA (bradykinin — life-threatening), Hyperkalemia, AKI, Hypotension, Teratogen (Cat D/X).<br><b>CI:</b> Bilateral RAS, Pregnancy, K⁺ &gt;5.5, Angioedema history.", "uses": "<span class='utag'>HTN + DM + Proteinuria ★</span><span class='utag'>HFrEF</span><span class='utag'>Post-MI</span><span class='utag'>CKD + Proteinuria</span>", "hy": ["Dry cough = bradykinin class effect → switch to ARB (NOT another ACEi).", "Angioedema = bradykinin-mediated → switch to ARB; NOT ARNI acutely.", "Cr rise &lt;30% after starting = <strong>acceptable and therapeutic</strong>.", "Bilateral RAS: ACEi/ARB CONTRAINDICATED → severe AKI."], "trap": "Angioedema from ACEi → do NOT give another ACEi. Switch to ARB. Never combine ACEi + ARB — no benefit, ↑ hyperkalemia/AKI."}, {"name": "Losartan · Valsartan · Candesartan (ARBs)", "aliases": ["losartan", "valsartan", "candesartan", "arb", "angiotensin receptor blocker", "sartan", "at1"], "category": "Hypertension", "class": "Angiotensin Receptor Blockers (ARBs)", "route": "PO · Monitor K⁺, Cr, BP · Adjust in CKD", "css": "raas", "moa": "Block <strong>AT1 receptor</strong> → ↓ Ang II effects → ↓ vasoconstriction + ↓ aldosterone. <strong>NO bradykinin effect</strong> → NO cough, very rare angioedema.", "se": "<b>SE:</b> Hyperkalemia, AKI, Hypotension. NO cough. Teratogen.<br><b>CI:</b> Bilateral RAS, Pregnancy, Severe hyperkalemia.", "uses": "<span class='utag'>HTN intolerant of ACEi cough</span><span class='utag'>DM + Proteinuria</span><span class='utag'>HFrEF</span><span class='utag'>Post-MI</span><span class='utag'>CKD</span>", "hy": ["ARBs = ACEi <strong>minus the cough and angioedema</strong>. Same compelling indications.", "<strong>Losartan is uricosuric</strong> (↓ serum uric acid) — ideal for HTN + gout.", "Same compelling indications as ACEi: DM, HF, post-MI, CKD with proteinuria."], "trap": "Do NOT combine ACEi + ARB (↑ hyperkalemia, ↑ AKI, no mortality benefit). Use ONE or the other."}, {"name": "Sacubitril/Valsartan (Entresto) — ARNI", "aliases": ["sacubitril", "valsartan", "entresto", "arni", "neprilysin", "paradigm"], "category": "Hypertension / Heart Failure", "class": "ARB + Neprilysin Inhibitor (ARNI)", "route": "PO · BID · 36-hr ACEi washout required! · Monitor K⁺, Cr, BP", "css": "raas", "moa": "<strong>Sacubitril</strong> inhibits neprilysin → ↑ BNP, ANP, bradykinin. <strong>Valsartan</strong> blocks AT1R. PARADIGM-HF: 20% ↓ CV death + HF hospitalization vs. enalapril.", "se": "<b>SE:</b> Hypotension (most common), Hyperkalemia, AKI, ANGIOEDEMA (↑↑ if &lt;36 hrs from ACEi).<br><b>CI:</b> &lt;36 hrs after ACEi, Pregnancy, Angioedema history.", "uses": "<span class='utag'>HFrEF (EF ≤40%) — PREFERRED over ACEi ★</span>", "hy": ["PARADIGM-HF: ARNI ↓ CV death + HF hospitalization by <strong>20%</strong> vs. enalapril → preferred 1st line in HFrEF.", "<strong>36-hr washout</strong> from ACEi before ARNI → prevent dual bradykinin → angioedema.", "Monitor with <strong>NT-proBNP (NOT BNP)</strong> while on ARNI — neprilysin inhibition falsely elevates BNP."], "trap": "ARNI within <36 hrs of ACEi = life-threatening angioedema. BNP unreliable on ARNI — always use NT-proBNP."}, {"name": "Amlodipine · Nifedipine · Nicardipine (DHP CCBs)", "aliases": ["amlodipine", "nifedipine", "nicardipine", "dihydropyridine", "dhp ccb", "dhp calcium channel blocker"], "category": "Hypertension", "class": "Dihydropyridine CCBs — Vascular Selective", "route": "PO (amlodipine, nifedipine XR) or IV (nicardipine)", "css": "ccb", "moa": "Block <strong>L-type Ca²⁺ channels in vascular smooth muscle</strong> → ↓ SVR → ↓ BP. <strong>NO AV node effect.</strong> May cause reflex tachycardia (short-acting &gt; long-acting).", "se": "<b>SE:</b> Peripheral edema (vasodilation, NOT fluid retention), Reflex tachycardia, Flushing, Gingival hyperplasia.<br><b>Avoid:</b> Short-acting nifedipine IR in ACS.", "uses": "<span class='utag'>HTN (elderly, isolated systolic)</span><span class='utag'>Vasospastic angina (Prinzmetal) ★</span><span class='utag'>Raynaud's</span><span class='utag'>HTN emergency (nicardipine IV)</span><span class='utag'>HTN in pregnancy (nifedipine XR)</span>", "hy": ["DHP CCBs: <strong>NO AV nodal effect</strong> → cannot rate-control Afib.", "Peripheral edema = venous dilation, <strong>NOT Na/water retention</strong>.", "Drug of choice for <strong>vasospastic (Prinzmetal) angina</strong> and Raynaud's.", "Nicardipine IV: titratable → preferred for HTN emergency in neurological settings.", "Amlodipine: long t½ → once daily, slow onset, minimal reflex tachycardia."], "trap": "Short-acting nifedipine IR → reflex tachycardia → dangerous in ACS. Use XR only. DHP = no AV nodal effect — useless for Afib rate control."}, {"name": "Verapamil · Diltiazem (Non-DHP CCBs)", "aliases": ["verapamil", "diltiazem", "non-dhp", "non dihydropyridine", "non-dihydropyridine ccb", "benzothiazepine", "phenylalkylamine"], "category": "Hypertension / Antiarrhythmics", "class": "Non-DHP CCBs — Cardiac + Vascular", "route": "PO or IV · Monitor HR, ECG · Check digoxin level", "css": "ccb", "moa": "Block <strong>L-type Ca²⁺ in both cardiac and vascular tissue</strong>. SA node: ↓ automaticity → ↓ HR. AV node: ↓ conduction → rate control in Afib. Vascular: ↓ SVR.", "se": "<b>SE:</b> Bradycardia, AV block, Constipation (verapamil — most constipating antihypertensive), ↑ digoxin levels (verapamil P-gp inhibition), Negative inotropy (worsen HFrEF).<br><b>CI:</b> HFrEF, with β-blocker, WPW + Afib, Bradycardia.", "uses": "<span class='utag'>HTN + Afib rate control</span><span class='utag'>SVT (verapamil IV)</span><span class='utag'>Angina</span>", "hy": ["Non-DHP: AV nodal effect → used for Afib/AFL rate control AND HTN (dual benefit).", "<strong>Verapamil ↑ digoxin levels</strong> (P-gp inhibition) — check digoxin if both prescribed.", "<strong>Constipation</strong> = classic verapamil SE (most constipating antihypertensive).", "Non-DHP CCBs <strong>WORSEN HFrEF</strong> — avoid in systolic dysfunction."], "trap": "Non-DHP + β-blocker = AV block/cardiac arrest. Non-DHP in HFrEF = worsens EF. Verapamil + digoxin = digoxin toxicity."}, {"name": "Metoprolol · Bisoprolol · Carvedilol · Labetalol · Propranolol · Esmolol · Nebivolol (β-Blockers)", "aliases": ["metoprolol", "bisoprolol", "carvedilol", "labetalol", "propranolol", "esmolol", "nebivolol", "beta blocker", "bb", "beta-blocker"], "category": "Hypertension / Heart Failure / Antiarrhythmics", "class": "β-Blockers — Various Selectivity", "route": "PO or IV (labetalol, esmolol) · NEVER stop abruptly", "css": "bb", "moa": "β₁ blockade → ↓ HR + ↓ contractility → ↓ CO → ↓ BP. Also ↓ renin. Carvedilol/labetalol: α₁ + β → ↓ SVR. Nebivolol: β₁ + ↑ NO. Esmolol: t½ ~9 min (IV only).", "se": "<b>SE:</b> Bradycardia, Bronchoconstriction (non-selective — avoid asthma/COPD), Masks hypoglycemia (tachycardia), Fatigue, Sexual dysfunction.<br><b>NEVER stop abruptly</b> → rebound HTN/angina/MI.", "uses": "<span class='utag'>Post-MI (survival benefit)</span><span class='utag'>HFrEF (3 specific drugs)</span><span class='utag'>Angina</span><span class='utag'>Afib rate control</span><span class='utag'>HTN emergency in pregnancy (labetalol IV)</span>", "hy": ["<strong>NOT first-line</strong> for uncomplicated HTN per ALLHAT.", "Only <strong>3 β-blockers for HFrEF mortality</strong>: carvedilol, metoprolol <strong>succinate</strong>, bisoprolol.", "<strong>Labetalol IV</strong>: drug of choice for HTN emergency in pregnancy.", "<strong>Esmolol</strong>: ultrashort t½ (~9 min) — IV only; perioperative rate control, aortic dissection.", "Propranolol: non-selective, crosses BBB → migraine prophylaxis, essential tremor, hyperthyroidism."], "trap": "Metoprolol TARTRATE ≠ metoprolol SUCCINATE — only succinate is proven for HFrEF mortality. Non-selective β-blockers in asthma → bronchoconstriction."}, {"name": "Clonidine · Methyldopa · Prazosin · Doxazosin", "aliases": ["clonidine", "methyldopa", "prazosin", "doxazosin", "tamsulosin", "alpha blocker", "central sympatholytic", "alpha2 agonist", "alpha-1 blocker"], "category": "Hypertension", "class": "α-Blockers & Central Sympatholytics", "route": "PO · Prazosin: start low at bedtime · Clonidine: oral or 7-day patch", "css": "alpha", "moa": "α₁-blockers (prazosin/doxazosin): Block α₁ → ↓ SVR → ↓ BP. Clonidine: Central α₂ agonist → ↓ NE release → ↓ HR + ↓ SVR. Methyldopa: prodrug → α-methylNE → central α₂ agonism.", "se": "<b>SE:</b> First-dose orthostatic hypotension (prazosin), Reflex tachycardia. Clonidine: dry mouth, sedation, REBOUND HTN on abrupt withdrawal. Methyldopa: positive Coombs test, sedation, hepatotoxicity.", "uses": "<span class='utag'>HTN + BPH (doxazosin, prazosin)</span><span class='utag'>Refractory HTN (clonidine)</span><span class='utag'>HTN in Pregnancy (methyldopa)</span><span class='utag'>Opioid withdrawal (clonidine)</span>", "hy": ["First-dose orthostatic hypotension with prazosin → start low dose at <strong>BEDTIME</strong>.", "<strong>Clonidine: NEVER stop abruptly</strong> → rebound hypertensive crisis. Always taper.", "<strong>Methyldopa → positive Coombs test</strong> (hemolytic anemia) + sedation. Safe in pregnancy.", "Losartan now preferred over methyldopa for HTN in pregnancy."], "trap": "Clonidine abrupt withdrawal = rebound HTN crisis. Methyldopa → positive Coombs test (hemolytic anemia). ALLHAT: doxazosin ↑ HF risk vs. thiazide."}, {"name": "Hydralazine · Minoxidil · Nitroprusside", "aliases": ["hydralazine", "minoxidil", "nitroprusside", "direct vasodilator", "rogaine"], "category": "Hypertension / Heart Failure", "class": "Direct Vasodilators", "route": "Hydralazine: PO or IV · Minoxidil: PO · Nitroprusside: IV (ICU only)", "css": "vasodilator", "moa": "<b>Hydralazine</b>: direct arteriolar vasodilation → ↓ SVR → reflex tachycardia + RAAS activation. <b>Minoxidil</b>: K⁺ channel opener → hyperpolarization → vasodilation. <b>Nitroprusside</b>: NO donor → balanced arterial + venous vasodilation.", "se": "<b>Hydralazine:</b> Reflex tachycardia, drug-induced lupus (ANA+, anti-histone+, anti-dsDNA <b>NEGATIVE</b>).<br><b>Minoxidil:</b> HYPERTRICHOSIS (hair growth), fluid retention, pericardial effusion.<br><b>Nitroprusside:</b> CYANIDE TOXICITY (prolonged use/renal failure). AVOID in pregnancy.", "uses": "<span class='utag'>Resistant HTN (hydralazine triple therapy)</span><span class='utag'>HFrEF (hydralazine + ISDN)</span><span class='utag'>HTN emergency in pregnancy (hydralazine IV)</span><span class='utag'>Alopecia (minoxidil topical)</span><span class='utag'>HTN emergency (nitroprusside IV)</span>", "hy": ["Hydralazine always needs <strong>β-blocker + diuretic</strong> — reflex tachycardia + fluid retention blunt effect.", "<strong>Drug-induced lupus</strong>: ANA+, anti-histone+, anti-dsDNA <strong>NEGATIVE</strong> (vs. idiopathic SLE: anti-dsDNA+).", "Minoxidil → <strong>hypertrichosis</strong> → topical = Rogaine for alopecia.", "<strong>Nitroprusside → cyanide toxicity</strong> in prolonged use. NEVER in pregnancy."], "trap": "Hydralazine lupus: ANA (+), anti-histone (+), anti-dsDNA NEGATIVE. Nitroprusside in pregnancy = fetal cyanide toxicity. Nitroprusside requires ICU monitoring."}, {"name": "Ivabradine (Corlanor)", "aliases": ["ivabradine", "corlanor", "funny current", "if current", "shift trial"], "category": "Heart Failure", "class": "If (Funny Current) Inhibitor — SA Node HR Reducer", "route": "PO · BID · HR ≥70 bpm required · Sinus rhythm ONLY", "css": "hf-newer", "moa": "Blocks <strong>If (funny current)</strong> in SA node → ↓ pacemaker depolarization → ↓ HR ONLY. No effect on contractility, BP, or AV conduction. <strong>NO effect in Afib</strong> (SA node not driving rhythm).", "se": "<b>SE:</b> Bradycardia; luminous phenomena (phosphenes — visual brightness; reversible); headache.<br><b>CI:</b> Afib/flutter, HR &lt;60, Sick sinus syndrome, Strong CYP3A4 inhibitors.", "uses": "<span class='utag'>HFrEF + HR ≥70 in sinus rhythm on MAX β-blocker</span>", "hy": ["Indication: HFrEF + sinus rhythm + HR ≥70 on <strong>maximum tolerated β-blocker dose</strong>.", "Pure rate-reducer — no effect on contractility, BP, or AV conduction.", "<strong>COMPLETELY USELESS IN AFIB</strong> — only blocks SA node (not driving rhythm in Afib).", "Luminous phenomena (phosphenes) = unique and characteristic ADR."], "trap": "Ivabradine for Afib rate control → WRONG. Only works in sinus rhythm. Useless if HR <60."}, {"name": "Empagliflozin · Dapagliflozin (SGLT-2 Inhibitors)", "aliases": ["empagliflozin", "dapagliflozin", "sglt2", "sglt-2", "gliflozin", "emperor", "dapa-hf", "jardiance", "farxiga"], "category": "Hypertension / Heart Failure", "class": "SGLT-2 Inhibitors", "route": "PO · Once daily · Avoid eGFR <20 · Monitor renal function", "css": "hf-newer", "moa": "Block <strong>SGLT-2</strong> in PCT → osmotic diuresis + natriuresis + direct cardiac anti-fibrotic/anti-inflammatory effects. Mechanism in HF goes <strong>BEYOND glucose lowering</strong>.", "se": "<b>SE:</b> Genital mycotic infections, UTI, Euglycemic DKA (glucose may be NORMAL — check ketones), Hypotension.<br><b>CI:</b> eGFR &lt;20, Type 1 DM.", "uses": "<span class='utag'>HFrEF (EMPEROR-Reduced)</span><span class='utag'>HFpEF (EMPEROR-Preserved) ★</span><span class='utag'>DM type 2</span><span class='utag'>CKD with proteinuria</span>", "hy": ["<strong>UNIQUE: Only class with mortality benefit in BOTH HFrEF AND HFpEF.</strong>", "Works in HF <strong>even without diabetes</strong> — mechanism beyond glucose lowering.", "Euglycemic DKA: DKA with <strong>near-normal glucose</strong> — check KETONES, not just glucose.", "EMPEROR-Preserved/Reduced (empagliflozin); DAPA-HF (dapagliflozin): landmark trials."], "trap": "'No diabetes → SGLT-2i doesn't apply' → WRONG. SGLT-2i benefit in HF regardless of DM. Euglycemic DKA — glucose may be NORMAL."}, {"name": "Digoxin", "aliases": ["digoxin", "digitalis", "digibind", "dig trial", "na k atpase", "cardiac glycoside", "xanthopsia"], "category": "Heart Failure / Antiarrhythmics", "class": "Cardiac Glycoside — Na/K-ATPase Inhibitor", "route": "PO or IV · Narrow TI · Target 0.5–0.9 ng/mL · Monitor K⁺, Mg²⁺, Cr", "css": "hf-digoxin", "moa": "Inhibits <strong>Na⁺/K⁺-ATPase</strong> → ↑ intracellular Na⁺ → reverse NCX → ↑ intracellular Ca²⁺ → <strong>positive inotropy</strong>. Also vagomimetic → ↑ vagal tone → ↓ HR + ↓ AV conduction (rate control in Afib).", "se": "<b>Toxicity triad:</b> GI (N/V, anorexia) + Xanthopsia (yellow-green halos) + Cardiac (PAT with block, any arrhythmia).<br>Precipitated by: <b>HYPOKALEMIA</b> (most important), renal failure, verapamil/amiodarone (↑ levels).<br>Treatment: <b>DIGIBIND</b> (Fab antibodies).", "uses": "<span class='utag'>HFrEF symptom relief (NO mortality benefit)</span><span class='utag'>Afib rate control</span>", "hy": ["<strong>NO MORTALITY BENEFIT</strong> — reduces symptoms + hospitalizations only (DIG trial).", "Therapeutic level for HF: <strong>0.5–0.9 ng/mL</strong> (NOT old 1.0–2.0 range).", "Hypokalemia dramatically ↑ digoxin toxicity — K⁺ competes at Na/K-ATPase binding site.", "Toxicity treatment: <strong>DIGIBIND</strong> (anti-digoxin Fab antibodies).", "Verapamil + amiodarone → ↑ digoxin levels (P-gp inhibition) → toxicity.", "<strong>CONTRAINDICATED in WPW + Afib</strong> → forces conduction via accessory pathway → VF."], "trap": "Digoxin + loop diuretic → always monitor K⁺ (hypokalemia = most common toxicity precipitant). Target 0.5–0.9 ng/mL for HF (NOT 1.0–2.0). PAT with block = classic toxicity arrhythmia."}, {"name": "Procainamide · Disopyramide (Class IA)", "aliases": ["procainamide", "disopyramide", "quinidine", "class ia", "class 1a", "class one a"], "category": "Antiarrhythmics", "class": "Class IA — Intermediate Na⁺ Block + K⁺ Block", "route": "Procainamide: IV or PO · Disopyramide: PO · Monitor QT", "css": "class-ia", "moa": "<strong>Intermediate Na⁺ kinetics + K⁺ channel (IKr) block</strong> → ↓ conduction velocity + ↑ APD + ↑ ERP → <strong>↑ QT interval</strong>.", "se": "<b>All Class IA:</b> QT prolongation → TORSADES DE POINTES.<br><b>Procainamide:</b> DRUG-INDUCED LUPUS (anti-histone Ab+, anti-dsDNA−).<br><b>Disopyramide:</b> Strong anticholinergic (urinary retention, dry mouth) + negative inotrope (avoid HF).", "uses": "<span class='utag'>VT/VF</span><span class='utag'>AF conversion</span><span class='utag'>WPW + Afib: procainamide ★</span>", "hy": ["All Class IA prolong QT → <strong>Torsades de Pointes</strong> risk.", "ECG changes: <strong>↑ PR, ↑ QRS, ↑ QT</strong>.", "<strong>Procainamide: drug-induced lupus</strong> — anti-histone Ab (+), anti-dsDNA (−). Stops when drug stopped.", "<strong>WPW + Afib: PROCAINAMIDE</strong> (blocks accessory pathway). Never adenosine/digoxin/verapamil."], "trap": "Drug-induced lupus: anti-histone+, anti-dsDNA− (idiopathic SLE is anti-dsDNA+). Disopyramide in HF = dangerous (negative inotrope)."}, {"name": "Lidocaine · Mexiletine (Class IB)", "aliases": ["lidocaine", "mexiletine", "class ib", "class 1b", "ib antiarrhythmic"], "category": "Antiarrhythmics", "class": "Class IB — Fast Na⁺ Block (Use-Dependent)", "route": "Lidocaine: IV ONLY (high first-pass) · Mexiletine: PO", "css": "class-ib", "moa": "<strong>Fast Na⁺ channel kinetics</strong> — preferentially bind inactivated channels → most effective in <strong>ischemic/tachycardic tissue</strong>. <strong>↓ APD</strong> (shortens AP duration).", "se": "<b>SE:</b> CNS toxicity (dose-dependent): dizziness → tremor → SEIZURES → respiratory depression. Minimal ECG changes.", "uses": "<span class='utag'>VT/VF post-MI ★</span><span class='utag'>Ischemic VT (use-dependent)</span><span class='utag'>Local anesthesia (lidocaine)</span>", "hy": ["<strong>Use-dependent</strong> → most effective in ischemic/tachycardic tissue (post-MI VT).", "IB drugs <strong>SHORTEN APD</strong> → minimal/no QT prolongation.", "<strong>Minimal ECG changes</strong> — distinguishing feature from IA and IC.", "Lidocaine: <strong>IV ONLY</strong> (extensive first-pass metabolism).", "<strong>INEFFECTIVE for atrial arrhythmias</strong> — ventricular only."], "trap": "'Give oral lidocaine' → impossible (first-pass). IB drugs USELESS in Afib/AFL. Minimal ECG change = IB hallmark."}, {"name": "Flecainide · Propafenone (Class IC)", "aliases": ["flecainide", "propafenone", "class ic", "class 1c", "cast trial", "pill in pocket"], "category": "Antiarrhythmics", "class": "Class IC — Marked Na⁺ Block (Slow Kinetics)", "route": "PO · Monitor ECG (QRS, PR) · CONTRAINDICATED post-MI / structural disease", "css": "class-ic", "moa": "<strong>Slow Na⁺ kinetics</strong> → <strong>marked ↑ QRS + ↑ PR</strong>. Minimal effect on APD/QT. Propafenone also has β-blocking activity.", "se": "<b>SE:</b> PROARRHYTHMIC (↑ risk of VF), CNS toxicity, blurry vision.<br><b>CI: Post-MI, structural heart disease, HFrEF</b> (CAST trial — ↑ sudden death).", "uses": "<span class='utag'>Paroxysmal Afib — 'pill-in-pocket' (normal heart ONLY) ★</span><span class='utag'>SVT</span>", "hy": ["<strong>CAST TRIAL</strong>: flecainide/encainide suppressed PVCs post-MI but <strong>INCREASED sudden death 2.5×</strong>.", "ECG: <strong>↑ QRS</strong> (most prominent), ↑ PR; minimal QT change.", "'Pill-in-pocket' for paroxysmal Afib: <strong>ONLY in structurally normal hearts</strong>."], "trap": "IC drugs suppress PVCs but INCREASE death post-MI (CAST trial). IC = safe ONLY in structurally normal hearts."}, {"name": "Amiodarone", "aliases": ["amiodarone", "class iii", "class 3", "class three", "multitarget", "pulmonary toxicity", "thyroid", "iodine", "blue skin"], "category": "Antiarrhythmics", "class": "Multi-Class Antiarrhythmic (Class I+II+III+IV)", "route": "IV or PO (poor bioavailability) · t½ = 40–55 DAYS · Monitor TFTs, LFTs, PFTs, CXR", "css": "class-iii", "moa": "Blocks K⁺ channels (primarily) + Na⁺ + Ca²⁺ channels + α/β receptors. <strong>37% iodine by weight</strong>. Highly lipophilic → accumulates in tissues → <strong>t½ 40–55 days</strong>.", "se": "<b>Multi-organ toxicity:</b><br>• <b>PULMONARY</b>: interstitial pneumonitis/fibrosis (most serious/fatal)<br>• <b>THYROID</b>: hypo OR hyper (Jod-Basedow) — both directions<br>• <b>HEPATOTOXICITY</b><br>• <b>CORNEAL microdeposits</b> (almost universal)<br>• <b>Blue-gray skin</b> discoloration (sun-exposed), photosensitivity<br><br><b>Drug interactions:</b> CYP2C9 inhibitor → ↑ warfarin (↑ INR); P-gp inhibitor → ↑ digoxin. Interactions persist <em>months</em> after stopping.", "uses": "<span class='utag'>Pulseless VT/VF — ACLS 1st line ★</span><span class='utag'>AF/AFL (rate + rhythm)</span><span class='utag'>HFrEF with arrhythmia (tolerated)</span>", "hy": ["<strong>First-line for PULSELESS VT/VF</strong> in ACLS (300 mg IV → 150 mg).", "t½ = <strong>40–55 DAYS</strong> — toxicity + interactions persist MONTHS after stopping.", "<strong>PARADOX: causes LESS torsades</strong> than other Class III despite most QT prolongation.", "Thyroid toxicity goes <strong>BOTH ways</strong>. Check TSH regularly.", "<strong>Amiodarone + warfarin</strong> → ↑ INR. <strong>Amiodarone + digoxin</strong> → ↑ digoxin toxicity.", "<strong>Ground-glass opacities + dyspnea</strong> + amiodarone → pulmonary toxicity. Get CXR + PFTs."], "trap": "Blue-gray skin = amiodarone. Stopped amiodarone → toxicity/interactions persist MONTHS. TSH checks — can go EITHER direction. Reduce warfarin dose when starting."}, {"name": "Dronedarone · Ibutilide · Dofetilide · Sotalol", "aliases": ["dronedarone", "ibutilide", "dofetilide", "sotalol", "andromeda", "class iii other"], "category": "Antiarrhythmics", "class": "Class III — K⁺ Channel Blockers (Various)", "route": "Ibutilide: IV only · Dofetilide: PO (renal dosing critical) · Sotalol: PO", "css": "class-iii-other", "moa": "All block <strong>K⁺ channels (IKr)</strong> → ↑ APD → ↑ ERP → <strong>↑ QT → Torsades risk</strong>. Sotalol: also Class II (β-blocker activity).", "se": "<b>All:</b> QT prolongation → Torsades de Pointes.<br><b>Dronedarone: CI in CHF or permanent Afib</b> (ANDROMEDA — ↑ mortality).<br><b>Dofetilide:</b> Requires in-hospital initiation; renally cleared (dose-adjust critical).<br><b>Ibutilide:</b> ~6% torsades risk.", "uses": "<span class='utag'>Dronedarone: paroxysmal Afib (NOT CHF)</span><span class='utag'>Ibutilide: acute AF/AFL cardioversion (IV)</span><span class='utag'>Dofetilide: AF/AFL conversion + maintenance</span><span class='utag'>Sotalol: VT/VF + Afib maintenance</span>", "hy": ["<strong>Dronedarone</strong>: no iodine → no thyroid toxicity. <strong>CI in CHF and permanent Afib</strong> (ANDROMEDA).", "<strong>Dofetilide</strong>: requires <strong>in-hospital initiation</strong>. Critical renal dosing.", "<strong>Ibutilide</strong>: ~6% torsades — defibrillator must be available.", "<strong>Sotalol</strong> = Class II + Class III — two ADR profiles."], "trap": "Dronedarone in CHF or permanent Afib = CONTRAINDICATED (↑ mortality). Dofetilide accumulates in CKD. All Class III → QT prolongation."}, {"name": "Adenosine", "aliases": ["adenosine", "adenosine svt", "adenosine avnrt", "girk", "a1 receptor"], "category": "Antiarrhythmics", "class": "GIRK K⁺ Channel Activator — AV Node Blocker", "route": "IV rapid bolus · t½ <10 seconds", "css": "other-arr", "moa": "Binds <strong>A1 GPCR</strong> → activates GIRK K⁺ channels → K⁺ efflux → AV node hyperpolarization → <strong>transient complete AV block</strong> → terminates SVT. t½ &lt;10 seconds.", "se": "<b>SE:</b> Transient flushing, chest tightness, dyspnea, sinus arrest (all &lt;30 sec).<br>Methylxanthines (theophylline, caffeine) <b>BLOCK</b> adenosine. Dipyridamole <b>POTENTIATES</b> adenosine.<br><b>CI:</b> WPW + Afib, Sick sinus syndrome, 2nd/3rd degree AV block.", "uses": "<span class='utag'>Acute SVT termination (AVNRT/AVRT) — 1st line ★</span><span class='utag'>Diagnostic (reveal flutter waves)</span>", "hy": ["<strong>Drug of choice for acute SVT</strong>. t½ &lt;10 SECONDS — effects vanish instantly.", "Both <strong>diagnostic + therapeutic</strong> — slows AV node → reveals flutter waves.", "<strong>Theophylline/caffeine BLOCK</strong> adenosine (need higher dose).", "<strong>Dipyridamole POTENTIATES</strong> adenosine (need lower dose)."], "trap": "Adenosine in WPW + Afib = POTENTIALLY FATAL (blocks AV node → all impulses via accessory pathway → VF). Never in WPW + Afib."}, {"name": "Magnesium Sulfate", "aliases": ["magnesium sulfate", "magnesium", "torsades treatment", "mg"], "category": "Antiarrhythmics", "class": "Ca²⁺ Channel Competitor — Membrane Stabilizer", "route": "IV · Regardless of serum Mg²⁺ level in torsades", "css": "other-arr", "moa": "Competes with Ca²⁺ at channels → membrane stabilization → suppresses triggered activity (EADs) → treats torsades.", "se": "<b>SE:</b> Hypotension, respiratory depression (high doses).<br>Monitor serum levels.", "uses": "<span class='utag'>Torsades de Pointes — 1st line ★</span><span class='utag'>Digoxin toxicity arrhythmias</span><span class='utag'>Pre-eclampsia/eclampsia seizures</span>", "hy": ["<strong>FIRST-LINE for Torsades de Pointes</strong> (IV, regardless of serum Mg²⁺ level).", "Also used in digoxin toxicity (stabilizes membrane)."], "trap": "Torsades de Pointes → IV Mg²⁺ FIRST (NOT Class IA or III drugs — they prolong QT further and worsen torsades)."}, {"name": "Atropine", "aliases": ["atropine", "muscarinic antagonist", "bradycardia treatment"], "category": "Antiarrhythmics", "class": "Muscarinic Antagonist — Positive Chronotrope", "route": "IV", "css": "other-arr", "moa": "Muscarinic antagonist → blocks vagal tone → ↑ sinus rate (positive chronotrope). ↑ AV conduction.", "se": "<b>SE:</b> Tachycardia, dry mouth, urinary retention, blurry vision, confusion (anti-cholinergic).", "uses": "<span class='utag'>Acute symptomatic bradycardia — 1st line ★</span>", "hy": ["First-line for <strong>acute symptomatic bradycardia</strong>.", "Blocks muscarinic receptors → ↑ HR + ↑ AV conduction."], "trap": "Atropine only works in vagally-mediated bradycardia. Not effective in complete heart block."}, {"name": "Atorvastatin · Rosuvastatin · Pravastatin · Simvastatin (Statins)", "aliases": ["atorvastatin", "lipitor", "rosuvastatin", "crestor", "pravastatin", "pravachol", "simvastatin", "zocor", "statin", "hmg-coa", "hmgcoa reductase"], "category": "Lipid-Lowering", "class": "HMG-CoA Reductase Inhibitors (Statins)", "route": "PO · Once daily (evening preferred) · Monitor CK if myalgia · Baseline LFTs", "css": "statin", "moa": "Inhibit <strong>HMG-CoA reductase</strong> → ↓ hepatic cholesterol synthesis → compensatory <strong>↑ LDL receptor expression</strong> → ↑ LDL clearance from blood → ↓ serum LDL. High-intensity: ↓ LDL ≥50%.", "se": "<b>SE:</b> Myopathy/myalgia → RHABDOMYOLYSIS (↑↑ CK + myoglobinuria + AKI), ↑ LFTs, Teratogenic (Category X), ↑ glucose/new-onset DM.<br>Myopathy ↑ with: CYP3A4 inhibitors, <b>GEMFIBROZIL</b>.", "uses": "<span class='utag'>Primary ASCVD prevention</span><span class='utag'>Secondary prevention (post-MI, stroke, PAD)</span><span class='utag'>Familial hypercholesterolemia</span><span class='utag'>Elevated LDL-C</span>", "hy": ["<strong>High-intensity</strong>: atorvastatin, rosuvastatin (LDL ↓ ≥50%).", "<strong>Pravastatin</strong>: glucuronidation (NOT CYP3A4) → fewer drug interactions → safer with fibrates.", "<strong>Simvastatin</strong>: multiple CYP3A4 interactions; max 20 mg/day with amlodipine.", "Teratogenic (<strong>Category X</strong>) — NEVER in pregnancy."], "trap": "SIMVASTATIN + GEMFIBROZIL = classic rhabdomyolysis combo. If fibrate + statin needed: use FENOFIBRATE + PRAVASTATIN."}, {"name": "Fenofibrate · Gemfibrozil (Fibrates)", "aliases": ["fenofibrate", "tricor", "gemfibrozil", "lopid", "fibrate", "fibric acid", "ppara", "ppar alpha"], "category": "Lipid-Lowering", "class": "Fibrates — PPARα Agonists", "route": "PO · With meals · Monitor CK, LFTs", "css": "fibrate", "moa": "Activate <strong>PPARα</strong> → ↑ lipoprotein lipase (LPL) → ↑ VLDL hydrolysis → <strong>↓ TG 40–60%</strong> + ↑ HDL 10–20%.", "se": "<b>SE:</b> Myopathy (↑ with statins, especially gemfibrozil), Cholelithiasis (↑ biliary cholesterol), ↑ LFTs.<br><b>Gemfibrozil + statins = rhabdomyolysis risk.</b>", "uses": "<span class='utag'>★ Severe hypertriglyceridemia (TG >500) — pancreatitis prevention</span><span class='utag'>Mixed dyslipidemia</span>", "hy": ["<strong>First-line for TG &gt;500 mg/dL</strong> (pancreatitis prevention).", "<strong>GEMFIBROZIL</strong>: inhibits statin glucuronidation → ↑ statin levels → rhabdomyolysis.", "<strong>FENOFIBRATE</strong>: safer with statins (does NOT inhibit glucuronidation).", "Cholelithiasis: fibrates ↑ biliary cholesterol → gallstones."], "trap": "Gemfibrozil + any statin = most dangerous lipid drug interaction. Always use FENOFIBRATE if fibrate + statin combination needed."}, {"name": "Cholestyramine · Colesevelam (Bile Acid Sequestrants)", "aliases": ["cholestyramine", "questran", "colesevelam", "welchol", "bile acid sequestrant", "bas", "anion exchange resin"], "category": "Lipid-Lowering", "class": "Bile Acid Sequestrants (BAS) — Anion Exchange Resins", "route": "PO · With meals · Other meds 1 hr before or 4 hrs after", "css": "bas", "moa": "Bind <strong>bile acids</strong> in gut → ↓ enterohepatic recirculation → ↑ hepatic BA synthesis → ↑ LDL receptor expression → ↓ LDL 15–30%. <strong>NOT systemically absorbed.</strong>", "se": "<b>SE:</b> Constipation (most common), bloating; ↑ TG (CI if elevated TG); impairs absorption of fat-soluble vitamins (A,D,E,K) + warfarin, digoxin, levothyroxine.", "uses": "<span class='utag'>★ Pregnancy + hypercholesterolemia (safest)</span><span class='utag'>Primary hypercholesterolemia</span><span class='utag'>Colesevelam: DM type 2 (modest glucose ↓)</span>", "hy": ["<strong>Safe in PREGNANCY</strong> — not absorbed (no fetal exposure). Drug of choice for hypercholesterolemia in pregnancy.", "<strong>Colesevelam</strong>: tablets (easier), also approved for type 2 DM.", "Take all other meds <strong>1 hr BEFORE or 4 hrs AFTER</strong> BAS (drug interaction).", "<strong>AVOID if TG elevated</strong> — BAS raise TG."], "trap": "BAS + warfarin → ↓ warfarin absorption → ↓ INR. BAS RAISE TG — contraindicated in hypertriglyceridemia. Pregnancy + high LDL → BAS not statin."}, {"name": "Ezetimibe (Zetia)", "aliases": ["ezetimibe", "zetia", "npc1l1", "cholesterol absorption", "improved-it"], "category": "Lipid-Lowering", "class": "NPC1L1 Blocker — Cholesterol Absorption Inhibitor", "route": "PO · Once daily · No routine monitoring", "css": "ezetimibe", "moa": "Blocks <strong>NPC1L1 transporter</strong> in intestinal brush border → ↓ cholesterol absorption → ↓ LDL ~18–25%. Synergistic with statin.", "se": "<b>SE:</b> Generally very well tolerated. Rare: ↑ LFTs, myopathy (additive with statin).", "uses": "<span class='utag'>Add-on when statin alone doesn't reach LDL goal</span><span class='utag'>Statin intolerance</span><span class='utag'>Familial hypercholesterolemia</span>", "hy": ["Modest LDL reduction (~18–25%) alone; <strong>synergistic with statin</strong> (additional ~20%).", "Step-up: max statin → <strong>+ ezetimibe</strong> → + PCSK9 inhibitor.", "IMPROVED-IT: ezetimibe + statin ↓ CV events (modest benefit)."], "trap": "Ezetimibe ALONE has only MODEST effect. Always start statin first. Ezetimibe = add-on, not monotherapy first-line."}, {"name": "Evolocumab · Alirocumab (PCSK9 Inhibitors)", "aliases": ["evolocumab", "repatha", "alirocumab", "praluent", "pcsk9", "pcsk9 inhibitor", "fourier", "odyssey"], "category": "Lipid-Lowering", "class": "PCSK9 Inhibitors — Anti-PCSK9 Monoclonal Antibodies", "route": "SQ injection · Every 2 or 4 weeks · Expensive", "css": "pcsk9", "moa": "Monoclonal antibodies → bind <strong>PCSK9</strong> → prevent LDL receptor degradation → ↑ LDL-R density → <strong>↓ LDL 50–60%</strong>. Most potent LDL-lowering agents available.", "se": "<b>SE:</b> Injection site reactions; nasopharyngitis. Rare neurocognitive effects. Cost barriers common.", "uses": "<span class='utag'>★ Familial hypercholesterolemia (FH)</span><span class='utag'>Very high ASCVD risk + LDL not at goal on max statin + ezetimibe</span><span class='utag'>Statin intolerance</span>", "hy": ["<strong>Most potent LDL-lowering</strong>: ↓ LDL 50–60% (on top of statin effect).", "<strong>NEVER first-line</strong> — exhaust statin ± ezetimibe first.", "Step-up: Statin → + ezetimibe → <strong>+ PCSK9 inhibitor</strong>.", "FOURIER (evolocumab), ODYSSEY (alirocumab): ↓ CV events on top of statin."], "trap": "'PCSK9 inhibitors are first-line for high LDL' → WRONG. Always start statin first. PCSK9 inhibitors = add-on only."}, {"name": "Omega-3 Fatty Acids (Vascepa / Fish Oils)", "aliases": ["omega-3", "omega 3", "vascepa", "icosapentaenoic acid", "epa", "dha", "fish oil", "lovaza", "reduce-it"], "category": "Lipid-Lowering", "class": "Omega-3 Fatty Acids — TG Synthesis Reduction", "route": "PO · With meals · Prescription formulation needed for therapeutic effect", "css": "omega3", "moa": "EPA/DHA → <strong>↓ hepatic VLDL synthesis + ↓ TG secretion</strong> → ↓ TG 30–50% at therapeutic doses (4g/day).", "se": "<b>SE:</b> GI upset, fishy aftertaste ('fishy burp'), ↑ bleeding time. DHA formulations may slightly ↑ LDL-C.", "uses": "<span class='utag'>★ Severe hypertriglyceridemia (TG >500) — pancreatitis prevention</span><span class='utag'>High CV risk on statin + elevated TG (Vascepa — REDUCE-IT)</span>", "hy": ["REDUCE-IT trial: <strong>Vascepa (pure EPA, 4g/day)</strong> ↓ CV events 25% in statin-treated patients with TG 135–500.", "<strong>Prescription formulations required</strong> — OTC fish oils have variable, unreliable potency.", "DHA formulations may slightly <strong>↑ LDL-C</strong> — watch in mixed dyslipidemia."], "trap": "OTC fish oils ≠ Vascepa/Lovaza. Cannot substitute for clinical TG management. Vascepa (EPA only) ≠ Lovaza (EPA+DHA) — different CV evidence."}];
+
+// Build flattened search index
+const INDEX = DRUGS.map(d => ({
+  ...d,
+  searchText: [d.name, ...d.aliases, d.category, d.class].join(' ').toLowerCase()
+}));
+
+const categories = [...new Set(DRUGS.map(d => d.category))];
+let activeCategory = null;
+let lastQuery = '';
+let ddActive = -1;
+let ddItems = [];
+
+const input = document.getElementById('searchInput');
+const dropdown = document.getElementById('dropdown');
+const emptyState = document.getElementById('emptyState');
+const resultsDiv = document.getElementById('results');
+const cardContainer = document.getElementById('cardContainer');
+const countLabel = document.getElementById('countLabel');
+const queryPill = document.getElementById('queryPill');
+const clearBtn = document.getElementById('clearBtn');
+const filtersDiv = document.getElementById('filters');
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function highlight(text, query) {
+  if (!query || query.length < 2) return text;
+  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return text.replace(new RegExp('(' + escaped + ')', 'gi'), '<mark>$1</mark>');
+}
+
+function score(drug, q) {
+  const name = drug.name.toLowerCase();
+  const aliases = drug.aliases.join(' ').toLowerCase();
+  if (name.startsWith(q)) return 100;
+  if (name.includes(q)) return 80;
+  if (aliases.split(' ').some(a => a.startsWith(q))) return 70;
+  if (aliases.includes(q)) return 60;
+  if (drug.category.toLowerCase().includes(q)) return 40;
+  if (drug.class.toLowerCase().includes(q)) return 35;
+  if (drug.searchText.includes(q)) return 20;
+  return 0;
+}
+
+function search(q) {
+  q = q.trim().toLowerCase();
+  lastQuery = q;
+  if (q.length < 1) {
+    emptyState.style.display = '';
+    resultsDiv.style.display = 'none';
+    closeDropdown();
+    return;
+  }
+
+  let results = INDEX.map(d => ({ drug:d, sc:score(d, q) }))
+    .filter(x => x.sc > 0)
+    .sort((a,b) => b.sc - a.sc)
+    .map(x => x.drug);
+
+  if (activeCategory) {
+    results = results.filter(d => d.category === activeCategory);
+  }
+
+  emptyState.style.display = 'none';
+  resultsDiv.style.display = '';
+  queryPill.textContent = q;
+
+  // Build category filter chips
+  const relevantCats = [...new Set(
+    INDEX.map(d => ({ drug:d, sc:score(d, q) }))
+      .filter(x => x.sc > 0)
+      .map(x => x.drug.category)
+  )];
+
+  filtersDiv.innerHTML = '<span style="font-size:11.5px;color:var(--muted);align-self:center;margin-right:2px;">Filter:</span>';
+  const allChip = document.createElement('span');
+  allChip.className = 'chip' + (!activeCategory ? ' active' : '');
+  allChip.textContent = 'All';
+  allChip.onclick = () => { activeCategory = null; renderChips(relevantCats, q); renderCards(q); };
+  filtersDiv.appendChild(allChip);
+
+  relevantCats.forEach(cat => {
+    const ch = document.createElement('span');
+    ch.className = 'chip' + (activeCategory === cat ? ' active' : '');
+    ch.textContent = cat;
+    ch.onclick = () => { activeCategory = cat; renderChips(relevantCats, q); renderCards(q); };
+    filtersDiv.appendChild(ch);
+  });
+
+  renderCards(q);
+}
+
+function renderChips(relevantCats, q) {
+  filtersDiv.innerHTML = '<span style="font-size:11.5px;color:var(--muted);align-self:center;margin-right:2px;">Filter:</span>';
+  const allChip = document.createElement('span');
+  allChip.className = 'chip' + (!activeCategory ? ' active' : '');
+  allChip.textContent = 'All';
+  allChip.onclick = () => { activeCategory = null; renderChips(relevantCats, q); renderCards(q); };
+  filtersDiv.appendChild(allChip);
+  relevantCats.forEach(cat => {
+    const ch = document.createElement('span');
+    ch.className = 'chip' + (activeCategory === cat ? ' active' : '');
+    ch.textContent = cat;
+    ch.onclick = () => { activeCategory = cat; renderChips(relevantCats, q); renderCards(q); };
+    filtersDiv.appendChild(ch);
+  });
+}
+
+function renderCards(q) {
+  let results = INDEX.map(d => ({ drug:d, sc:score(d, q) }))
+    .filter(x => x.sc > 0)
+    .sort((a,b) => b.sc - a.sc)
+    .map(x => x.drug);
+
+  if (activeCategory) results = results.filter(d => d.category === activeCategory);
+
+  countLabel.textContent = results.length === 0
+    ? 'No results'
+    : results.length + ' result' + (results.length !== 1 ? 's' : '');
+
+  if (results.length === 0) {
+    cardContainer.innerHTML = '<div class="no-results"><div class="nr-icon">🔎</div><p>No drugs found for "<strong>' + esc(q) + '</strong>".<br>Try a generic name, brand name, drug class, or mechanism.</p></div>';
+    return;
+  }
+
+  cardContainer.innerHTML = results.map((d,i) => buildCard(d, q, i)).join('');
+
+  // Add toggle listeners
+  document.querySelectorAll('.dh').forEach(dh => {
+    dh.addEventListener('click', () => {
+      dh.closest('.card').classList.toggle('collapsed');
+    });
+  });
+}
+
+function buildCard(d, q, idx) {
+  const hn = highlight(esc(d.name), q);
+  const hyFacts = d.hy.map(f => `<div class="hyfact">${highlight(f, q)}</div>`).join('');
+  const trapHtml = d.trap ? `<div class="trap">${highlight(esc(d.trap), q)}</div>` : '';
+  return `
+<div class="card">
+  <div class="dh ${d.css}">
+    <span class="dname">${hn}</span>
+    <span class="dpill">${esc(d.class)}</span>
+    <span class="dcat-badge">${esc(d.category)}</span>
+    <span class="droute">${esc(d.route)}</span>
+    <span class="toggle-icon">▾</span>
+  </div>
+  <div class="cbody">
+    <div class="cell moa">
+      <div class="clabel">⚙ MOA</div>
+      <div class="ccontent">${highlight(d.moa, q)}</div>
+    </div>
+    <div class="cell se">
+      <div class="clabel">⚡ Side Effects &amp; CI</div>
+      <div class="ccontent">${highlight(d.se, q)}</div>
+    </div>
+    <div class="cell use">
+      <div class="clabel">🎯 Clinical Uses</div>
+      <div class="ccontent">${d.uses}</div>
+    </div>
+    <div class="cell hy">
+      <div class="clabel">⭐ High-Yield Facts</div>
+      ${hyFacts}
+      ${trapHtml}
+    </div>
+  </div>
+</div>`;
+}
+
+// Autocomplete dropdown
+function showDropdown(q) {
+  if (q.length < 1) { closeDropdown(); return; }
+  const suggestions = INDEX.map(d => ({ drug:d, sc:score(d, q) }))
+    .filter(x => x.sc > 0)
+    .sort((a,b) => b.sc - a.sc)
+    .slice(0,8)
+    .map(x => x.drug);
+
+  if (suggestions.length === 0) { closeDropdown(); return; }
+  ddItems = suggestions;
+  ddActive = -1;
+
+  dropdown.innerHTML = suggestions.map((d,i) => `
+    <div class="dd-item" data-idx="${i}">
+      <span class="dd-name">${highlight(esc(d.name), q)}</span>
+      <span class="dd-cat">${esc(d.category)}</span>
+    </div>`).join('');
+
+  dropdown.querySelectorAll('.dd-item').forEach((el,i) => {
+    el.addEventListener('mousedown', e => {
+      e.preventDefault();
+      selectSuggestion(i);
+    });
+  });
+
+  dropdown.classList.add('open');
+}
+
+function closeDropdown() {
+  dropdown.classList.remove('open');
+  ddActive = -1;
+}
+
+function selectSuggestion(i) {
+  const drug = ddItems[i];
+  input.value = drug.name;
+  closeDropdown();
+  search(drug.name);
+}
+
+input.addEventListener('input', () => {
+  const q = input.value.trim();
+  showDropdown(q);
+  search(q);
+});
+
+input.addEventListener('keydown', e => {
+  const items = dropdown.querySelectorAll('.dd-item');
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    ddActive = Math.min(ddActive + 1, items.length - 1);
+    items.forEach((el,i) => el.classList.toggle('active', i === ddActive));
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    ddActive = Math.max(ddActive - 1, -1);
+    items.forEach((el,i) => el.classList.toggle('active', i === ddActive));
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    if (ddActive >= 0 && ddItems[ddActive]) {
+      selectSuggestion(ddActive);
+    } else {
+      closeDropdown();
+      search(input.value);
+    }
+  } else if (e.key === 'Escape') {
+    closeDropdown();
+  }
+});
+
+input.addEventListener('blur', () => { setTimeout(closeDropdown, 150); });
+input.addEventListener('focus', () => { if(input.value.trim().length > 0) showDropdown(input.value.trim()); });
+
+clearBtn.addEventListener('click', () => {
+  input.value = '';
+  activeCategory = null;
+  emptyState.style.display = '';
+  resultsDiv.style.display = 'none';
+  closeDropdown();
+  input.focus();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anticoagulants & Antiplatelets — HY Reference Chart</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f3ef;
+    --surface: #ffffff;
+    --border: #d9d3c7;
+    --text: #1a1612;
+    --muted: #7a7268;
+    --accent: #c0392b;
+    --accent-light: #fdf0ee;
+    --accent-mid: #e8998f;
+    --gold: #9b7e3a;
+    --gold-light: #fdf8ee;
+    --teal: #2d6e65;
+    --teal-light: #e8f4f2;
+    --blue: #2c5282;
+    --blue-light: #ebf2fc;
+    --purple: #5b3fa6;
+    --purple-light: #f0ecfc;
+    --orange: #b85c1a;
+    --orange-light: #fef3e8;
+    --hy-bg: #fff8e1;
+    --hy-border: #f0c040;
+    --hy-text: #7a5c00;
+    --shadow: 0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+    --radius: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.55;
+    padding: 24px 20px 60px;
+  }
+
+  /* ── HEADER ── */
+  .page-header {
+    max-width: 1400px;
+    margin: 0 auto 24px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 14px;
+  }
+  .page-header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+  .page-header .subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+  .legend {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 11.5px;
+    align-items: center;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* ── CATEGORY SECTION HEADERS ── */
+  .section-label {
+    max-width: 1400px;
+    margin: 28px auto 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+  .section-label::before {
+    content: '';
+    flex: none;
+    width: 4px;
+    height: 18px;
+    border-radius: 2px;
+    background: var(--accent);
+  }
+
+  /* ── DRUG CARDS ── */
+  .card-wrapper {
+    max-width: 1400px;
+    margin: 0 auto 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .card-wrapper:hover {
+    border-color: var(--accent-mid);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.06);
+  }
+
+  /* ── DRUG NAME HEADER BAR ── */
+  .drug-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background: var(--text);
+    color: white;
+    flex-wrap: wrap;
+  }
+  .drug-header.antiplatelet { background: #2c3e50; }
+  .drug-header.heparin { background: #1a3a4a; }
+  .drug-header.vka { background: #2d1b4e; }
+  .drug-header.doac { background: #1a3a2d; }
+  .drug-header.fibrinolytic { background: #4a1a1a; }
+  .drug-header.direct-thrombin { background: #1a2a4a; }
+
+  .drug-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 17px;
+    font-weight: 400;
+    letter-spacing: -0.2px;
+  }
+  .drug-class-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    padding: 2px 9px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.9);
+    text-transform: uppercase;
+  }
+  .drug-header .route {
+    margin-left: auto;
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── GRID BODY ── */
+  .card-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1.2fr;
+    gap: 0;
+  }
+  @media (max-width: 900px) {
+    .card-body { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .card-body { grid-template-columns: 1fr; }
+  }
+
+  .cell {
+    padding: 12px 14px;
+    border-right: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+  }
+  .cell:last-child { border-right: none; }
+
+  .cell-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .cell-label .icon { font-size: 12px; }
+
+  .cell-content { font-size: 12.5px; color: var(--text); line-height: 1.55; }
+  .cell-content strong { color: var(--accent); font-weight: 600; }
+  .cell-content em { font-style: normal; color: var(--muted); }
+
+  /* MOA cell */
+  .cell.moa { background: var(--accent-light); }
+  .cell.moa .cell-label { color: var(--accent); }
+
+  /* Side effects cell */
+  .cell.se .warn {
+    display: inline-block;
+    color: var(--orange);
+    font-weight: 600;
+  }
+
+  /* HY cell — the star of the show */
+  .cell.hy {
+    background: var(--hy-bg);
+    border-left: 3px solid var(--hy-border);
+    border-right: none;
+  }
+  .cell.hy .cell-label {
+    color: var(--hy-text);
+    font-size: 10.5px;
+  }
+  .cell.hy .hy-fact {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    margin-bottom: 6px;
+    font-size: 12.5px;
+    color: var(--hy-text);
+  }
+  .cell.hy .hy-fact::before {
+    content: '⭐';
+    font-size: 11px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .cell.hy .trap {
+    margin-top: 8px;
+    padding: 6px 8px;
+    background: rgba(192,57,43,0.08);
+    border-left: 2px solid var(--accent);
+    border-radius: 4px;
+    font-size: 11.5px;
+    color: var(--accent);
+  }
+  .cell.hy .trap::before {
+    content: '⚠ TRAP: ';
+    font-weight: 700;
+  }
+
+  /* Use cell */
+  .cell.use { background: var(--teal-light); }
+  .cell.use .cell-label { color: var(--teal); }
+  .cell.use .use-tag {
+    display: inline-block;
+    background: var(--teal-light);
+    border: 1px solid var(--teal);
+    color: var(--teal);
+    border-radius: 4px;
+    padding: 1px 7px;
+    font-size: 11px;
+    font-weight: 500;
+    margin: 1px 2px 2px 0;
+  }
+
+  /* ── REVERSAL QUICK-REF STRIP ── */
+  .reversal-bar {
+    max-width: 1400px;
+    margin: 32px auto 8px;
+    background: var(--blue-light);
+    border: 1px solid #c5d8f0;
+    border-radius: var(--radius);
+    padding: 14px 18px;
+  }
+  .reversal-bar h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--blue);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .reversal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 8px;
+  }
+  .reversal-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 10px;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid #c5d8f0;
+  }
+  .reversal-item .drug { font-weight: 600; font-size: 12px; color: var(--blue); }
+  .reversal-item .agent { font-size: 12.5px; color: var(--text); }
+  .reversal-item .note { font-size: 11px; color: var(--muted); }
+
+  /* ── INDICATION TABLE ── */
+  .indication-section {
+    max-width: 1400px;
+    margin: 32px auto 8px;
+  }
+  .indication-section h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .indication-section h3::before {
+    content: '';
+    width: 4px; height: 18px;
+    border-radius: 2px;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+  .ind-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .ind-table th {
+    background: #2c3e50;
+    color: white;
+    padding: 8px 12px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .ind-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .ind-table tr:last-child td { border-bottom: none; }
+  .ind-table tr:nth-child(even) td { background: #faf9f7; }
+  .ind-table .indication-name { font-weight: 600; color: var(--text); }
+  .ind-table .choice { color: var(--teal); font-weight: 500; }
+  .ind-table .warn-cell { color: var(--accent); font-weight: 600; }
+  .ind-table .muted { color: var(--muted); }
+
+  .print-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 24px;
+    padding: 10px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(192,57,43,0.3);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(192,57,43,0.4);
+  }
+
+  @media print {
+    body { background: white; padding: 10px; font-size: 10px; }
+    .print-btn { display: none; }
+    .card-wrapper { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+    .page-header { break-after: avoid; }
+    .section-label { break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div>
+    <h1>Anticoagulants &amp; Antiplatelets</h1>
+    <div class="subtitle">Georgetown SOM · Cardio Exam 2 · HY Reference Chart</div>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#fdf0ee; border:1px solid var(--accent-mid)"></div> MOA</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e8f4f2; border:1px solid var(--teal)"></div> Uses</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--hy-bg); border:1px solid var(--hy-border)"></div> ⭐ High-Yield Facts</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(192,57,43,0.08); border:1px solid var(--accent)"></div> ⚠ Trap</div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════ ANTIPLATELETS ══════════════════════════════════ -->
+<div class="section-label"><h2>Antiplatelets — Primary Hemostasis Targets</h2></div>
+
+<!-- ASPIRIN -->
+<div class="card-wrapper">
+  <div class="drug-header antiplatelet">
+    <span class="drug-name">Aspirin (ASA)</span>
+    <span class="drug-class-pill">COX Inhibitor</span>
+    <span class="route">PO · 81mg (antiplatelet) / 325mg (anti-inflam)</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        <strong>Irreversibly inhibits COX-1 (and COX-2)</strong> → ↓ thromboxane A₂ (TXA₂) synthesis in platelets → ↓ vasoconstriction and platelet aggregation.<br><br>
+        Rapid onset: platelet inhibition within 1 hour. Effect lasts <strong>platelet lifetime (7–10 days)</strong> because platelets cannot synthesize new COX.
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content">
+        <span class="warn">GI ulcers/bleeding</span> — COX-1 also makes prostaglandins that protect gastric mucosa<br><br>
+        <span class="warn">Renal impairment</span> — prostaglandins support renal perfusion<br><br>
+        <strong>Contraindicated:</strong> children with viral illness (<strong>Reye syndrome</strong>); hemorrhagic stroke
+      </div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content">
+        <span class="use-tag">ACS</span> <span class="use-tag">Ischemic Stroke</span> <span class="use-tag">PAD</span> <span class="use-tag">1° / 2° CV prevention</span><br><br>
+        During acute MI/stroke: ↓ future vascular events by ~20%<br>
+        Safe in pregnancy for specific high-clotting risks (e.g., APS)
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label">⭐ High-Yield Facts</div>
+      <div class="hy-fact">Irreversible COX-1 — effect lasts <strong>7–10 days</strong> (platelet lifetime). Surgery: hold 7–10 days pre-op.</div>
+      <div class="hy-fact">Low dose (81 mg) = antiplatelet only. High dose = anti-inflammatory.</div>
+      <div class="hy-fact">ACS → DAPT: <strong>aspirin + P2Y12 inhibitor</strong> (dual antiplatelet therapy).</div>
+      <div class="hy-fact">Ischemic stroke without tPA → <strong>aspirin alone</strong>. Post-tPA → hold aspirin 24 hrs, then resume.</div>
+      <div class="trap">Aspirin is NOT for hemorrhagic stroke — always confirm ischemic. Never in children with viral illness → Reye syndrome.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CLOPIDOGREL / PRASUGREL -->
+<div class="card-wrapper">
+  <div class="drug-header antiplatelet">
+    <span class="drug-name">Clopidogrel / Prasugrel</span>
+    <span class="drug-class-pill">P2Y12 Inhibitor — Thienopyridine (Prodrug)</span>
+    <span class="route">PO</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        <strong>Prodrug → hepatic CYP2C19 activation</strong> → active metabolite <strong>irreversibly blocks P2Y12 (ADP receptor)</strong> on platelets → ↓ ADP-induced platelet aggregation.<br><br>
+        Prasugrel (3rd gen): also a prodrug but more consistently activated; faster onset; stronger inhibition.
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content">
+        <span class="warn">Bleeding</span> — DAPT (clopidogrel + aspirin) higher bleeding risk than ASA alone<br><br>
+        <strong>Clopidogrel contraindication/caution:</strong> CYP2C19 poor metabolizers (↓ efficacy)<br><br>
+        Surgery: hold clopidogrel <strong>5–7 days</strong> pre-op
+      </div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content">
+        <span class="use-tag">ACS</span> <span class="use-tag">Post-PCI stent</span> <span class="use-tag">PAD</span> <span class="use-tag">Ischemic stroke (2° prevention)</span><br><br>
+        Used for ~1 year post-MI (with ASA); loading dose during active ACS
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label">⭐ High-Yield Facts</div>
+      <div class="hy-fact"><strong>Prodrug</strong>: requires CYP2C19 to become active. Poor metabolizers (~15% Caucasian, ~30% Asian) → ↓ platelet inhibition → ↑ thrombosis risk.</div>
+      <div class="hy-fact">FDA black box warning: test for CYP2C19 loss-of-function in high-risk patients.</div>
+      <div class="hy-fact">Clopidogrel = irreversible P2Y12 block (lasts platelet lifetime).</div>
+      <div class="hy-fact">Prasugrel: stronger/faster; preferred if high ischemic risk and no prior stroke/TIA (higher bleeding).</div>
+      <div class="trap">Do NOT use clopidogrel in CYP2C19 poor metabolizers — switch to ticagrelor (direct-acting, bypasses this issue).</div>
+    </div>
+  </div>
+</div>
+
+<!-- TICAGRELOR -->
+<div class="card-wrapper">
+  <div class="drug-header antiplatelet">
+    <span class="drug-name">Ticagrelor</span>
+    <span class="drug-class-pill">P2Y12 Inhibitor — Direct-Acting (NOT a prodrug)</span>
+    <span class="route">PO</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        <strong>Direct-acting</strong> (no hepatic activation needed) → <strong>reversibly blocks P2Y12 (ADP receptor)</strong> → ↓ platelet aggregation.<br><br>
+        Faster onset than clopidogrel. More complete inhibition of ADP response. <strong>More efficacious than clopidogrel</strong> with similar bleeding risk (PLATO trial → ↓ mortality vs. clopidogrel in ACS).
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content">
+        <span class="warn">Dyspnea</span> — <em>unique to ticagrelor</em>; non-bronchospastic mechanism (adenosine-mediated); does not require stopping<br><br>
+        <span class="warn">Bleeding</span> — similar to clopidogrel<br><br>
+        More expensive than clopidogrel
+      </div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content">
+        <span class="use-tag">ACS (preferred P2Y12)</span> <span class="use-tag">Post-PCI stent</span><br><br>
+        Preferred over clopidogrel in ACS (PLATO trial: ↓ MI, stroke, CV death)
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label">⭐ High-Yield Facts</div>
+      <div class="hy-fact"><strong>Not a prodrug</strong> → works regardless of CYP2C19 status. Preferred in ACS over clopidogrel.</div>
+      <div class="hy-fact"><strong>Reversible</strong> P2Y12 block (vs. irreversible for clopidogrel/prasugrel).</div>
+      <div class="hy-fact">Unique ADR: <strong>dyspnea</strong> (adenosine-mediated, NOT bronchospasm — don't confuse with asthma).</div>
+      <div class="hy-fact">PLATO trial: ticagrelor superior to clopidogrel in ACS (lower mortality).</div>
+      <div class="trap">Ticagrelor dyspnea ≠ bronchospasm. Patient complaining of shortness of breath on ticagrelor → do NOT automatically switch; assess first.</div>
+    </div>
+  </div>
+</div>
+
+<!-- EPTIFIBATIDE / GP IIb/IIIa -->
+<div class="card-wrapper">
+  <div class="drug-header antiplatelet">
+    <span class="drug-name">Eptifibatide (GP IIb/IIIa Inhibitor)</span>
+    <span class="drug-class-pill">GP IIb/IIIa Antagonist</span>
+    <span class="route">IV only</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        <strong>Blocks GP IIb/IIIa receptor</strong> (final common pathway of platelet aggregation) → prevents fibrinogen and vWF from bridging platelets → ↓ platelet aggregation.<br><br>
+        GP IIb/IIIa changes shape when activated, allowing platelet-fibrin binding — eptifibatide prevents this conformational change.
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content">
+        <span class="warn">Bleeding</span> — most significant risk<br><br>
+        <span class="warn">Thrombocytopenia</span> (rare but monitor platelets)<br><br>
+        IV only — cannot be given orally
+      </div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content">
+        <span class="use-tag">ACS (adjunct)</span> <span class="use-tag">PCI procedures</span><br><br>
+        Used periprocedurally; <strong>rapid onset and offset</strong> (short t½)
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label">⭐ High-Yield Facts</div>
+      <div class="hy-fact"><strong>IV only</strong> — all other antiplatelets are oral. Rapid onset AND rapid offset.</div>
+      <div class="hy-fact">Blocks the <strong>final common pathway</strong> of platelet aggregation — most "downstream" antiplatelet.</div>
+      <div class="hy-fact">Used primarily in PCI/ACS settings — not for outpatient long-term use.</div>
+      <div class="trap">GP IIb/IIIa inhibitors carry higher bleeding risk than P2Y12 inhibitors and are reserved for in-hospital procedural settings.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ HEPARIN-DERIVED ══════════════════════════════════ -->
+<div class="section-label"><h2>Heparin-Derived Anticoagulants</h2></div>
+
+<!-- UFH -->
+<div class="card-wrapper">
+  <div class="drug-header heparin">
+    <span class="drug-name">Heparin (UFH — Unfractionated)</span>
+    <span class="drug-class-pill">Indirect Thrombin Inhibitor</span>
+    <span class="route">IV or SQ · Monitored by aPTT</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        Binds <strong>antithrombin III (AT-III)</strong> via unique pentasaccharide sequence → activates AT-III 1000× → AT-III inactivates <strong>thrombin (IIa), Factor Xa, and Factor IXa</strong>.<br><br>
+        Thrombin inhibition requires longer heparin chains (to bridge AT-III to thrombin); Xa inhibition only needs pentasaccharide binding → variable chain length = unpredictable dosing.
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content">
+        <span class="warn">Bleeding</span> — main risk; reverse with <strong>protamine sulfate</strong> (full reversal)<br><br>
+        <span class="warn">HIT Type II</span> — IgG ab vs. heparin-PF4 complex → platelet activation → <strong>paradoxical thrombosis + thrombocytopenia</strong> (days 5–14)<br><br>
+        <span class="warn">Osteoporosis</span> (long-term use)
+      </div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content">
+        <span class="use-tag">DVT/PE (acute)</span> <span class="use-tag">ACS</span> <span class="use-tag">Renal failure</span> <span class="use-tag">Surgery bridging</span> <span class="use-tag">Dialysis</span><br><br>
+        Preferred over LMWH in: <strong>ESRD/CKD</strong> (not renally cleared), patients needing rapid reversal, hemodynamically unstable
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label">⭐ High-Yield Facts</div>
+      <div class="hy-fact">Monitor with <strong>aPTT</strong> (goal 1.5–2.5× normal). NOT anti-Xa.</div>
+      <div class="hy-fact"><strong>Safe in renal failure</strong> (cleared by reticuloendothelial system, not kidneys).</div>
+      <div class="hy-fact">Does NOT cross placenta → safe in pregnancy (but LMWH preferred).</div>
+      <div class="hy-fact">Reversed by <strong>protamine sulfate</strong> (full reversal). Can stop 4–6 hrs before procedure.</div>
+      <div class="hy-fact"><strong>HIT:</strong> platelet drop ≥50%, days 5–14, paradoxical THROMBOSIS → STOP heparin → argatroban/bivalirudin.</div>
+      <div class="trap">In HIT: do NOT switch to LMWH (cross-reacts). Do NOT give warfarin acutely (protein C/S depletion → skin necrosis). Do NOT transfuse platelets.</div>
+    </div>
+  </div>
+</div>
+
+<!-- LMWH / ENOXAPARIN -->
+<div class="card-wrapper">
+  <div class="drug-header heparin">
+    <span class="drug-name">Enoxaparin (LMWH)</span>
+    <span class="drug-class-pill">Low-Molecular-Weight Heparin</span>
+    <span class="route">SQ only · Anti-Xa monitoring if needed</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        Same mechanism as UFH (binds AT-III) but <strong>smaller chains</strong> → primarily inhibits <strong>Factor Xa only</strong> (insufficient chain length to bridge AT-III to thrombin).<br><br>
+        More <strong>predictable pharmacokinetics</strong> → weight-based fixed dosing, no routine monitoring. Renally cleared.
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content">
+        <span class="warn">Bleeding</span><br>
+        <span class="warn">HIT</span> — lower risk than UFH (shorter chains less likely to bind PF4), but can still occur<br><br>
+        <strong>Contraindicated:</strong> CrCl &lt;15–30 mL/min / ESRD (accumulates → bleeding risk)<br><br>
+        Partial reversal only with protamine (~60% anti-Xa reversed)
+      </div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content">
+        <span class="use-tag">DVT/PE (Tx &amp; ppx)</span> <span class="use-tag">ACS</span> <span class="use-tag">Pregnancy</span> <span class="use-tag">Outpatient bridging</span><br><br>
+        Preferred for <strong>acute PE over UFH</strong> (unless hemodynamically unstable). Preferred in <strong>pregnancy</strong> (doesn't cross placenta; safer PK).
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label">⭐ High-Yield Facts</div>
+      <div class="hy-fact">Monitor with <strong>anti-Xa levels</strong> (NOT aPTT). Only monitor in pregnancy, obesity, renal impairment.</div>
+      <div class="hy-fact"><strong>Renally cleared</strong> → AVOID in GFR &lt;30 (accumulates). Use UFH instead.</div>
+      <div class="hy-fact">Does NOT cross placenta → preferred anticoagulant in <strong>pregnancy</strong>.</div>
+      <div class="hy-fact">Lower HIT risk than UFH but still possible — stop if HIT suspected.</div>
+      <div class="trap">Do NOT use LMWH in severe CKD (GFR &lt;30) — use UFH. Partial protamine reversal only (~60%). LMWH is cross-reactive in HIT — never substitute for UFH in HIT.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ VKA ══════════════════════════════════ -->
+<div class="section-label"><h2>Vitamin K Antagonist (VKA)</h2></div>
+
+<!-- WARFARIN -->
+<div class="card-wrapper">
+  <div class="drug-header vka">
+    <span class="drug-name">Warfarin</span>
+    <span class="drug-class-pill">Vitamin K Epoxide Reductase Inhibitor</span>
+    <span class="route">PO · INR monitoring</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        <strong>Inhibits Vitamin K epoxide reductase (VKOR)</strong> → ↓ recycling of vitamin K → ↓ γ-carboxylation of <strong>factors II, VII, IX, X</strong> (and <strong>Protein C, S</strong>).<br><br>
+        <strong>Factor VII shortest t½</strong> → INR rises first. Full anticoagulant effect takes <strong>2–5 days</strong>. Metabolized by <strong>CYP2C9</strong> (many drug interactions).
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content">
+        <span class="warn">Bleeding</span> — narrow therapeutic index; monitor INR<br>
+        <span class="warn">Teratogen (Category X)</span> — fetal warfarin syndrome (6–10% congenital abnormalities); use LMWH in pregnancy<br>
+        <span class="warn">Skin/tissue necrosis</span> — protein C/S depleted first → hypercoagulability (especially in HIT transition)<br><br>
+        <strong>Many drug interactions:</strong> CYP2C9 inhibitors ↑ INR (amiodarone, azoles, fluoroquinolones); CYP2C9 inducers ↓ INR (rifampin, anti-epileptics); High vitamin K diet ↓ efficacy
+      </div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content">
+        <span class="use-tag">Mechanical heart valves ★ONLY★</span> <span class="use-tag">DVT/PE</span> <span class="use-tag">Afib</span> <span class="use-tag">APS</span><br><br>
+        INR goal: <strong>2–3</strong> (most indications); <strong>2.5–3.5</strong> (mechanical valves).<br>
+        Still used when DOACs not affordable.
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label">⭐ High-Yield Facts</div>
+      <div class="hy-fact">Inhibits factors <strong>II, VII, IX, X</strong> + Protein C, S. Factor VII shortest t½ → <strong>INR rises first</strong>.</div>
+      <div class="hy-fact"><strong>Mechanical heart valves → WARFARIN ONLY</strong>. DOACs contraindicated (RE-ALIGN trial).</div>
+      <div class="hy-fact">Reversal: mild → hold + Vit K PO; serious → <strong>FFP + Vit K IV</strong>; life-threatening → <strong>4-factor PCC + Vit K IV</strong> (fastest).</div>
+      <div class="hy-fact">Amiodarone <strong>inhibits CYP2C9</strong> → ↑ warfarin → ↑ INR (classic interaction; effect persists months due to amiodarone's long t½).</div>
+      <div class="hy-fact"><strong>Teratogenic</strong> — use LMWH in pregnancy. Skin necrosis in HIT transition — protein C shortest t½.</div>
+      <div class="trap">FFP alone is NOT sufficient reversal — provides factors immediately but transiently. Must add Vitamin K for sustained effect. DOACs are NOT approved for mechanical valves.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ DOACs ══════════════════════════════════ -->
+<div class="section-label"><h2>Direct Oral Anticoagulants (DOACs / NOACs)</h2></div>
+
+<!-- RIVAROXABAN / APIXABAN / EDOXABAN -->
+<div class="card-wrapper">
+  <div class="drug-header doac">
+    <span class="drug-name">Rivaroxaban · Apixaban · Edoxaban</span>
+    <span class="drug-class-pill">Direct Factor Xa Inhibitors</span>
+    <span class="route">PO · No routine monitoring</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        <strong>Directly inhibit Factor Xa</strong> → ↓ thrombin generation → ↓ fibrin clot formation. No vitamin K dependence, no AT-III required.<br><br>
+        Predictable PK → no routine monitoring. All oral. Renal clearance varies: Apixaban least (27%), Rivaroxaban moderate, Edoxaban moderate.
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content">
+        <span class="warn">Bleeding</span> (limited reversal vs. warfarin)<br><br>
+        <strong>Renal dosing adjustments required</strong><br>
+        <strong>Apixaban:</strong> safest in CKD (only 27% renal clearance)<br>
+        Rivaroxaban/Edoxaban: moderate renal clearance — reduce/avoid in severe CKD<br><br>
+        <strong>Contraindicated:</strong> mechanical heart valves
+      </div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content">
+        <span class="use-tag">Non-valvular Afib (preferred)</span> <span class="use-tag">DVT/PE Tx &amp; ppx</span><br><br>
+        Preferred over warfarin for <strong>non-valvular Afib</strong> (ROCKET-AF, ARISTOTLE, ENGAGE trials).<br>
+        Apixaban also for <strong>long-term recurrent DVT/PE prevention</strong>.
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label">⭐ High-Yield Facts</div>
+      <div class="hy-fact">Reversal: <strong>andexanet alfa</strong> (recombinant Xa decoy — specific antidote for Xa inhibitors).</div>
+      <div class="hy-fact"><strong>Apixaban preferred in CKD</strong> — only 27% renally cleared (vs. dabigatran ~80%).</div>
+      <div class="hy-fact">Preferred over warfarin for <strong>non-valvular Afib</strong> — no monitoring, fewer drug interactions, equal/better efficacy.</div>
+      <div class="hy-fact">No routine monitoring — occasional anti-Xa level if needed (e.g., urgent surgery, renal impairment).</div>
+      <div class="trap">Do NOT use any DOAC for mechanical heart valves — warfarin ONLY. All DOACs are renally cleared to varying degrees; adjust in CKD.</div>
+    </div>
+  </div>
+</div>
+
+<!-- DABIGATRAN -->
+<div class="card-wrapper">
+  <div class="drug-header doac">
+    <span class="drug-name">Dabigatran (Pradaxa)</span>
+    <span class="drug-class-pill">Direct Thrombin (IIa) Inhibitor — DOAC</span>
+    <span class="route">PO · No routine monitoring</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        <strong>Directly inhibits thrombin (Factor IIa)</strong> → ↓ fibrin formation. Most renally cleared of all DOACs (<strong>~80% renal</strong>).<br><br>
+        No prodrug activation required. Predictable PK. No vitamin K dependence.
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content">
+        <span class="warn">Bleeding</span><br>
+        <span class="warn">GI upset</span> — take with food<br>
+        <strong>Contraindicated in severe renal failure</strong> (~80% renal clearance → accumulates)<br>
+        <strong>Contraindicated:</strong> mechanical heart valves (RE-ALIGN trial showed inferiority)
+      </div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content">
+        <span class="use-tag">Non-valvular Afib</span> <span class="use-tag">DVT/PE Tx &amp; ppx</span><br><br>
+        Preferred over warfarin for non-valvular Afib (RE-LY trial — non-inferior/superior to warfarin)
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label">⭐ High-Yield Facts</div>
+      <div class="hy-fact">Reversal: <strong>idarucizumab (Praxbind)</strong> — specific monoclonal antibody antidote. Name to memorize.</div>
+      <div class="hy-fact"><strong>Most renally cleared DOAC (~80%)</strong> → most affected by CKD. Avoid in severe renal failure.</div>
+      <div class="hy-fact">GI upset → take with food. GI absorption more variable than Xa inhibitors.</div>
+      <div class="hy-fact">RE-LY trial: dabigatran non-inferior/superior to warfarin for non-valvular Afib.</div>
+      <div class="trap">RE-ALIGN trial: dabigatran shown INFERIOR to warfarin in mechanical valves with more thromboembolic AND bleeding events. Mechanical valves = warfarin ONLY, always.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ DIRECT THROMBIN INHIBITORS (IV) ══════════════════════════════════ -->
+<div class="section-label"><h2>Direct Thrombin Inhibitors (IV) — HIT Management</h2></div>
+
+<!-- ARGATROBAN / BIVALIRUDIN -->
+<div class="card-wrapper">
+  <div class="drug-header direct-thrombin">
+    <span class="drug-name">Argatroban · Bivalirudin</span>
+    <span class="drug-class-pill">Direct Thrombin Inhibitors — IV</span>
+    <span class="route">IV · Very short t½</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        <strong>Directly inhibit thrombin (Factor IIa)</strong> → ↓ fibrin formation. <strong>NOT heparin-derived</strong> → do not cross-react with HIT antibodies.<br><br>
+        Bivalirudin: reversible direct thrombin inhibitor; very short t½. Argatroban: hepatically cleared (preferred in renal failure).
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content">
+        <span class="warn">Bleeding</span><br><br>
+        Argatroban: hepatically metabolized → use with caution in liver failure, but <strong>preferred in renal failure</strong><br>
+        Bivalirudin: renally cleared → reduce dose in CKD
+      </div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content">
+        <span class="use-tag">HIT (first-line replacement)</span> <span class="use-tag">PCI (bivalirudin)</span><br><br>
+        Used to deactivate the thrombin already activated by HIT. Bridge to warfarin/DOAC once platelets recover.
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label">⭐ High-Yield Facts</div>
+      <div class="hy-fact">These are the <strong>go-to drugs for HIT</strong> — not heparin-derived, so no cross-reactivity.</div>
+      <div class="hy-fact"><strong>Argatroban preferred in renal failure</strong> (hepatically cleared). Bivalirudin preferred in liver failure (renally cleared).</div>
+      <div class="hy-fact">Transition to warfarin ONLY after <strong>platelets recover</strong> in HIT — never start warfarin acutely.</div>
+      <div class="trap">In HIT: NEVER use LMWH (cross-reacts), NEVER transfuse platelets (worsens thrombosis), NEVER start warfarin acutely (depletes protein C → skin necrosis/worsening thrombosis).</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ FIBRINOLYTICS ══════════════════════════════════ -->
+<div class="section-label"><h2>Fibrinolytics (Thrombolytics)</h2></div>
+
+<!-- tPA -->
+<div class="card-wrapper">
+  <div class="drug-header fibrinolytic">
+    <span class="drug-name">Alteplase (tPA) · Tenecteplase</span>
+    <span class="drug-class-pill">Tissue Plasminogen Activator — Fibrinolytic</span>
+    <span class="route">IV infusion · Fast-acting</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        <strong>Converts plasminogen → plasmin</strong> → plasmin cleaves fibrin crosslinks → dissolves clot.<br><br>
+        Must be given early — as fibrin matures and crosslinks form, plasmin is less effective. Tenecteplase: longer t½, bolus dosing (vs. infusion for alteplase). D-dimer ↑ after tPA = expected (fibrin degradation products).
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚡</span> Side Effects &amp; Contraindications</div>
+      <div class="cell-content">
+        <span class="warn">Intracranial hemorrhage</span> — most feared complication<br>
+        <span class="warn">Major bleeding</span><br><br>
+        <strong>Absolute contraindications:</strong><br>
+        • Prior intracranial hemorrhage (any time)<br>
+        • Active internal bleeding<br>
+        • Recent (&lt;3 mo) intracranial surgery or head trauma<br>
+        • Ischemic stroke within 3 months<br>
+        • BP &gt;185/110 (for stroke indication)<br>
+        • Suspected aortic dissection
+      </div>
+    </div>
+    <div class="cell use">
+      <div class="cell-label"><span class="icon">🎯</span> Clinical Uses</div>
+      <div class="cell-content">
+        <span class="use-tag">Ischemic stroke (&lt;4.5 hrs)</span> <span class="use-tag">STEMI (if PCI &gt;120 min)</span> <span class="use-tag">Massive PE (unstable)</span><br><br>
+        Always do <strong>CT head first</strong> for stroke to rule out hemorrhage before giving tPA.
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label">⭐ High-Yield Facts</div>
+      <div class="hy-fact">Ischemic stroke: tPA within <strong>4.5 hours</strong> of symptom onset (or last known well time). CT head must be done FIRST.</div>
+      <div class="hy-fact">BP threshold for stroke tPA: <strong>&lt;185/110</strong> (not 140/90 — common confusion).</div>
+      <div class="hy-fact">STEMI: tPA if primary PCI not available within <strong>120 minutes</strong> of first medical contact.</div>
+      <div class="hy-fact">After tPA in stroke: hold antiplatelets for <strong>24 hours</strong>, then start aspirin.</div>
+      <div class="hy-fact">Last <strong>known well time</strong> (not symptom recognition) determines eligibility window.</div>
+      <div class="trap">tPA in hemorrhagic stroke = catastrophic and potentially fatal. CT MUST be done first, always. Daily aspirin is NOT a contraindication to tPA. Prior hemorrhagic stroke = absolute contraindication regardless of how long ago.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ REVERSAL QUICK REF ══════════════════════════════════ -->
+<div class="reversal-bar">
+  <h3>🔄 Reversal Agents — Quick Reference</h3>
+  <div class="reversal-grid">
+    <div class="reversal-item">
+      <span class="drug">UFH (Heparin)</span>
+      <span class="agent">→ Protamine Sulfate</span>
+      <span class="note">Full reversal</span>
+    </div>
+    <div class="reversal-item">
+      <span class="drug">LMWH (Enoxaparin)</span>
+      <span class="agent">→ Protamine Sulfate</span>
+      <span class="note">Partial reversal (~60% anti-Xa)</span>
+    </div>
+    <div class="reversal-item">
+      <span class="drug">Warfarin (mild/no bleed)</span>
+      <span class="agent">→ Hold + Vitamin K (PO)</span>
+      <span class="note">Slow onset (hours)</span>
+    </div>
+    <div class="reversal-item">
+      <span class="drug">Warfarin (serious bleed)</span>
+      <span class="agent">→ FFP + Vitamin K IV</span>
+      <span class="note">FFP = immediate, transient</span>
+    </div>
+    <div class="reversal-item">
+      <span class="drug">Warfarin (life-threatening)</span>
+      <span class="agent">→ 4-factor PCC + Vit K IV</span>
+      <span class="note">Fastest, most complete</span>
+    </div>
+    <div class="reversal-item">
+      <span class="drug">Dabigatran</span>
+      <span class="agent">→ Idarucizumab (Praxbind)</span>
+      <span class="note">Specific monoclonal Ab antidote</span>
+    </div>
+    <div class="reversal-item">
+      <span class="drug">Apixaban / Rivaroxaban</span>
+      <span class="agent">→ Andexanet Alfa</span>
+      <span class="note">Recombinant Xa decoy</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ INDICATION TABLE ══════════════════════════════════ -->
+<div class="indication-section">
+  <h3>Indication-Based Drug Selection</h3>
+  <table class="ind-table">
+    <thead>
+      <tr>
+        <th>Indication</th>
+        <th>Acute Anticoag (IV/SQ)</th>
+        <th>Oral Anticoag</th>
+        <th>Antiplatelet</th>
+        <th>Fibrinolytic</th>
+        <th>Key Constraint</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="indication-name">DVT / PE (acute)</td>
+        <td class="choice">Heparin or LMWH (bridge)</td>
+        <td class="choice">DOAC preferred; Warfarin OK</td>
+        <td class="muted">—</td>
+        <td>tPA if massive PE + hemodynamic instability</td>
+        <td>LMWH preferred if stable + normal renal function</td>
+      </tr>
+      <tr>
+        <td class="indication-name">Non-valvular Afib (stroke ppx)</td>
+        <td class="choice">Heparin/LMWH (bridge only)</td>
+        <td class="choice"><strong>DOAC preferred</strong> over warfarin</td>
+        <td class="muted">—</td>
+        <td class="muted">—</td>
+        <td>DOACs: easier, no monitoring, ↓ drug interactions</td>
+      </tr>
+      <tr>
+        <td class="indication-name">Mechanical Heart Valves</td>
+        <td class="choice">Heparin (bridge)</td>
+        <td class="warn-cell">WARFARIN ONLY ★</td>
+        <td class="muted">—</td>
+        <td class="muted">—</td>
+        <td class="warn-cell">DOACs CONTRAINDICATED — warfarin only</td>
+      </tr>
+      <tr>
+        <td class="indication-name">ACS (STEMI/NSTEMI)</td>
+        <td class="choice">Heparin or LMWH (IV/SQ)</td>
+        <td class="muted">—</td>
+        <td class="choice">Aspirin + P2Y12 inhibitor (DAPT)</td>
+        <td>tPA for STEMI if PCI &gt;120 min</td>
+        <td>DAPT for ~12 months post-stent</td>
+      </tr>
+      <tr>
+        <td class="indication-name">Acute Ischemic Stroke</td>
+        <td class="muted">—</td>
+        <td class="muted">—</td>
+        <td class="choice">Aspirin (if tPA not given)</td>
+        <td class="choice">tPA if &lt;4.5 hrs + CT negative</td>
+        <td>CT head FIRST always; aspirin held 24 hrs post-tPA</td>
+      </tr>
+      <tr>
+        <td class="indication-name">HIT (Type II)</td>
+        <td class="warn-cell">STOP heparin → Argatroban or Bivalirudin</td>
+        <td>Warfarin/DOAC after platelets recover</td>
+        <td class="muted">—</td>
+        <td class="muted">—</td>
+        <td class="warn-cell">No LMWH, no platelet transfusions, no acute warfarin</td>
+      </tr>
+      <tr>
+        <td class="indication-name">Pregnancy (anticoag needed)</td>
+        <td class="choice">LMWH preferred</td>
+        <td class="warn-cell">Warfarin CONTRAINDICATED (teratogen)</td>
+        <td class="muted">—</td>
+        <td class="muted">—</td>
+        <td>Neither LMWH nor UFH crosses placenta</td>
+      </tr>
+      <tr>
+        <td class="indication-name">Severe CKD (GFR &lt;30) + anticoag needed</td>
+        <td class="choice">UFH (not renally cleared)</td>
+        <td>Warfarin or Apixaban (least renal)</td>
+        <td class="muted">—</td>
+        <td class="muted">—</td>
+        <td class="warn-cell">AVOID LMWH &amp; dabigatran (renally cleared)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<button class="print-btn" onclick="window.print()">🖨 Print / Save PDF</button>
+
+</body>
+</html>
