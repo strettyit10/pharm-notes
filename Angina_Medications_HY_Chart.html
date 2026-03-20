@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Angina Medications — HY Reference Chart</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f3ef;
+    --surface: #ffffff;
+    --border: #d9d3c7;
+    --text: #1a1612;
+    --muted: #7a7268;
+    --accent: #c0392b;
+    --accent-light: #fdf0ee;
+    --accent-mid: #e8998f;
+    --gold: #9b7e3a;
+    --gold-light: #fdf8ee;
+    --teal: #2d6e65;
+    --teal-light: #e8f4f2;
+    --blue: #2c5282;
+    --blue-light: #ebf2fc;
+    --purple: #5b3fa6;
+    --purple-light: #f0ecfc;
+    --orange: #b85c1a;
+    --orange-light: #fef3e8;
+    --hy-bg: #fff8e1;
+    --hy-border: #f0c040;
+    --hy-text: #7a5c00;
+    --shadow: 0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+    --radius: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.55;
+    padding: 24px 20px 60px;
+  }
+
+  /* ── HEADER ── */
+  .page-header {
+    max-width: 1400px;
+    margin: 0 auto 24px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 14px;
+  }
+  .page-header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+  .page-header .subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+  .legend {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 11.5px;
+    align-items: center;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* ── PRINT BUTTON ── */
+  .print-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 18px;
+    background: var(--text);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+  }
+  .print-btn:hover { background: #2d2824; }
+
+  /* ── SECTION LABELS ── */
+  .section-label {
+    max-width: 1400px;
+    margin: 28px auto 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::before {
+    content: '';
+    flex: none;
+    width: 4px;
+    height: 18px;
+    border-radius: 2px;
+    background: var(--accent);
+  }
+  .section-label h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+
+  /* ── CARD WRAPPER ── */
+  .card-wrapper {
+    max-width: 1400px;
+    margin: 0 auto 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .card-wrapper:hover {
+    border-color: var(--accent-mid);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.06);
+  }
+
+  /* ── DRUG HEADER BARS — one colour per class ── */
+  .drug-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background: var(--text);
+    color: white;
+    flex-wrap: wrap;
+  }
+  .drug-header.nitrate        { background: #1a3d2e; }
+  .drug-header.beta-ns        { background: #2c1a4a; }
+  .drug-header.beta-b1        { background: #1a2e4a; }
+  .drug-header.beta-no        { background: #1a3540; }
+  .drug-header.beta-ab        { background: #2a1a3a; }
+  .drug-header.ccb-dhp        { background: #3a1a10; }
+  .drug-header.ccb-nondhp     { background: #1a2a10; }
+  .drug-header.ranolazine     { background: #1a1a3d; }
+
+  .drug-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 17px;
+    font-weight: 400;
+    letter-spacing: -0.2px;
+  }
+  .drug-class-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    padding: 2px 9px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.9);
+    text-transform: uppercase;
+  }
+  .drug-header .route {
+    margin-left: auto;
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── GRID BODY ── */
+  .card-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1.2fr;
+    gap: 0;
+  }
+  @media (max-width: 900px) { .card-body { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { .card-body { grid-template-columns: 1fr; } }
+
+  .cell {
+    padding: 12px 14px;
+    border-right: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+  }
+  .cell:last-child { border-right: none; }
+
+  .cell-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .cell-label .icon { font-size: 12px; }
+  .cell-content { font-size: 12.5px; color: var(--text); line-height: 1.55; }
+  .cell-content strong { color: var(--accent); font-weight: 600; }
+  .cell-content em { font-style: normal; color: var(--muted); }
+
+  /* MOA cell */
+  .cell.moa { background: var(--accent-light); }
+  .cell.moa .cell-label { color: var(--accent); }
+
+  /* Side effects / CI cell */
+  .cell.se .warn {
+    display: inline-block;
+    color: var(--orange);
+    font-weight: 600;
+  }
+
+  /* HY cell */
+  .cell.hy {
+    background: var(--hy-bg);
+    border-left: 3px solid var(--hy-border);
+    border-right: none;
+  }
+  .cell.hy .cell-label { color: var(--hy-text); }
+  .cell.hy .cell-content { color: var(--hy-text); }
+
+  /* ── LISTS ── */
+  .cell ul { padding-left: 14px; margin-top: 2px; }
+  .cell ul li { margin-bottom: 3px; font-size: 12.5px; }
+  .cell ul li::marker { color: var(--accent); }
+
+  /* ── TRAP BADGES ── */
+  .trap {
+    display: inline-block;
+    background: var(--orange-light);
+    border: 1px solid #e8b080;
+    border-radius: 5px;
+    padding: 2px 7px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--orange);
+    margin: 2px 0;
+  }
+  .ci-tag {
+    display: inline-block;
+    background: #fef0f0;
+    border: 1px solid #f5a5a5;
+    border-radius: 5px;
+    padding: 1px 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1px 0;
+  }
+  .ok-tag {
+    display: inline-block;
+    background: var(--teal-light);
+    border: 1px solid #a0d0c8;
+    border-radius: 5px;
+    padding: 1px 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--teal);
+    margin: 1px 0;
+  }
+  .note {
+    display: inline-block;
+    background: var(--blue-light);
+    border: 1px solid #b0c8e8;
+    border-radius: 5px;
+    padding: 1px 6px;
+    font-size: 11px;
+    color: var(--blue);
+    margin: 1px 0;
+  }
+  .star { color: var(--hy-border); font-size: 12px; }
+
+  /* ── BOTTOM REFERENCE TABLES ── */
+  .ref-section {
+    max-width: 1400px;
+    margin: 36px auto 0;
+  }
+  .ref-section h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .ref-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 800px) { .ref-grid { grid-template-columns: 1fr; } }
+
+  .ref-table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .ref-table-title {
+    padding: 9px 14px;
+    background: var(--text);
+    color: white;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .ref-table th {
+    background: #f8f6f2;
+    padding: 7px 12px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .ref-table td {
+    padding: 7px 12px;
+    border-bottom: 1px solid #ede9e2;
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .ref-table tr:last-child td { border-bottom: none; }
+  .ref-table tr:nth-child(even) td { background: #fbfaf7; }
+  .ref-table .drug-col { font-weight: 600; color: var(--text); min-width: 110px; }
+  .ref-table .ci { color: var(--accent); font-weight: 600; }
+  .ref-table .ok { color: var(--teal); font-weight: 600; }
+
+  /* ── ANGINA TYPE TABLE ── */
+  .angina-table-wrap {
+    max-width: 1400px;
+    margin: 16px auto 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .angina-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .angina-table th {
+    background: var(--text);
+    color: white;
+    padding: 9px 14px;
+    text-align: left;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .angina-table td {
+    padding: 8px 14px;
+    border-bottom: 1px solid #ede9e2;
+    border-right: 1px solid #ede9e2;
+    font-size: 12px;
+    line-height: 1.4;
+    vertical-align: top;
+  }
+  .angina-table tr:last-child td { border-bottom: none; }
+  .angina-table td:last-child { border-right: none; }
+  .angina-table tr:nth-child(even) td { background: #fbfaf7; }
+  .angina-table .row-label { font-weight: 700; color: var(--text); background: #f8f6f2 !important; min-width: 140px; }
+  .angina-table .yes { color: var(--teal); font-weight: 600; }
+  .angina-table .ci  { color: var(--accent); font-weight: 700; }
+  .angina-table .addon { color: var(--orange); font-weight: 600; }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: white; padding: 12px; font-size: 11px; }
+    .print-btn { display: none; }
+    .card-wrapper, .ref-table-wrap, .angina-table-wrap { box-shadow: none; break-inside: avoid; }
+    .page-header { break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════ HEADER ═══════ -->
+<div class="page-header">
+  <div>
+    <h1>Angina Medications — High-Yield Reference Chart</h1>
+    <div class="subtitle">Georgetown SOM · Cardio Exam 2 · Treatment of Angina · ⭐ = High-Yield Testable Fact · ⚠ = Common Exam Trap</div>
+  </div>
+  <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+    <div class="legend">
+      <span class="legend-item"><span class="legend-dot" style="background:#1a3d2e"></span>Nitrates</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#2c1a4a"></span>β-Blockers</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#3a1a10"></span>CCBs</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#1a1a3d"></span>Ranolazine</span>
+    </div>
+    <button class="print-btn" onclick="window.print()">🖨 Print / Save PDF</button>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 1 — NITRATES
+════════════════════════════════════════════════════ -->
+<div class="section-label"><h2>Nitrates — NO donors → ↑ cGMP → venodilation</h2></div>
+
+<!-- Nitroglycerin SL -->
+<div class="card-wrapper">
+  <div class="drug-header nitrate">
+    <span class="drug-name">Nitroglycerin — Sublingual (SL)</span>
+    <span class="drug-class-pill">Nitrate · Acute</span>
+    <span class="route">SL tablet / spray · 0.3–0.4 mg PRN</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        Organic nitrate → releases <strong>NO</strong> → activates guanylate cyclase → ↑ <strong>cGMP</strong> → vascular smooth muscle relaxation<br><br>
+        Primary: <strong>venodilation</strong> (↓ preload &gt;&gt; afterload) → ↓ wall stress → ↓ MVO₂<br>
+        Secondary: coronary artery dilation → ↑ O₂ supply
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚠</span> Side Effects / CI</div>
+      <div class="cell-content">
+        <span class="warn">Headache</span> — most common ADR (meningeal vasodilation)<br>
+        <span class="warn">Hypotension</span>, reflex tachycardia, flushing<br><br>
+        <span class="ci-tag">CI: PDE-5 inhibitors</span><br>
+        <span class="note">Sildenafil ≥24 hr washout</span><br>
+        <span class="note">Tadalafil ≥48 hr washout</span><br><br>
+        <span class="ci-tag">CI: RV infarct</span> (preload-dependent RV; NTG → ↓ preload → ↓ CO → hemodynamic collapse)
+      </div>
+    </div>
+    <div class="cell">
+      <div class="cell-label"><span class="icon">💊</span> Clinical Use</div>
+      <div class="cell-content">
+        <ul>
+          <li><strong>Acute angina attack</strong> — abort within 1–3 min</li>
+          <li>Onset: 1–3 min · Duration: ~30 min</li>
+          <li>Give up to 3 doses q5 min; call EMS if no relief after 1st dose in ACS</li>
+          <li>Stable, unstable, variant angina</li>
+          <li><span class="ci-tag">Avoid in RV infarct</span> — suspect if inferior STEMI (II, III, aVF) + right-sided leads</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="star">⭐</span> HY Facts + ⚠ Traps</div>
+      <div class="cell-content">
+        <span class="star">⭐</span> Fastest-acting antianginal — onset 1–3 min<br>
+        <span class="star">⭐</span> Primarily venodilation → ↓ preload (not arterial)<br>
+        <span class="star">⭐</span> Headache = expected pharmacologic effect (NOT allergy)<br><br>
+        <span class="trap">⚠ TRAP</span> NTG + sildenafil/tadalafil → fatal hypotension via additive cGMP accumulation. Absolute CI.<br><br>
+        <span class="trap">⚠ TRAP</span> Inferior STEMI (ST↑ II/III/aVF) → order right-sided ECG first → if RV infarct → NTG contraindicated
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Nitroglycerin Transdermal -->
+<div class="card-wrapper">
+  <div class="drug-header nitrate">
+    <span class="drug-name">Nitroglycerin — Transdermal Patch / Ointment</span>
+    <span class="drug-class-pill">Nitrate · Chronic Prophylaxis</span>
+    <span class="route">Transdermal patch / 2% ointment · Daily</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        Same as SL NTG — NO → ↑ cGMP → venodilation<br><br>
+        Continuous systemic absorption through skin → sustained plasma levels<br><br>
+        <strong>Tolerance</strong>: depletion of vascular sulfhydryl (–SH) groups needed for NO bioactivation + neurohormonal counter-activation (↑ SNS/RAAS)
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚠</span> Side Effects / CI</div>
+      <div class="cell-content">
+        Headache, hypotension, reflex tachycardia<br>
+        <span class="warn">Tolerance</span> — major limitation of continuous use<br>
+        Skin irritation at patch site (ointment: messier)<br><br>
+        <span class="ci-tag">CI: PDE-5 inhibitors</span><br>
+        <span class="ci-tag">CI: RV infarct</span>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="cell-label"><span class="icon">💊</span> Clinical Use</div>
+      <div class="cell-content">
+        <ul>
+          <li>Chronic stable angina prophylaxis</li>
+          <li>Apply patch in morning, <strong>remove after 12–14 hrs</strong> (8–12 hr nitrate-free period at night)</li>
+          <li>Ointment: dose-titrated, more flexible</li>
+          <li>NOT for acute attacks</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="star">⭐</span> HY Facts + ⚠ Traps</div>
+      <div class="cell-content">
+        <span class="star">⭐</span> Tolerance prevention = <strong>8–12 hr nitrate-free period</strong> every night (remove patch at bedtime)<br>
+        <span class="star">⭐</span> Mechanism of tolerance: sulfhydryl group depletion + neurohormonal counter-activation<br><br>
+        <span class="trap">⚠ TRAP</span> Continuous 24-hr use leads to tolerance within days — efficacy lost. Must have daily nitrate-free interval.<br><br>
+        <span class="trap">⚠ TRAP</span> Patch is NOT the same as SL NTG — cannot abort acute attacks; onset is too slow
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Isosorbide Dinitrate -->
+<div class="card-wrapper">
+  <div class="drug-header nitrate">
+    <span class="drug-name">Isosorbide Dinitrate (ISDN)</span>
+    <span class="drug-class-pill">Nitrate · Oral</span>
+    <span class="route">PO · BID–TID · Eccentric dosing</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        Organic nitrate → NO → ↑ cGMP → venodilation + some arterial dilation<br><br>
+        <strong>Prodrug</strong> — undergoes hepatic first-pass metabolism to active isosorbide-2-mononitrate and isosorbide-5-mononitrate<br><br>
+        Variable bioavailability (~20–60%) due to first-pass effect
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚠</span> Side Effects / CI</div>
+      <div class="cell-content">
+        Headache, hypotension, reflex tachycardia<br>
+        Tolerance with continuous dosing<br><br>
+        <span class="ci-tag">CI: PDE-5 inhibitors</span><br>
+        <span class="ci-tag">CI: RV infarct</span>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="cell-label"><span class="icon">💊</span> Clinical Use</div>
+      <div class="cell-content">
+        <ul>
+          <li>Chronic stable angina prophylaxis</li>
+          <li><strong>HFrEF</strong> (in combination with hydralazine = H-ISDN) — especially Black patients when ACEi/ARB not tolerated (A-HeFT trial)</li>
+          <li>Eccentric dosing (e.g., 8 AM + 2 PM) to allow nitrate-free period</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="star">⭐</span> HY Facts + ⚠ Traps</div>
+      <div class="cell-content">
+        <span class="star">⭐</span> ISDN = prodrug (first-pass metabolism) → variable bioavailability<br>
+        <span class="star">⭐</span> ISDN + hydralazine = H-ISDN combination for HFrEF when ACEi/ARB not tolerated (A-HeFT trial — Black patients)<br><br>
+        <span class="trap">⚠ TRAP</span> ISDN ≠ ISMN: ISDN undergoes first-pass; ISMN does not (higher bioavailability, more predictable). Know the difference.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Isosorbide Mononitrate -->
+<div class="card-wrapper">
+  <div class="drug-header nitrate">
+    <span class="drug-name">Isosorbide Mononitrate (ISMN)</span>
+    <span class="drug-class-pill">Nitrate · Oral</span>
+    <span class="route">PO · QD (ER) or Eccentric BID</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        Organic nitrate → NO → ↑ cGMP → venodilation<br><br>
+        <strong>Not a prodrug</strong> — active as administered, no hepatic first-pass metabolism<br><br>
+        Bioavailability ≈ <strong>100%</strong> → more predictable and consistent plasma levels than ISDN
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚠</span> Side Effects / CI</div>
+      <div class="cell-content">
+        Headache, hypotension, reflex tachycardia<br>
+        Tolerance (managed by nitrate-free interval)<br><br>
+        <span class="ci-tag">CI: PDE-5 inhibitors</span><br>
+        <span class="ci-tag">CI: RV infarct</span>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="cell-label"><span class="icon">💊</span> Clinical Use</div>
+      <div class="cell-content">
+        <ul>
+          <li>Chronic stable angina prophylaxis</li>
+          <li>Extended-release: once daily with built-in nitrate-free period</li>
+          <li>Immediate-release: eccentric dosing (7 AM + 2 PM)</li>
+          <li>More predictable than ISDN due to 100% bioavailability</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="star">⭐</span> HY Facts + ⚠ Traps</div>
+      <div class="cell-content">
+        <span class="star">⭐</span> <strong>No first-pass metabolism</strong> → ~100% bioavailability → more predictable than ISDN<br>
+        <span class="star">⭐</span> Extended-release taken once daily (7 AM) allows natural nitrate-free window overnight<br>
+        <span class="star">⭐</span> This is the active metabolite of ISDN — the distinction between prodrug (ISDN) vs. active drug (ISMN) is frequently tested<br><br>
+        <span class="trap">⚠ TRAP</span> ISMN ≠ ISDN: ISMN has no first-pass effect, ISDN does. ISMN is active drug; ISDN is prodrug.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 2 — BETA-BLOCKERS
+════════════════════════════════════════════════════ -->
+<div class="section-label" style="margin-top:36px;"><h2>β-Blockers — ↓ MVO₂ via ↓ HR + ↓ contractility</h2></div>
+
+<!-- Propranolol -->
+<div class="card-wrapper">
+  <div class="drug-header beta-ns">
+    <span class="drug-name">Propranolol</span>
+    <span class="drug-class-pill">β-Blocker · Non-selective</span>
+    <span class="route">PO · QD–TID (IR or LA)</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        <strong>Non-selective β₁ + β₂ blockade</strong><br><br>
+        β₁: ↓ HR (chronotropy) + ↓ contractility (inotropy) + ↓ conduction → ↓ MVO₂ + ↑ diastolic filling time → ↑ coronary perfusion<br><br>
+        β₂: ↓ bronchodilation (bronchoconstriction risk) + ↓ peripheral vasodilation (Raynaud's risk) + masks hypoglycemia tachycardia
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚠</span> Side Effects / CI</div>
+      <div class="cell-content">
+        <span class="warn">Bronchoconstriction</span> (β₂ block — avoid in asthma/COPD)<br>
+        Bradycardia, fatigue, impotence, dyslipidemia<br>
+        Masks hypoglycemia tachycardia (caution in DM)<br>
+        Raynaud's worsening (β₂ block → ↓ peripheral vasodilation)<br><br>
+        <span class="ci-tag">CI: Asthma / COPD</span><br>
+        <span class="ci-tag">CI: Variant angina (Prinzmetal)</span><br>
+        <span class="ci-tag">CI: Acute decompensated HF</span><br>
+        <span class="ci-tag">AVOID: non-DHP CCB combo</span>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="cell-label"><span class="icon">💊</span> Clinical Use</div>
+      <div class="cell-content">
+        <ul>
+          <li>Chronic stable angina (1st-line)</li>
+          <li>Migraine prophylaxis</li>
+          <li>Essential tremor</li>
+          <li>Portal hypertension (↓ splanchnic flow)</li>
+          <li>Thyrotoxicosis — ↓ peripheral T4→T3 conversion + ↓ sympathomimetic symptoms</li>
+          <li>Performance anxiety</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="star">⭐</span> HY Facts + ⚠ Traps</div>
+      <div class="cell-content">
+        <span class="star">⭐</span> Non-selective β₁ + β₂ — widest receptor profile of all β-blockers<br>
+        <span class="star">⭐</span> Multiple non-cardiac uses: migraine, tremor, portal HTN, thyrotoxicosis, anxiety<br>
+        <span class="star">⭐</span> Abrupt withdrawal → upregulated β-receptors → rebound angina/tachycardia/MI. <strong>Always taper.</strong><br><br>
+        <span class="trap">⚠ TRAP</span> β₂ blockade → unopposed α in coronary spasm → ABSOLUTELY CONTRAINDICATED in variant (Prinzmetal) angina<br><br>
+        <span class="trap">⚠ TRAP</span> Masks tachycardia of hypoglycemia — use with caution in insulin-dependent diabetics
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Metoprolol -->
+<div class="card-wrapper">
+  <div class="drug-header beta-b1">
+    <span class="drug-name">Metoprolol</span>
+    <span class="drug-class-pill">β-Blocker · β₁-Selective</span>
+    <span class="route">PO · Tartrate (IR) or Succinate (ER)</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        <strong>Cardioselective β₁ blockade</strong> (loses selectivity at high doses)<br><br>
+        β₁: ↓ HR + ↓ contractility + ↓ AV conduction → ↓ MVO₂<br><br>
+        Relative sparing of β₂ (lungs, peripheral vessels) → safer in mild-moderate asthma than propranolol, but still use with caution
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚠</span> Side Effects / CI</div>
+      <div class="cell-content">
+        Bradycardia, fatigue, cold extremities<br>
+        Less bronchoconstriction than propranolol (β₁ selective)<br>
+        Impotence, dyslipidemia<br><br>
+        <span class="ci-tag">CI: Variant angina</span><br>
+        <span class="ci-tag">CI: Acute decompensated HF</span><br>
+        <span class="note">Caution: high-dose loses β₁ selectivity</span><br>
+        <span class="ci-tag">AVOID: non-DHP CCB combo</span>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="cell-label"><span class="icon">💊</span> Clinical Use</div>
+      <div class="cell-content">
+        <ul>
+          <li>Chronic stable angina</li>
+          <li><strong>HFrEF</strong> — <em>succinate (ER) form only</em>, proven mortality benefit (MERIT-HF)</li>
+          <li>Post-MI — reduces remodeling + arrhythmia risk</li>
+          <li>Hypertension</li>
+          <li>Afib rate control</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="star">⭐</span> HY Facts + ⚠ Traps</div>
+      <div class="cell-content">
+        <span class="star">⭐</span> β₁-selective (cardioselective) — safer than propranolol in lung disease<br>
+        <span class="star">⭐</span> HFrEF: <strong>succinate (ER) ONLY</strong> — metoprolol tartrate (IR) is NOT proven in HF<br>
+        <span class="star">⭐</span> 3 approved β-blockers for HFrEF: carvedilol, metoprolol succinate, bisoprolol<br><br>
+        <span class="trap">⚠ TRAP</span> Do NOT start in acute decompensated HF — wait until euvolemic. Starting in ADHF → cardiogenic shock.<br><br>
+        <span class="trap">⚠ TRAP</span> Metoprolol tartrate (IR) ≠ metoprolol succinate (ER) for HFrEF — only succinate is evidence-based
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Atenolol -->
+<div class="card-wrapper">
+  <div class="drug-header beta-b1">
+    <span class="drug-name">Atenolol</span>
+    <span class="drug-class-pill">β-Blocker · β₁-Selective</span>
+    <span class="route">PO · QD · Renally cleared</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        <strong>Cardioselective β₁ blockade</strong><br><br>
+        Same cardiac mechanism as metoprolol: ↓ HR + ↓ contractility → ↓ MVO₂<br><br>
+        <strong>Hydrophilic</strong> — does not cross blood-brain barrier readily → fewer CNS side effects (less depression, nightmares) than propranolol
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚠</span> Side Effects / CI</div>
+      <div class="cell-content">
+        Bradycardia, fatigue<br>
+        Fewer CNS side effects than propranolol (hydrophilic)<br><br>
+        <span class="ci-tag">CI: Variant angina</span><br>
+        <span class="ci-tag">CI: Acute decompensated HF</span><br>
+        <span class="note">Renally cleared — dose adjust in CKD</span><br>
+        <span class="ci-tag">AVOID: non-DHP CCB combo</span>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="cell-label"><span class="icon">💊</span> Clinical Use</div>
+      <div class="cell-content">
+        <ul>
+          <li>Chronic stable angina (first-line)</li>
+          <li>Hypertension (once daily dosing)</li>
+          <li>Microvascular angina — effective</li>
+          <li>Post-MI (less evidence than metoprolol succinate for HF benefit)</li>
+          <li>Preferred when CNS side effects are a concern (hydrophilic)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="star">⭐</span> HY Facts + ⚠ Traps</div>
+      <div class="cell-content">
+        <span class="star">⭐</span> Hydrophilic → fewer CNS side effects (depression, insomnia) vs. lipophilic propranolol<br>
+        <span class="star">⭐</span> Renally cleared → dose reduce in CKD (contrast: propranolol = hepatically metabolized)<br>
+        <span class="star">⭐</span> NOT proven for HFrEF mortality benefit — only carvedilol, metoprolol succinate, bisoprolol are<br><br>
+        <span class="trap">⚠ TRAP</span> Atenolol is NOT on the approved HFrEF β-blocker list — a common distractor. Only metoprolol succinate (not atenolol) is approved for HF.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Nebivolol -->
+<div class="card-wrapper">
+  <div class="drug-header beta-no">
+    <span class="drug-name">Nebivolol</span>
+    <span class="drug-class-pill">β₁-Selective + NO Release</span>
+    <span class="route">PO · QD</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        <strong>Dual mechanism:</strong><br>
+        1. β₁-selective blockade → ↓ HR + ↓ contractility<br>
+        2. <strong>Stimulates endothelial NO (eNOS)</strong> → vasodilation → ↓ SVR<br><br>
+        Result: ↓ BP + ↓ HR without the peripheral vasoconstriction of other β-blockers → better tolerated in patients with peripheral vascular disease
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚠</span> Side Effects / CI</div>
+      <div class="cell-content">
+        Bradycardia<br>
+        <strong>Fewest metabolic side effects</strong> of all β-blockers (minimal ↑ TG, minimal ↓ HDL)<br>
+        <strong>Least sexual dysfunction</strong> of all β-blockers<br><br>
+        <span class="ci-tag">CI: Variant angina</span><br>
+        <span class="ci-tag">CI: Acute decompensated HF</span>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="cell-label"><span class="icon">💊</span> Clinical Use</div>
+      <div class="cell-content">
+        <ul>
+          <li>Hypertension (especially when metabolic side effects are a concern)</li>
+          <li>Stable angina</li>
+          <li>Preferred when sexual dysfunction with other β-blockers</li>
+          <li>Preferred when peripheral vascular disease — NO release maintains peripheral circulation</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="star">⭐</span> HY Facts + ⚠ Traps</div>
+      <div class="cell-content">
+        <span class="star">⭐</span> <strong>UNIQUE mechanism</strong>: β₁ blockade + endothelial NO release (eNOS stimulation) → vasodilation<br>
+        <span class="star">⭐</span> Fewest metabolic side effects: no significant ↑ TG or ↓ HDL (unlike propranolol)<br>
+        <span class="star">⭐</span> Least sexual dysfunction of all β-blockers<br>
+        <span class="star">⭐</span> The "special" β-blocker — the only one that causes vasodilation via NO<br><br>
+        <span class="trap">⚠ TRAP</span> The NO release mechanism distinguishes nebivolol from all other β-blockers — this is a frequent USMLE differentiator
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Carvedilol -->
+<div class="card-wrapper">
+  <div class="drug-header beta-ab">
+    <span class="drug-name">Carvedilol</span>
+    <span class="drug-class-pill">α₁ + β₁ + β₂ Blocker</span>
+    <span class="route">PO · BID (IR) or QD (ER)</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        <strong>Non-selective β₁ + β₂ + α₁ blockade</strong><br><br>
+        β₁: ↓ HR + ↓ contractility → ↓ MVO₂ + ↓ cardiac remodeling<br>
+        β₂: bronchoconstriction risk (like propranolol)<br>
+        α₁: ↓ SVR → vasodilation → ↓ afterload<br><br>
+        Net: <strong>most vasodilatory β-blocker</strong>; no reflex tachycardia because β₁ already blocked
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚠</span> Side Effects / CI</div>
+      <div class="cell-content">
+        Dizziness, hypotension (α₁ vasodilation)<br>
+        Bradycardia, fatigue<br>
+        <span class="warn">Bronchoconstriction</span> (β₂ block — non-selective)<br><br>
+        <span class="ci-tag">CI: Severe asthma</span><br>
+        <span class="ci-tag">CI: Acute decompensated HF</span><br>
+        <span class="ci-tag">CI: Variant angina</span><br>
+        <span class="ci-tag">AVOID: non-DHP CCB combo</span>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="cell-label"><span class="icon">💊</span> Clinical Use</div>
+      <div class="cell-content">
+        <ul>
+          <li><strong>HFrEF</strong> — proven mortality benefit (COPERNICUS trial; one of 3 approved β-blockers for HF)</li>
+          <li>Post-MI LV dysfunction</li>
+          <li>Hypertension (α₁ block adds vasodilation)</li>
+          <li>Stable angina</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="star">⭐</span> HY Facts + ⚠ Traps</div>
+      <div class="cell-content">
+        <span class="star">⭐</span> <strong>α₁ + β₁ + β₂ blockade</strong> — triple receptor profile (widest of HF-approved β-blockers)<br>
+        <span class="star">⭐</span> One of 3 β-blockers proven to ↓ mortality in HFrEF: <strong>carvedilol, metoprolol succinate, bisoprolol</strong><br>
+        <span class="star">⭐</span> Most vasodilatory β-blocker (α₁ block → ↓ afterload); no reflex tachycardia due to β₁ block<br><br>
+        <span class="trap">⚠ TRAP</span> Non-selective → CONTRAINDICATED in variant angina (same as propranolol — unopposed α → worsens vasospasm)<br><br>
+        <span class="trap">⚠ TRAP</span> Do NOT initiate in ADHF. Only start when hemodynamically stable and euvolemic.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Labetalol -->
+<div class="card-wrapper">
+  <div class="drug-header beta-ab">
+    <span class="drug-name">Labetalol</span>
+    <span class="drug-class-pill">α₁ + β₁ + β₂ Blocker</span>
+    <span class="route">PO or IV (HTN emergency)</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        <strong>Non-selective β₁ + β₂ + α₁ blockade</strong><br><br>
+        Like carvedilol, but <strong>IV formulation available</strong> → used in acute hypertensive emergencies<br><br>
+        α₁ block → ↓ SVR (no reflex tachycardia because β₁ also blocked → balanced BP reduction).<br>
+        Ratio: β:α blockade ≈ 3:1 (oral), 7:1 (IV)
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚠</span> Side Effects / CI</div>
+      <div class="cell-content">
+        Orthostatic hypotension, dizziness<br>
+        Bradycardia, fatigue<br>
+        <span class="warn">Bronchoconstriction</span> (β₂ non-selective)<br><br>
+        <span class="ci-tag">CI: Severe asthma</span><br>
+        <span class="ci-tag">CI: Cardiogenic shock</span><br>
+        <span class="ci-tag">CI: Variant angina</span>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="cell-label"><span class="icon">💊</span> Clinical Use</div>
+      <div class="cell-content">
+        <ul>
+          <li><strong>Hypertensive emergency in pregnancy</strong> — drug of choice (IV)</li>
+          <li>Hypertensive emergency + aortic dissection (IV) — ↓ HR and BP simultaneously to reduce aortic shear stress</li>
+          <li>Pheochromocytoma crisis (α+β blockade)</li>
+          <li>Chronic hypertension (oral)</li>
+          <li>Stable angina</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="star">⭐</span> HY Facts + ⚠ Traps</div>
+      <div class="cell-content">
+        <span class="star">⭐</span> <strong>#1 drug for HTN emergency in pregnancy</strong> (IV labetalol) — safe for fetus<br>
+        <span class="star">⭐</span> <strong>Aortic dissection</strong>: labetalol IV preferred — blocks both α (↓ SVR) and β (↓ HR) simultaneously → reduces aortic wall stress (dP/dt)<br>
+        <span class="star">⭐</span> No reflex tachycardia (β₁ block prevents it despite vasodilation from α₁ block)<br><br>
+        <span class="trap">⚠ TRAP</span> Non-selective β₂ block → contraindicated in variant angina. Also avoid in severe asthma.<br><br>
+        <span class="trap">⚠ TRAP</span> Pure vasodilators (hydralazine alone, nitroprusside) worsen aortic dissection via reflex tachycardia — always use labetalol or a β-blocker first in dissection
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 3 — CCBs
+════════════════════════════════════════════════════ -->
+<div class="section-label" style="margin-top:36px;"><h2>Calcium Channel Blockers (CCBs)</h2></div>
+
+<!-- Nifedipine -->
+<div class="card-wrapper">
+  <div class="drug-header ccb-dhp">
+    <span class="drug-name">Nifedipine</span>
+    <span class="drug-class-pill">DHP CCB · Vascular-selective</span>
+    <span class="route">PO · IR or ER · QD–BID</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        <strong>Dihydropyridine (DHP)</strong> — blocks L-type Ca²⁺ channels primarily in <strong>vascular smooth muscle</strong><br><br>
+        ↓ intracellular Ca²⁺ → arterial vasodilation → ↓ SVR → ↓ afterload<br><br>
+        <strong>No significant AV nodal effect</strong> (in contrast to non-DHPs)<br>
+        Rapid vasodilation → <strong>↑ reflex tachycardia</strong> (especially short-acting IR form)
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚠</span> Side Effects / CI</div>
+      <div class="cell-content">
+        <span class="warn">Reflex tachycardia</span> (significant — especially IR form)<br>
+        Peripheral edema, flushing, headache<br>
+        Dizziness, hypotension<br><br>
+        <span class="ci-tag">CI: Short-acting IR — chronic stable angina</span> (↑ sympathetic activation → worse outcomes)<br>
+        <span class="note">Long-acting ER form is acceptable</span><br>
+        <span class="ci-tag">Cannot rate-control Afib/SVT</span> (no AV nodal effect)
+      </div>
+    </div>
+    <div class="cell">
+      <div class="cell-label"><span class="icon">💊</span> Clinical Use</div>
+      <div class="cell-content">
+        <ul>
+          <li>Variant (Prinzmetal) angina — first-line (relieves vasospasm)</li>
+          <li>Hypertension (long-acting ER form)</li>
+          <li>Raynaud's phenomenon (peripheral vasodilation)</li>
+          <li>Chronic stable angina (long-acting form only)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="star">⭐</span> HY Facts + ⚠ Traps</div>
+      <div class="cell-content">
+        <span class="star">⭐</span> <strong>Variant angina: drug of choice</strong> (along with other DHPs and non-DHPs) — relieves coronary vasospasm<br>
+        <span class="star">⭐</span> DHP = vascular-selective → NO AV nodal effect → cannot rate-control Afib or SVT<br>
+        <span class="star">⭐</span> Short-acting IR form associated with ↑ CV events in chronic stable angina — use ER only<br><br>
+        <span class="trap">⚠ TRAP</span> Short-acting nifedipine is contraindicated for chronic stable angina — rapid vasodilation → reflex tachycardia → ↑ ischemia<br><br>
+        <span class="trap">⚠ TRAP</span> DHP CCBs CANNOT rate-control Afib (no AV nodal effect) — must use non-DHP CCB or β-blocker for rate control
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Amlodipine -->
+<div class="card-wrapper">
+  <div class="drug-header ccb-dhp">
+    <span class="drug-name">Amlodipine</span>
+    <span class="drug-class-pill">DHP CCB · Long-acting</span>
+    <span class="route">PO · QD · Longest t½ of all CCBs</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        <strong>DHP</strong> — blocks vascular smooth muscle L-type Ca²⁺ channels → arterial vasodilation → ↓ SVR<br><br>
+        <strong>Slowest onset of all CCBs</strong> → minimal reflex tachycardia (gradual vasodilation)<br><br>
+        t½ ≈ 35–50 hrs → once-daily dosing, smooth BP/HR effect<br><br>
+        <strong>No AV nodal effect</strong>
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚠</span> Side Effects / CI</div>
+      <div class="cell-content">
+        <span class="warn">Peripheral edema</span> — most common ADR (vasodilation → fluid redistribution, NOT cardiac edema)<br>
+        Mild reflex tachycardia (less than nifedipine due to slow onset)<br>
+        Flushing, headache<br><br>
+        <span class="ok-tag">✓ Safe in HFrEF</span> — only DHP CCB that does NOT worsen systolic function<br>
+        <span class="ci-tag">Cannot rate-control Afib/SVT</span>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="cell-label"><span class="icon">💊</span> Clinical Use</div>
+      <div class="cell-content">
+        <ul>
+          <li>Chronic stable angina</li>
+          <li>Variant (Prinzmetal) angina</li>
+          <li>Hypertension (first-line, especially elderly + isolated systolic)</li>
+          <li>Raynaud's phenomenon</li>
+          <li><strong>HFrEF</strong> — only DHP CCB approved (PRAISE trial)</li>
+          <li>Angina + HFrEF (non-DHPs contraindicated in HFrEF)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="star">⭐</span> HY Facts + ⚠ Traps</div>
+      <div class="cell-content">
+        <span class="star">⭐</span> <strong>Longest t½</strong> of all CCBs (~40 hrs) → once daily, smooth effect, minimal reflex tachycardia<br>
+        <span class="star">⭐</span> <strong>Only DHP CCB safe in HFrEF</strong> — does not worsen systolic function (non-DHPs like verapamil/diltiazem are contraindicated in HFrEF)<br>
+        <span class="star">⭐</span> Peripheral edema is from vasodilation (venous pooling), NOT worsening heart failure<br><br>
+        <span class="trap">⚠ TRAP</span> Amlodipine edema ≠ HF — do not stop amlodipine or add diuretic for the edema. Reducing dose or switching is the fix.<br><br>
+        <span class="trap">⚠ TRAP</span> Simvastatin + amlodipine → ↑ simvastatin levels (CYP3A4 competition) → myopathy risk → max simvastatin dose 20 mg with amlodipine
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Verapamil -->
+<div class="card-wrapper">
+  <div class="drug-header ccb-nondhp">
+    <span class="drug-name">Verapamil</span>
+    <span class="drug-class-pill">Non-DHP CCB · Most cardiac effect</span>
+    <span class="route">PO or IV · TID–QD (SR)</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        <strong>Non-DHP</strong> — blocks L-type Ca²⁺ channels in both <strong>vascular smooth muscle AND cardiac tissue</strong><br><br>
+        Heart: ↓ SA node automaticity + ↓ AV node conduction velocity + ↓ contractility (negative chronotropy + dromotropy + inotropy)<br><br>
+        Vasculature: ↓ SVR (less vasodilatory than DHPs)<br><br>
+        Most cardiac effect of all CCBs
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚠</span> Side Effects / CI</div>
+      <div class="cell-content">
+        <span class="warn">Constipation</span> — most common ADR (classic!)<br>
+        Bradycardia, AV block, hypotension<br>
+        <span class="warn">↑ Digoxin levels</span> (P-glycoprotein inhibition)<br><br>
+        <span class="ci-tag">CI: HFrEF (worsens systolic function)</span><br>
+        <span class="ci-tag">CI: WPW + Afib (can accelerate accessory pathway)</span><br>
+        <span class="ci-tag">CI: Combined with β-blocker</span> (additive AV block)<br>
+        <span class="ci-tag">AVOID: digoxin + verapamil</span> (toxicity risk)
+      </div>
+    </div>
+    <div class="cell">
+      <div class="cell-label"><span class="icon">💊</span> Clinical Use</div>
+      <div class="cell-content">
+        <ul>
+          <li>Variant angina (first-line) + chronic stable angina</li>
+          <li><strong>SVT termination</strong> (IV — slows AV node)</li>
+          <li>Afib/flutter rate control (oral)</li>
+          <li>Hypertension + Afib (oral)</li>
+          <li>Migraine prophylaxis (alternative)</li>
+          <li>HCM (↓ LVOTO + improves diastolic filling)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="star">⭐</span> HY Facts + ⚠ Traps</div>
+      <div class="cell-content">
+        <span class="star">⭐</span> Constipation = classic ADR — only CCB with this as primary complaint<br>
+        <span class="star">⭐</span> Inhibits P-glycoprotein → ↑ digoxin plasma levels → check digoxin levels when starting verapamil<br>
+        <span class="star">⭐</span> <strong>Only non-DHP + β-blocker = DANGEROUS</strong> → additive AV nodal suppression → complete heart block<br>
+        <span class="star">⭐</span> Contraindicated in HFrEF (negative inotropy worsens systolic function)<br><br>
+        <span class="trap">⚠ TRAP</span> Verapamil + β-blocker → complete heart block / asystole. NEVER combine. (Amlodipine + β-blocker is SAFE.)<br><br>
+        <span class="trap">⚠ TRAP</span> Verapamil in WPW + Afib → blocks AV node → forces conduction through accessory pathway → VF risk
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Diltiazem -->
+<div class="card-wrapper">
+  <div class="drug-header ccb-nondhp">
+    <span class="drug-name">Diltiazem</span>
+    <span class="drug-class-pill">Non-DHP CCB · Intermediate effect</span>
+    <span class="route">PO or IV · QD–TID (formulation-dependent)</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        <strong>Non-DHP</strong> — blocks L-type Ca²⁺ channels in vascular smooth muscle AND cardiac tissue<br><br>
+        <strong>Intermediate cardiac effect</strong> between verapamil (most cardiac) and DHPs (least cardiac)<br><br>
+        ↓ AV node conduction + ↓ SA node automaticity (less than verapamil)<br>
+        Arterial vasodilation (less than DHPs)<br>
+        ↓ Contractility (less negative inotropic than verapamil)
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚠</span> Side Effects / CI</div>
+      <div class="cell-content">
+        Bradycardia, AV block (less severe than verapamil)<br>
+        Peripheral edema, headache<br>
+        Fewer GI effects than verapamil<br><br>
+        <span class="ci-tag">CI: HFrEF (↓ contractility)</span><br>
+        <span class="ci-tag">CI: Combined with β-blocker</span><br>
+        <span class="ci-tag">CI: WPW + Afib</span><br>
+        <span class="note">Better tolerated than verapamil</span>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="cell-label"><span class="icon">💊</span> Clinical Use</div>
+      <div class="cell-content">
+        <ul>
+          <li>Variant angina (first-line) + chronic stable angina</li>
+          <li>SVT rate control (IV)</li>
+          <li>Afib/flutter rate control (oral)</li>
+          <li>Hypertension</li>
+          <li>When verapamil causes intolerable constipation or side effects</li>
+          <li>HCM (similar to verapamil)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="star">⭐</span> HY Facts + ⚠ Traps</div>
+      <div class="cell-content">
+        <span class="star">⭐</span> <strong>Intermediate cardiac effect</strong>: more cardiac than DHPs, less cardiac than verapamil<br>
+        <span class="star">⭐</span> Clinically interchangeable with verapamil for most indications (Afib rate control, SVT, angina)<br>
+        <span class="star">⭐</span> Fewer GI side effects than verapamil (no constipation as primary complaint)<br><br>
+        <span class="trap">⚠ TRAP</span> Still contraindicated with β-blockers (same danger as verapamil — additive AV block) despite being "intermediate"<br><br>
+        <span class="trap">⚠ TRAP</span> Both non-DHPs are CONTRAINDICATED in HFrEF — only amlodipine is safe. This is heavily tested.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 4 — RANOLAZINE
+════════════════════════════════════════════════════ -->
+<div class="section-label" style="margin-top:36px;"><h2>Ranolazine — Late INa inhibitor (Unique MOA)</h2></div>
+
+<div class="card-wrapper">
+  <div class="drug-header ranolazine">
+    <span class="drug-name">Ranolazine</span>
+    <span class="drug-class-pill">Late INa Inhibitor · 2nd-Line Add-On</span>
+    <span class="route">PO · ER · BID · 500–1000 mg</span>
+  </div>
+  <div class="card-body">
+    <div class="cell moa">
+      <div class="cell-label"><span class="icon">⚙</span> MOA</div>
+      <div class="cell-content">
+        <strong>Inhibits late inward Na⁺ current (late INa)</strong> in ischemic myocytes<br><br>
+        Ischemia → channels fail to inactivate → ↑ late INa → ↑ intracellular Na⁺ → Na/Ca exchanger (NCX) runs in reverse → ↑ intracellular Ca²⁺ → diastolic dysfunction + ↑ wall tension → ↑ MVO₂<br><br>
+        Ranolazine blocks this late INa → ↓ intracellular Na⁺/Ca²⁺ → ↓ diastolic tension → ↓ MVO₂<br><br>
+        <strong>Does NOT affect HR or BP</strong>
+      </div>
+    </div>
+    <div class="cell se">
+      <div class="cell-label"><span class="icon">⚠</span> Side Effects / CI</div>
+      <div class="cell-content">
+        <span class="warn">QTc prolongation</span> — monitor ECG; avoid with other QT-prolonging drugs (amiodarone, sotalol, fluoroquinolones, azithromycin)<br>
+        Dizziness, nausea, constipation, headache<br><br>
+        Metabolism: <strong>CYP3A4</strong> substrate<br>
+        <span class="note">Drug interactions: azole antifungals, macrolide antibiotics → ↑ ranolazine levels</span><br><br>
+        <span class="ci-tag">CI: Severe hepatic impairment</span><br>
+        <span class="note">No dose adjustment in renal failure</span>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="cell-label"><span class="icon">💊</span> Clinical Use</div>
+      <div class="cell-content">
+        <ul>
+          <li><strong>Chronic stable angina</strong> — add-on when other drugs insufficient or not tolerated</li>
+          <li>Ideal for: angina + <em>hypotension</em> (no BP effect), angina + <em>bradycardia</em> (no HR effect)</li>
+          <li>Angina + COPD/asthma (cannot use non-selective β-blockers)</li>
+          <li><strong>Microvascular angina</strong> — effective (where nitrates are less so)</li>
+          <li>NOT for acute angina attacks (not fast enough onset)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cell hy">
+      <div class="cell-label"><span class="star">⭐</span> HY Facts + ⚠ Traps</div>
+      <div class="cell-content">
+        <span class="star">⭐</span> <strong>Only antianginal that does NOT change HR or BP</strong> — hemodynamically neutral<br>
+        <span class="star">⭐</span> MOA: inhibits late INa → ↓ intracellular Ca²⁺ overload → ↓ MVO₂ (mechanistically unique)<br>
+        <span class="star">⭐</span> Perfect for hemodynamically limited patients (hypotension, bradycardia) who can't tolerate other antianginals<br>
+        <span class="star">⭐</span> Effective in <strong>microvascular angina</strong> (where nitrates are less effective)<br>
+        <span class="star">⭐</span> Second-line / add-on — not first-line monotherapy; always used alongside other antianginals<br><br>
+        <span class="trap">⚠ TRAP</span> Ranolazine prolongs QTc — do NOT combine with other QT-prolonging agents<br><br>
+        <span class="trap">⚠ TRAP</span> CYP3A4 substrate — azole antifungals + macrolide antibiotics significantly ↑ ranolazine plasma levels → toxicity
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     REFERENCE TABLES
+════════════════════════════════════════════════════ -->
+<div class="ref-section" style="margin-top:40px;">
+  <h3>Quick Reference: Angina Type × Drug Selection</h3>
+  <div class="angina-table-wrap">
+    <table class="angina-table">
+      <tr>
+        <th style="min-width:140px;">Drug Class</th>
+        <th>Stable Angina</th>
+        <th>Unstable Angina</th>
+        <th>Variant / Prinzmetal</th>
+        <th>Microvascular</th>
+      </tr>
+      <tr>
+        <td class="row-label">Nitrates (SL / oral)</td>
+        <td class="yes">✓ First-line</td>
+        <td class="yes">✓ Acute relief</td>
+        <td class="yes">✓ Effective</td>
+        <td><span style="color:var(--orange);font-weight:600;">± Less effective</span></td>
+      </tr>
+      <tr>
+        <td class="row-label">β-Blockers</td>
+        <td class="yes">✓ First-line</td>
+        <td class="yes">✓ First-line</td>
+        <td class="ci">✗ CONTRAINDICATED<br><em style="font-size:11px;">(unopposed α → worse spasm)</em></td>
+        <td class="yes">✓ Effective</td>
+      </tr>
+      <tr>
+        <td class="row-label">CCB — non-DHP<br><em style="font-weight:400;font-size:11px;">(verapamil / diltiazem)</em></td>
+        <td class="yes">✓ Effective</td>
+        <td><span class="addon">± if β-blocker CI</span></td>
+        <td class="yes">✓ First-line</td>
+        <td class="yes">✓ Effective</td>
+      </tr>
+      <tr>
+        <td class="row-label">CCB — DHP<br><em style="font-weight:400;font-size:11px;">(amlodipine / nifedipine ER)</em></td>
+        <td class="yes">✓ Effective</td>
+        <td><span class="addon">± if β-blocker CI</span></td>
+        <td class="yes">✓ First-line</td>
+        <td class="yes">✓ Effective</td>
+      </tr>
+      <tr>
+        <td class="row-label">Ranolazine</td>
+        <td><span class="addon">✓ Add-on</span></td>
+        <td><span class="addon">✓ Add-on</span></td>
+        <td><span style="color:var(--muted);">? Limited data</span></td>
+        <td class="yes">✓ Effective</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="ref-section" style="margin-top:24px;">
+  <h3>Co-morbidity Drug Selection</h3>
+  <div class="ref-grid">
+    <div class="ref-table-wrap">
+      <div class="ref-table-title">Preferred Drug by Co-morbidity</div>
+      <table class="ref-table">
+        <tr><th>Co-morbidity</th><th>Preferred Antianginal</th><th>Avoid</th></tr>
+        <tr><td class="drug-col">Asthma / COPD</td><td class="ok">CCBs, ranolazine</td><td class="ci">Non-selective β-blockers (propranolol, carvedilol, labetalol)</td></tr>
+        <tr><td class="drug-col">Raynaud's disease</td><td class="ok">DHP CCBs (amlodipine)</td><td class="ci">β-Blockers (↓ peripheral blood flow)</td></tr>
+        <tr><td class="drug-col">Hypotension / Bradycardia</td><td class="ok">Ranolazine (hemodynamically neutral)</td><td class="ci">Nitrates, CCBs (↓ BP); β-blockers (↓ HR)</td></tr>
+        <tr><td class="drug-col">SVT / Afib rate control</td><td class="ok">β-Blockers or non-DHP CCBs (verapamil/diltiazem)</td><td class="ci">DHP CCBs — NO AV nodal effect</td></tr>
+        <tr><td class="drug-col">HFrEF</td><td class="ok">β-Blockers (carvedilol, metoprolol succinate, bisoprolol); amlodipine only safe DHP</td><td class="ci">Non-DHP CCBs (↓ contractility)</td></tr>
+        <tr><td class="drug-col">Variant (Prinzmetal) angina</td><td class="ok">CCBs (any), nitrates</td><td class="ci">ALL β-Blockers (unopposed α → ↑ vasospasm)</td></tr>
+        <tr><td class="drug-col">Microvascular angina</td><td class="ok">β-Blockers, CCBs, ranolazine</td><td>Nitrates (less effective)</td></tr>
+        <tr><td class="drug-col">Headaches / Migraine</td><td class="ok">β-Blockers (propranolol)</td><td class="ci">Nitrates (worsen headache via meningeal vasodilation)</td></tr>
+        <tr><td class="drug-col">HTN emergency in pregnancy</td><td class="ok">IV Labetalol (1st-line)</td><td class="ci">ACEi/ARBs (teratogenic); nitroprusside (fetal cyanide)</td></tr>
+        <tr><td class="drug-col">Aortic dissection</td><td class="ok">IV Labetalol (↓ HR + ↓ BP simultaneously)</td><td class="ci">Pure vasodilators alone (reflex tachycardia worsens dP/dt)</td></tr>
+        <tr><td class="drug-col">On PDE-5 inhibitor</td><td class="ok">β-Blockers, CCBs, ranolazine</td><td class="ci">ALL Nitrates — absolute CI (fatal hypotension)</td></tr>
+        <tr><td class="drug-col">RV infarct</td><td class="ok">IV fluids (maintain preload)</td><td class="ci">Nitrates — reduce preload → hemodynamic collapse</td></tr>
+      </table>
+    </div>
+    <div class="ref-table-wrap">
+      <div class="ref-table-title">Safe vs. Dangerous Drug Combinations</div>
+      <table class="ref-table">
+        <tr><th>Combination</th><th>Safe?</th><th>Reason</th></tr>
+        <tr><td class="drug-col">β-Blocker + Nitrate</td><td class="ok">✓ Rational</td><td>Complementary: nitrate causes reflex tachycardia → β-blocker blunts it; additive ↓ MVO₂</td></tr>
+        <tr><td class="drug-col">β-Blocker + Amlodipine (DHP)</td><td class="ok">✓ Safe & additive</td><td>DHP has no AV nodal effect → no additive conduction risk; adds vasodilation</td></tr>
+        <tr><td class="drug-col">β-Blocker + Verapamil/Diltiazem</td><td class="ci">✗ DANGEROUS</td><td>Both suppress AV node → additive bradycardia, complete heart block, asystole</td></tr>
+        <tr><td class="drug-col">Nitrate + PDE-5 inhibitor</td><td class="ci">✗ ABSOLUTE CI</td><td>Both ↑ cGMP → synergistic vasodilation → fatal hypotension</td></tr>
+        <tr><td class="drug-col">Verapamil + Digoxin</td><td class="ci">✗ Caution</td><td>Verapamil inhibits P-gp → ↑ digoxin levels → digoxin toxicity</td></tr>
+        <tr><td class="drug-col">Nitrate + β-Blocker + Amlodipine</td><td class="ok">✓ Triple therapy OK</td><td>All three have complementary MOAs; frequently combined in refractory stable angina</td></tr>
+        <tr><td class="drug-col">Ranolazine + CYP3A4 inhibitor</td><td class="ci">✗ Caution</td><td>Azole antifungals, macrolides → ↑ ranolazine → QTc prolongation / toxicity</td></tr>
+        <tr><td class="drug-col">Verapamil + β-Blocker (IV)</td><td class="ci">✗ MOST DANGEROUS</td><td>IV forms together → immediate complete AV block; do not give IV verapamil if on β-blocker</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="ref-section" style="margin-top:24px; margin-bottom: 40px;">
+  <h3>Nitrate Tolerance — Prevention & Mechanism</h3>
+  <div class="ref-table-wrap" style="max-width:800px;">
+    <div class="ref-table-title">Nitrate Tolerance Quick Reference</div>
+    <table class="ref-table">
+      <tr><th>Formulation</th><th>Tolerance Risk</th><th>Prevention Strategy</th></tr>
+      <tr><td class="drug-col">SL Nitroglycerin (PRN)</td><td class="ok">Minimal — used acutely</td><td>No scheduled use; PRN only</td></tr>
+      <tr><td class="drug-col">Transdermal patch</td><td class="ci">High — continuous absorption</td><td>Remove patch for 8–12 hrs nightly</td></tr>
+      <tr><td class="drug-col">NTG Ointment</td><td class="ci">High if applied continuously</td><td>Off period daily (wipe off at night)</td></tr>
+      <tr><td class="drug-col">Isosorbide Dinitrate (IR)</td><td class="ci">Moderate–High</td><td>Eccentric BID dosing (e.g., 8 AM + 2 PM); 10-hr nitrate-free period</td></tr>
+      <tr><td class="drug-col">Isosorbide Mononitrate ER</td><td class="ok">Low — built-in free window</td><td>Once-daily morning dosing; overnight nitrate-free period inherent</td></tr>
+    </table>
+  </div>
+</div>
+
+</body>
+</html>
