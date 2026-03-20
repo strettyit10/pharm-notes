@@ -1,0 +1,447 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+.wrap { padding: 1rem 0; font-family: var(--font-sans); }
+.section { margin-bottom: 1.5rem; }
+.sec-label { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; color: var(--color-text-secondary); text-transform: uppercase; margin-bottom: 10px; }
+.comparison { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); overflow: hidden; margin-bottom: 10px; }
+.comp-header { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 0.5px solid var(--color-border-tertiary); cursor: pointer; }
+.comp-header:hover { background: var(--color-background-secondary); }
+.comp-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); flex: 1; }
+.comp-tag { font-size: 11px; padding: 2px 8px; border-radius: 999px; font-weight: 500; flex-shrink: 0; }
+.tag-high { background: #FCEBEB; color: #791F1F; }
+.tag-med { background: #FAEEDA; color: #633806; }
+.tag-low { background: #EAF3DE; color: #27500A; }
+.chevron { font-size: 12px; color: var(--color-text-tertiary); transition: transform 0.2s; flex-shrink: 0; }
+.chevron.open { transform: rotate(90deg); }
+.comp-body { display: none; padding: 12px 14px; }
+.comp-body.open { display: block; }
+.vs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.vs-col { border-radius: 8px; padding: 10px 12px; }
+.vs-col.a { background: #E6F1FB; }
+.vs-col.b { background: #FAEEDA; }
+.vs-name { font-size: 13px; font-weight: 500; margin-bottom: 6px; }
+.vs-col.a .vs-name { color: #0C447C; }
+.vs-col.b .vs-name { color: #633806; }
+.vs-point { font-size: 12px; line-height: 1.6; color: var(--color-text-secondary); margin-bottom: 3px; padding-left: 10px; position: relative; }
+.vs-point::before { content: '·'; position: absolute; left: 0; }
+.vs-key { margin-top: 10px; padding: 8px 10px; background: var(--color-background-secondary); border-radius: 6px; border-left: 2px solid #378ADD; font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; }
+.vs-key strong { color: var(--color-text-primary); }
+.toggle-all { font-size: 12px; color: var(--color-text-secondary); cursor: pointer; padding: 4px 0; margin-bottom: 12px; }
+.toggle-all:hover { color: var(--color-text-primary); }
+</style>
+
+<div class="wrap">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+  <div>
+    <p style="font-size:13px;color:var(--color-text-secondary)">Click any comparison to expand. High-frequency = most tested.</p>
+  </div>
+  <span class="toggle-all" onclick="toggleAll()">Expand all</span>
+</div>
+
+<div class="section">
+<div class="sec-label">Anticoagulation / antiplatelet</div>
+
+<div class="comparison">
+  <div class="comp-header" onclick="toggle(this)">
+    <div class="comp-title">Aspirin vs clopidogrel</div>
+    <span class="comp-tag tag-high">High frequency</span>
+    <span class="chevron">▶</span>
+  </div>
+  <div class="comp-body">
+    <div class="vs-grid">
+      <div class="vs-col a">
+        <div class="vs-name">Aspirin</div>
+        <div class="vs-point">Blocks COX-1 → inhibits TXA2 synthesis</div>
+        <div class="vs-point">Irreversibly acetylates COX-1</div>
+        <div class="vs-point">Effect lasts 7-10 days (platelet lifetime)</div>
+        <div class="vs-point">First drug to give in ACS</div>
+        <div class="vs-point">Does NOT affect Protein C/S</div>
+      </div>
+      <div class="vs-col b">
+        <div class="vs-name">Clopidogrel</div>
+        <div class="vs-point">Blocks P2Y12 ADP receptor on platelets</div>
+        <div class="vs-point">Irreversibly binds receptor</div>
+        <div class="vs-point">Effect lasts 7-10 days (platelet lifetime)</div>
+        <div class="vs-point">Prodrug — requires CYP2C19 activation</div>
+        <div class="vs-point">Used with aspirin post-stent (DAPT)</div>
+      </div>
+    </div>
+    <div class="vs-key"><strong>Key distinction:</strong> Aspirin → TXA2 pathway. Clopidogrel → ADP pathway. Different targets, synergistic when combined. Both irreversible. Aspirin goes first in ACS.</div>
+  </div>
+</div>
+
+<div class="comparison">
+  <div class="comp-header" onclick="toggle(this)">
+    <div class="comp-title">Heparin (UFH) vs argatroban</div>
+    <span class="comp-tag tag-high">High frequency</span>
+    <span class="chevron">▶</span>
+  </div>
+  <div class="comp-body">
+    <div class="vs-grid">
+      <div class="vs-col a">
+        <div class="vs-name">Heparin (UFH)</div>
+        <div class="vs-point">Indirect — activates antithrombin III</div>
+        <div class="vs-point">Requires aPTT monitoring</div>
+        <div class="vs-point">Causes HIT (immune, IgG vs heparin-PF4)</div>
+        <div class="vs-point">Reversed by protamine sulfate</div>
+        <div class="vs-point">Affected by platelet factor 4</div>
+      </div>
+      <div class="vs-col b">
+        <div class="vs-name">Argatroban</div>
+        <div class="vs-point">Direct thrombin inhibitor (no ATIII needed)</div>
+        <div class="vs-point">No interaction with platelet factor 4</div>
+        <div class="vs-point">First-line when HIT is present</div>
+        <div class="vs-point">Hepatic elimination</div>
+        <div class="vs-point">No reversal agent</div>
+      </div>
+    </div>
+    <div class="vs-key"><strong>Key distinction:</strong> HIT = platelet drop >50% after day 5-10 of heparin. Stop all heparin (including LMWH). Start argatroban or bivalirudin. HIT is immune-mediated (unpredictable, NOT dose-dependent) and life-threatening (paradoxical thrombosis).</div>
+  </div>
+</div>
+
+<div class="comparison">
+  <div class="comp-header" onclick="toggle(this)">
+    <div class="comp-title">Warfarin vs DOACs (apixaban, dabigatran)</div>
+    <span class="comp-tag tag-high">High frequency</span>
+    <span class="chevron">▶</span>
+  </div>
+  <div class="comp-body">
+    <div class="vs-grid">
+      <div class="vs-col a">
+        <div class="vs-name">Warfarin</div>
+        <div class="vs-point">Inhibits vitamin K epoxide reductase</div>
+        <div class="vs-point">Blocks factors II, VII, IX, X + Protein C/S</div>
+        <div class="vs-point">Early hypercoagulable state (protein C drops first)</div>
+        <div class="vs-point">Requires INR monitoring (goal 2-3)</div>
+        <div class="vs-point">Many drug/food interactions</div>
+        <div class="vs-point">Can use for mechanical heart valves</div>
+        <div class="vs-point">Reversed by FFP (immediate) or vitamin K</div>
+      </div>
+      <div class="vs-col b">
+        <div class="vs-name">DOACs (apixaban/rivaroxaban/dabigatran)</div>
+        <div class="vs-point">Target Factor Xa (apixaban, rivaroxaban) or IIa (dabigatran)</div>
+        <div class="vs-point">No routine monitoring required</div>
+        <div class="vs-point">Fewer drug interactions</div>
+        <div class="vs-point">NOT approved for mechanical heart valves</div>
+        <div class="vs-point">Reversal: andexanet alfa (Xa), idarucizumab (dabigatran)</div>
+      </div>
+    </div>
+    <div class="vs-key"><strong>Key distinction:</strong> DOACs more specific, no monitoring, can't use for mechanical valves. INR 1.4 = under-anticoagulated (thrombosis risk). INR 5 = over-anticoagulated (bleeding risk, decreased clotting).</div>
+  </div>
+</div>
+
+<div class="comparison">
+  <div class="comp-header" onclick="toggle(this)">
+    <div class="comp-title">tPA (alteplase) vs anticoagulants</div>
+    <span class="comp-tag tag-high">High frequency</span>
+    <span class="chevron">▶</span>
+  </div>
+  <div class="comp-body">
+    <div class="vs-grid">
+      <div class="vs-col a">
+        <div class="vs-name">tPA (alteplase)</div>
+        <div class="vs-point">Converts plasminogen → plasmin</div>
+        <div class="vs-point">Dissolves EXISTING formed clot</div>
+        <div class="vs-point">STEMI with no cath lab within 120 min</div>
+        <div class="vs-point">Ischemic stroke within 3-4.5 hours</div>
+        <div class="vs-point">Major bleeding risk (including ICH)</div>
+      </div>
+      <div class="vs-col b">
+        <div class="vs-name">Anticoagulants (heparin, DOACs, warfarin)</div>
+        <div class="vs-point">Prevent NEW clot formation</div>
+        <div class="vs-point">Do NOT dissolve existing clots</div>
+        <div class="vs-point">Long-term AF stroke prevention</div>
+        <div class="vs-point">DVT/PE treatment and prevention</div>
+        <div class="vs-point">Bridge therapy peri-procedure</div>
+      </div>
+    </div>
+    <div class="vs-key"><strong>Key distinction:</strong> tPA = thrombolytic (dissolves clot). Anticoagulants = prevent new clot. tPA is NOT used for AF stroke prevention — that requires anticoagulants. For AF + prior stroke → apixaban immediately.</div>
+  </div>
+</div>
+
+</div>
+
+<div class="section">
+<div class="sec-label">Angina drugs</div>
+
+<div class="comparison">
+  <div class="comp-header" onclick="toggle(this)">
+    <div class="comp-title">Nitrates vs beta-blockers: mechanism & contraindications</div>
+    <span class="comp-tag tag-high">High frequency</span>
+    <span class="chevron">▶</span>
+  </div>
+  <div class="comp-body">
+    <div class="vs-grid">
+      <div class="vs-col a">
+        <div class="vs-name">Nitrates (nitroglycerin, isosorbide)</div>
+        <div class="vs-point">NO → guanylate cyclase → cGMP → vasodilation</div>
+        <div class="vs-point">Primarily venodilation → reduces preload</div>
+        <div class="vs-point">Redistributes blood to subendocardium (↓LVEDP)</div>
+        <div class="vs-point">Does NOT reduce mortality post-MI</div>
+        <div class="vs-point">Tolerance with continuous use → nitrate-free interval</div>
+        <div class="vs-point">Contraindicated with sildenafil (PDE5 inhibitors)</div>
+        <div class="vs-point">Cause reflex tachycardia (blocked by beta-blockers)</div>
+      </div>
+      <div class="vs-col b">
+        <div class="vs-name">Beta-blockers (metoprolol, atenolol)</div>
+        <div class="vs-point">Block β1 → reduce HR, contractility, O2 demand</div>
+        <div class="vs-point">Reduce reflex tachycardia from nitrates</div>
+        <div class="vs-point">REDUCE mortality post-MI</div>
+        <div class="vs-point">CONTRAINDICATED in variant angina (worsen spasm)</div>
+        <div class="vs-point">Atenolol: less CNS SE (less lipophilic than metoprolol)</div>
+        <div class="vs-point">Safe in stable angina, NOT variant angina</div>
+      </div>
+    </div>
+    <div class="vs-key"><strong>Critical distinction:</strong> Nitrates do NOT reduce mortality post-MI (unlike beta-blockers). Beta-blockers are contraindicated in variant (vasospastic) angina. Nitrates cause tolerance — need 8-12hr nitrate-free period (remove patch at night).</div>
+  </div>
+</div>
+
+<div class="comparison">
+  <div class="comp-header" onclick="toggle(this)">
+    <div class="comp-title">DHP CCBs (amlodipine) vs non-DHP CCBs (diltiazem, verapamil)</div>
+    <span class="comp-tag tag-high">High frequency</span>
+    <span class="chevron">▶</span>
+  </div>
+  <div class="comp-body">
+    <div class="vs-grid">
+      <div class="vs-col a">
+        <div class="vs-name">Amlodipine (DHP)</div>
+        <div class="vs-point">Blocks L-type Ca channels in VASCULAR smooth muscle</div>
+        <div class="vs-point">Arteriolar dilation → reduces afterload</div>
+        <div class="vs-point">Does NOT slow AV node → NOT for AF rate control</div>
+        <div class="vs-point">Causes peripheral edema (arteriolar, not fluid retention)</div>
+        <div class="vs-point">Safe in asthma, safe with NSAIDs</div>
+        <div class="vs-point">Treats variant angina (coronary vasodilation)</div>
+      </div>
+      <div class="vs-col b">
+        <div class="vs-name">Diltiazem / Verapamil (non-DHP)</div>
+        <div class="vs-point">Block Ca channels in CARDIAC tissue AND vasculature</div>
+        <div class="vs-point">Slow AV node → use for AF/flutter rate control + angina</div>
+        <div class="vs-point">Inhibit CYP3A4 → increase atorvastatin levels (use pravastatin)</div>
+        <div class="vs-point">CONTRAINDICATED with beta-blockers (AV block)</div>
+        <div class="vs-point">Verapamil: constipation; diltiazem: preferred for angina + AF</div>
+        <div class="vs-point">Both treat variant angina</div>
+      </div>
+    </div>
+    <div class="vs-key"><strong>Key distinction:</strong> Only non-DHPs slow the AV node. Diltiazem = best drug for angina + AF. Verapamil/diltiazem + beta-blocker = dangerous AV block. Amlodipine edema is arteriolar (not fluid retention — diuretics don't fix it).</div>
+  </div>
+</div>
+
+</div>
+
+<div class="section">
+<div class="sec-label">Hypertension drugs</div>
+
+<div class="comparison">
+  <div class="comp-header" onclick="toggle(this)">
+    <div class="comp-title">ACE inhibitors vs ARBs</div>
+    <span class="comp-tag tag-high">High frequency</span>
+    <span class="chevron">▶</span>
+  </div>
+  <div class="comp-body">
+    <div class="vs-grid">
+      <div class="vs-col a">
+        <div class="vs-name">ACE inhibitors (lisinopril, enalapril)</div>
+        <div class="vs-point">Block ACE → reduce Ang II AND accumulate bradykinin</div>
+        <div class="vs-point">Bradykinin → dry cough (10-15%) and angioedema</div>
+        <div class="vs-point">Reduce intraglomerular pressure (dilate efferent arteriole)</div>
+        <div class="vs-point">Enalapril is a prodrug (delayed peak effect)</div>
+        <div class="vs-point">Reduce new-onset diabetes</div>
+        <div class="vs-point">Both AT1 and AT2 receptors receive less Ang II</div>
+      </div>
+      <div class="vs-col b">
+        <div class="vs-name">ARBs (losartan, valsartan)</div>
+        <div class="vs-point">Block AT1 receptor → Ang II shunted to AT2</div>
+        <div class="vs-point">GREATEST AT2 receptor stimulation (Ang II builds up)</div>
+        <div class="vs-point">No cough (no bradykinin accumulation)</div>
+        <div class="vs-point">Same mortality benefit as ACE inhibitors</div>
+        <div class="vs-point">Renin↑, Ang I↑, Ang II↑, Aldosterone↓</div>
+        <div class="vs-point">Both equally effective at lowering BP</div>
+      </div>
+    </div>
+    <div class="vs-key"><strong>Key distinctions:</strong> Cough → switch ACE to ARB. ARBs cause greater AT2 stimulation. NEVER combine ACE + ARB (hyperkalemia + renal failure). Both contraindicated in pregnancy and bilateral renal artery stenosis. Both decrease new-onset diabetes (NOT thiazides/beta-blockers which increase it).</div>
+  </div>
+</div>
+
+<div class="comparison">
+  <div class="comp-header" onclick="toggle(this)">
+    <div class="comp-title">Loop diuretics (furosemide) vs thiazides (chlorthalidone)</div>
+    <span class="comp-tag tag-high">High frequency</span>
+    <span class="chevron">▶</span>
+  </div>
+  <div class="comp-body">
+    <div class="vs-grid">
+      <div class="vs-col a">
+        <div class="vs-name">Furosemide (loop)</div>
+        <div class="vs-point">Blocks Na/K/2Cl in thick ascending loop of Henle</div>
+        <div class="vs-point">Ca↓, Mg↓, K↓, Na↓ — washes out everything</div>
+        <div class="vs-point">Used in acute pulmonary edema, hypercalcemia</div>
+        <div class="vs-point">Hypokalemia → worsens digoxin toxicity</div>
+        <div class="vs-point">Metabolic alkalosis</div>
+        <div class="vs-point">No anti-remodeling, does NOT increase EF</div>
+      </div>
+      <div class="vs-col b">
+        <div class="vs-name">Chlorthalidone / HCTZ (thiazide)</div>
+        <div class="vs-point">Blocks Na/Cl in distal convoluted tubule</div>
+        <div class="vs-point">Ca↑ (SAVES calcium), K↓, Na↓</div>
+        <div class="vs-point">Used for kidney stones (Ca type), osteoporosis, HTN</div>
+        <div class="vs-point">Metabolic effects: ↑glucose, ↑uric acid, ↑lipids</div>
+        <div class="vs-point">Does NOT decrease cholesterol</div>
+        <div class="vs-point">NSAIDs blunt its antihypertensive effect</div>
+      </div>
+    </div>
+    <div class="vs-key"><strong>Critical distinction:</strong> Furosemide → Ca DECREASES. Thiazides → Ca INCREASES. This is the single most-tested difference between these two classes.</div>
+  </div>
+</div>
+
+<div class="comparison">
+  <div class="comp-header" onclick="toggle(this)">
+    <div class="comp-title">Spironolactone / eplerenone vs triamterene (K-sparing diuretics)</div>
+    <span class="comp-tag tag-med">Medium frequency</span>
+    <span class="chevron">▶</span>
+  </div>
+  <div class="comp-body">
+    <div class="vs-grid">
+      <div class="vs-col a">
+        <div class="vs-name">Spironolactone / Eplerenone</div>
+        <div class="vs-point">Block aldosterone at mineralocorticoid receptor</div>
+        <div class="vs-point">↓ Na/K ATPase expression on basolateral side</div>
+        <div class="vs-point">Anti-remodeling benefit in HF (blocks MR in heart)</div>
+        <div class="vs-point">Spironolactone: gynecomastia; eplerenone: more selective</div>
+        <div class="vs-point">No metabolic acidosis</div>
+      </div>
+      <div class="vs-col b">
+        <div class="vs-name">Triamterene / Amiloride</div>
+        <div class="vs-point">Directly block ENaC on luminal side</div>
+        <div class="vs-point">Reduce Na reabsorption → reduce H+ secretion</div>
+        <div class="vs-point">Cause metabolic ACIDOSIS (distinguish from others)</div>
+        <div class="vs-point">No cardiac anti-remodeling benefit</div>
+        <div class="vs-point">Hyperkalemia risk when combined with ARBs or ACE inhibitors</div>
+      </div>
+    </div>
+    <div class="vs-key"><strong>Key distinction:</strong> Triamterene causes metabolic acidosis (reduced H+ secretion). Spironolactone/eplerenone do not. The HF mortality benefit of aldosterone antagonists comes from blocking the receptor in the MYOCARDIUM (anti-fibrotic), not just the kidney.</div>
+  </div>
+</div>
+
+</div>
+
+<div class="section">
+<div class="sec-label">Heart failure drugs</div>
+
+<div class="comparison">
+  <div class="comp-header" onclick="toggle(this)">
+    <div class="comp-title">Digoxin vs ACE inhibitors / beta-blockers in HF</div>
+    <span class="comp-tag tag-high">High frequency</span>
+    <span class="chevron">▶</span>
+  </div>
+  <div class="comp-body">
+    <div class="vs-grid">
+      <div class="vs-col a">
+        <div class="vs-name">Digoxin</div>
+        <div class="vs-point">Inhibits Na/K ATPase → ↑intracellular Ca → positive inotropy</div>
+        <div class="vs-point">Increases vagal tone → slows AV node (AF rate control)</div>
+        <div class="vs-point">CO↑, SV↑, HR↓, PVR↑ (reflex vasoconstriction)</div>
+        <div class="vs-point">Reduces symptoms and hospitalizations</div>
+        <div class="vs-point">Does NOT reduce mortality (DIG trial)</div>
+        <div class="vs-point">Hypokalemia → ↑digoxin toxicity (yellow-green halos, AV block)</div>
+      </div>
+      <div class="vs-col b">
+        <div class="vs-name">ACE inhibitors + beta-blockers (carvedilol)</div>
+        <div class="vs-point">ACE inhibitors: venodilation + natriuresis + anti-remodeling</div>
+        <div class="vs-point">Carvedilol: α1 + β block → ↓TPR, ↓HR, ↓renin, ↑K+</div>
+        <div class="vs-point">Both: REDUCE mortality in HFrEF</div>
+        <div class="vs-point">Both increase EF with chronic therapy (reverse remodeling)</div>
+        <div class="vs-point">Carvedilol: do NOT start in acute decompensated HF</div>
+      </div>
+    </div>
+    <div class="vs-key"><strong>Critical distinction:</strong> Digoxin = symptom benefit, NO mortality benefit. ACE inhibitors + beta-blockers = mortality benefit. Spironolactone/eplerenone also reduce mortality (block aldosterone in heart). Furosemide = symptoms only, no mortality benefit.</div>
+  </div>
+</div>
+
+</div>
+
+<div class="section">
+<div class="sec-label">Antiarrhythmic drugs</div>
+
+<div class="comparison">
+  <div class="comp-header" onclick="toggle(this)">
+    <div class="comp-title">Amiodarone vs flecainide vs lidocaine vs adenosine</div>
+    <span class="comp-tag tag-high">High frequency</span>
+    <span class="chevron">▶</span>
+  </div>
+  <div class="comp-body">
+    <div class="vs-grid">
+      <div class="vs-col a">
+        <div class="vs-name">Amiodarone (Class III)</div>
+        <div class="vs-point">Multi-class: I + II + III + IV effects</div>
+        <div class="vs-point">Blocks IKr → prolongs QT (rarely causes torsade)</div>
+        <div class="vs-point">Slows accessory pathways → safe in WPW</div>
+        <div class="vs-point">Best for resistant VT/VF and AF rhythm control</div>
+        <div class="vs-point">Half-life 40-55 days; active metabolite</div>
+        <div class="vs-point">SE: pulmonary fibrosis, thyroid (hypo + hyper), NOT lupus</div>
+        <div class="vs-point">Avoid if thyroid disease history</div>
+      </div>
+      <div class="vs-col b">
+        <div class="vs-name">Flecainide (Class IC)</div>
+        <div class="vs-point">Slows Na+ channel recovery (slow conduction)</div>
+        <div class="vs-point">Increases pacing AND defibrillation threshold</div>
+        <div class="vs-point">Paradoxical ventricular acceleration in atrial flutter</div>
+        <div class="vs-point">Proarrhythmic in structural heart disease (CAST trial)</div>
+        <div class="vs-point">Only for structurally NORMAL hearts</div>
+        <div class="vs-point">Does NOT cause EADs (contrast with ibutilide)</div>
+      </div>
+    </div>
+    <div class="vs-key"><strong>Key distinctions:</strong> Lidocaine (Class IB) = IV only, acute VT, ischemia-selective. Adenosine = IV bolus, AVNRT/AVRT, 10-sec half-life, safe in COPD. Torsade de pointes = IKr blockade → IV magnesium. Lupus = procainamide (NOT amiodarone).</div>
+  </div>
+</div>
+
+<div class="comparison">
+  <div class="comp-header" onclick="toggle(this)">
+    <div class="comp-title">Early afterdepolarizations (EADs) vs delayed afterdepolarizations (DADs)</div>
+    <span class="comp-tag tag-med">Medium frequency</span>
+    <span class="chevron">▶</span>
+  </div>
+  <div class="comp-body">
+    <div class="vs-grid">
+      <div class="vs-col a">
+        <div class="vs-name">EADs → Torsade de pointes</div>
+        <div class="vs-point">Caused by IKr blockade (prolonged QT)</div>
+        <div class="vs-point">Associated: ibutilide, dofetilide, sotalol, quinidine</div>
+        <div class="vs-point">Also: hypokalemia, hypomagnesemia, long QT syndrome</div>
+        <div class="vs-point">Treatment: IV magnesium (regardless of Mg level)</div>
+        <div class="vs-point">Also treat by increasing HR (isoproterenol, pacing)</div>
+      </div>
+      <div class="vs-col b">
+        <div class="vs-name">DADs → Digoxin toxicity arrhythmias</div>
+        <div class="vs-point">Caused by intracellular Ca2+ overload</div>
+        <div class="vs-point">Classic cause: digoxin toxicity (+ hypokalemia)</div>
+        <div class="vs-point">Triggered activity, not re-entry</div>
+        <div class="vs-point">Treatment: correct electrolytes, digoxin Fab antibodies</div>
+        <div class="vs-point">Digoxin toxicity: yellow-green halos, AV block, nausea</div>
+      </div>
+    </div>
+    <div class="vs-key"><strong>Key distinction:</strong> Digoxin overdose causes DADs (calcium overload), NOT EADs. The exam explicitly tests this. EADs → torsade → IV magnesium. Flecainide does NOT cause EADs; ibutilide DOES.</div>
+  </div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+let allOpen = false;
+function toggle(header) {
+  const body = header.nextElementSibling;
+  const chev = header.querySelector('.chevron');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  chev.classList.toggle('open', !isOpen);
+}
+function toggleAll() {
+  allOpen = !allOpen;
+  document.querySelectorAll('.comp-body').forEach(b => b.classList.toggle('open', allOpen));
+  document.querySelectorAll('.chevron').forEach(c => c.classList.toggle('open', allOpen));
+  document.querySelector('.toggle-all').textContent = allOpen ? 'Collapse all' : 'Expand all';
+}
+</script>
