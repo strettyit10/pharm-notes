@@ -1,0 +1,225 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+.container { padding: 1rem 0; max-width: 100%; }
+.header { margin-bottom: 1.5rem; }
+.header h2 { font-size: 18px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; }
+.header p { font-size: 14px; color: var(--color-text-secondary); }
+.tabs { display: flex; gap: 8px; margin-bottom: 1.5rem; border-bottom: 0.5px solid var(--color-border-tertiary); padding-bottom: 0; }
+.tab { font-size: 14px; font-weight: 400; padding: 8px 16px; border: none; background: none; color: var(--color-text-secondary); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -0.5px; }
+.tab.active { color: var(--color-text-primary); border-bottom: 2px solid var(--color-text-primary); font-weight: 500; }
+.panel { display: none; }
+.panel.active { display: block; }
+textarea, input[type="text"] { width: 100%; font-size: 14px; font-family: var(--font-sans); color: var(--color-text-primary); background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; resize: vertical; }
+textarea:focus, input:focus { outline: none; border-color: var(--color-border-primary); }
+label { font-size: 13px; color: var(--color-text-secondary); display: block; margin-bottom: 6px; }
+.btn { display: inline-block; font-size: 14px; font-weight: 500; padding: 8px 18px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: transparent; color: var(--color-text-primary); cursor: pointer; margin-top: 10px; }
+.btn:hover { background: var(--color-background-secondary); }
+.btn-primary { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+.btn-primary:hover { opacity: 0.85; }
+.btn-danger { color: var(--color-text-danger); border-color: var(--color-border-danger); }
+.btn-danger:hover { background: var(--color-background-danger); }
+.row { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 10px; }
+.q-entry { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 10px; }
+.q-text { font-size: 14px; color: var(--color-text-primary); line-height: 1.6; margin-bottom: 8px; }
+.q-answer { font-size: 13px; color: var(--color-text-success); font-weight: 500; }
+.q-index { font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 4px; }
+.badge { display: inline-block; font-size: 12px; padding: 2px 8px; border-radius: var(--border-radius-md); background: var(--color-background-secondary); color: var(--color-text-secondary); margin-left: 8px; }
+.empty { font-size: 14px; color: var(--color-text-secondary); padding: 2rem 0; text-align: center; }
+.results-header { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 12px; }
+.highlight { background: #FAC775; color: #412402; border-radius: 2px; padding: 0 2px; }
+.status { font-size: 13px; color: var(--color-text-success); margin-top: 8px; min-height: 18px; }
+.bulk-hint { font-size: 12px; color: var(--color-text-tertiary); margin-top: 6px; line-height: 1.5; }
+</style>
+
+<div class="container">
+  <div class="header">
+    <h2>Question database</h2>
+    <p>Add questions, then search by keyword or concept.</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('add')">Add questions</button>
+    <button class="tab" onclick="switchTab('keyword')">Keyword search</button>
+    <button class="tab" onclick="switchTab('concept')">Concept search</button>
+    <button class="tab" onclick="switchTab('browse')">Browse all <span class="badge" id="count-badge">0</span></button>
+  </div>
+
+  <div id="panel-add" class="panel active">
+    <div style="margin-bottom:1.5rem;">
+      <label>Paste a single question + answer choice letter</label>
+      <textarea id="q-input" rows="5" placeholder="e.g. A 55-year-old patient with hypertension is started on lisinopril. Which of the following is the primary mechanism of action?
+A) Beta-1 receptor blockade
+B) ACE inhibition
+C) Calcium channel blockade
+D) Alpha-1 receptor blockade
+
+Answer: B"></textarea>
+      <button class="btn btn-primary" onclick="addSingle()" style="margin-right:8px;">Add question</button>
+      <span class="status" id="single-status"></span>
+    </div>
+
+    <hr style="border:none; border-top: 0.5px solid var(--color-border-tertiary); margin-bottom:1.5rem;">
+
+    <div>
+      <label>Bulk paste — multiple questions at once</label>
+      <textarea id="bulk-input" rows="8" placeholder="Paste many questions here. Separate each question block with a blank line. Each block should end with 'Answer: X'."></textarea>
+      <div class="bulk-hint">Each question block must end with a line starting with "Answer:". Separate blocks with a blank line.</div>
+      <button class="btn btn-primary" onclick="addBulk()" style="margin-right:8px;">Add all</button>
+      <button class="btn btn-danger" onclick="clearAll()">Clear database</button>
+      <span class="status" id="bulk-status"></span>
+    </div>
+  </div>
+
+  <div id="panel-keyword" class="panel">
+    <label>Search by keywords — separate multiple words with spaces or commas (all must match)</label>
+    <input type="text" id="kw-input" placeholder="e.g. ACE inhibitor bradycardia  or  aorta, dissection, hypertension..." oninput="keywordSearch()" />
+    <div style="margin-top:1.25rem;" id="kw-results"><p class="empty">Start typing to search questions.</p></div>
+  </div>
+
+  <div id="panel-concept" class="panel">
+    <label>Paste a full question to find similar concept questions</label>
+    <textarea id="concept-input" rows="6" placeholder="Paste a full practice question here..."></textarea>
+    <button class="btn btn-primary" onclick="conceptSearch()">Find similar ↗</button>
+    <div style="margin-top:1.25rem;" id="concept-results"></div>
+  </div>
+
+  <div id="panel-browse" class="panel">
+    <div id="browse-list"><p class="empty">No questions added yet.</p></div>
+  </div>
+</div>
+
+<script>
+let db = [];
+
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  const tabs = ['add','keyword','concept','browse'];
+  document.querySelectorAll('.tab')[tabs.indexOf(name)].classList.add('active');
+  document.getElementById('panel-' + name).classList.add('active');
+  if (name === 'browse') renderBrowse();
+}
+
+function parseBlock(text) {
+  text = text.trim();
+  if (!text) return null;
+  const answerMatch = text.match(/answer\s*:\s*([A-Ea-e][\w]*)/i);
+  if (!answerMatch) return null;
+  const answer = answerMatch[0].replace(/answer\s*:\s*/i, '').trim();
+  const qText = text.replace(/answer\s*:.*$/im, '').trim();
+  if (!qText) return null;
+  return { q: qText, a: answer, id: Date.now() + Math.random() };
+}
+
+function addSingle() {
+  const val = document.getElementById('q-input').value;
+  const parsed = parseBlock(val);
+  const status = document.getElementById('single-status');
+  if (!parsed) { status.style.color = 'var(--color-text-danger)'; status.textContent = 'Could not parse. Make sure to include "Answer: X".'; return; }
+  db.push(parsed);
+  document.getElementById('q-input').value = '';
+  document.getElementById('count-badge').textContent = db.length;
+  status.style.color = 'var(--color-text-success)';
+  status.textContent = 'Question added. Total: ' + db.length;
+}
+
+function addBulk() {
+  const val = document.getElementById('bulk-input').value;
+  const blocks = val.split(/\n\s*\n/);
+  let added = 0;
+  blocks.forEach(b => { const p = parseBlock(b); if (p) { db.push(p); added++; } });
+  document.getElementById('bulk-input').value = '';
+  document.getElementById('count-badge').textContent = db.length;
+  const status = document.getElementById('bulk-status');
+  status.style.color = added > 0 ? 'var(--color-text-success)' : 'var(--color-text-danger)';
+  status.textContent = added > 0 ? added + ' question(s) added. Total: ' + db.length : 'No valid questions found. Check formatting.';
+}
+
+function clearAll() {
+  if (!confirm('Clear all ' + db.length + ' questions?')) return;
+  db = [];
+  document.getElementById('count-badge').textContent = 0;
+  document.getElementById('bulk-status').textContent = 'Database cleared.';
+  document.getElementById('bulk-status').style.color = 'var(--color-text-secondary)';
+}
+
+function highlightAll(text, terms) {
+  if (!terms || terms.length === 0) return text;
+  // Build a single regex alternating all terms
+  const escaped = terms.map(t => t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'));
+  const re = new RegExp('(' + escaped.join('|') + ')', 'gi');
+  return text.replace(re, '<span class="highlight">$1</span>');
+}
+
+function parseKeywords(raw) {
+  // Split on commas and/or whitespace, filter empty strings
+  return raw.split(/[\s,]+/).map(k => k.trim()).filter(k => k.length > 0);
+}
+
+function keywordSearch() {
+  const raw = document.getElementById('kw-input').value.trim();
+  const container = document.getElementById('kw-results');
+  if (!raw) { container.innerHTML = '<p class="empty">Start typing to search questions.</p>'; return; }
+  if (db.length === 0) { container.innerHTML = '<p class="empty">No questions in database yet.</p>'; return; }
+
+  const keywords = parseKeywords(raw);
+  if (keywords.length === 0) { container.innerHTML = '<p class="empty">Start typing to search questions.</p>'; return; }
+
+  // A question matches only if EVERY keyword appears somewhere in the question text or answer
+  const results = db.filter(q => {
+    const haystack = (q.q + ' ' + q.a).toLowerCase();
+    return keywords.every(kw => haystack.includes(kw.toLowerCase()));
+  });
+
+  const label = keywords.length === 1
+    ? `"${keywords[0]}"`
+    : keywords.map(k => `"${k}"`).join(' + ');
+
+  if (results.length === 0) {
+    container.innerHTML = `<p class="empty">No questions contain all of: ${label}.</p>`;
+    return;
+  }
+
+  container.innerHTML = '<p class="results-header">' + results.length + ' match(es) containing all of: ' + label + '</p>' +
+    results.map(q => `<div class="q-entry"><div class="q-index">#${db.indexOf(q)+1}</div><div class="q-text">${highlightAll(q.q, keywords)}</div><div class="q-answer">Answer: ${q.a}</div></div>`).join('');
+}
+
+function conceptSearch() {
+  const input = document.getElementById('concept-input').value.trim().toLowerCase();
+  const container = document.getElementById('concept-results');
+  if (!input) { container.innerHTML = '<p class="empty">Paste a question above first.</p>'; return; }
+  if (db.length === 0) { container.innerHTML = '<p class="empty">No questions in database yet.</p>'; return; }
+
+  const stopwords = new Set(['a','an','the','of','in','on','is','are','was','were','be','been','being','to','for','with','that','this','which','what','how','does','do','would','should','could','will','can','if','it','its','by','at','as','from','or','and','not','no','who','when','where','why','he','she','they','his','her','their','patient','following']);
+
+  function tokenize(text) {
+    return text.toLowerCase().replace(/[^a-z0-9\s]/g,' ').split(/\s+/).filter(w => w.length > 2 && !stopwords.has(w));
+  }
+
+  const inputTokens = new Set(tokenize(input));
+
+  const scored = db.map(q => {
+    const qTokens = new Set(tokenize(q.q));
+    let shared = 0;
+    inputTokens.forEach(t => { if (qTokens.has(t)) shared++; });
+    const score = shared / Math.max(inputTokens.size, qTokens.size);
+    return { q, score, shared };
+  }).filter(r => r.shared > 0).sort((a,b) => b.score - a.score);
+
+  if (scored.length === 0) {
+    container.innerHTML = '<p class="empty">No conceptually similar questions found. Try adding more questions or check that your question uses relevant terms.</p>';
+    return;
+  }
+
+  container.innerHTML = '<p class="results-header">' + scored.length + ' conceptually similar question(s) found</p>' +
+    scored.map(r => `<div class="q-entry"><div class="q-index">#${db.indexOf(r.q)+1} &mdash; ${r.shared} keyword overlap(s)</div><div class="q-text">${r.q.q}</div><div class="q-answer">Answer: ${r.q.a}</div></div>`).join('');
+}
+
+function renderBrowse() {
+  const container = document.getElementById('browse-list');
+  if (db.length === 0) { container.innerHTML = '<p class="empty">No questions added yet.</p>'; return; }
+  container.innerHTML = db.map((q,i) => `<div class="q-entry"><div class="q-index">#${i+1}</div><div class="q-text">${q.q}</div><div class="q-answer">Answer: ${q.a}</div></div>`).join('');
+}
+</script>
